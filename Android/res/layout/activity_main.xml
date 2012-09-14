@@ -1,37 +1,14 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-    <LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent" 
-  android:id="@+id/loginlayout" android:orientation="vertical">
-  
-        <LinearLayout 
-        	android:id="@+id/linearLayout1"  
-        	android:layout_width="fill_parent"
-        	android:layout_height="wrap_content">
-        	
-            <EditText
-                android:id="@+id/userName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/username"
-                android:maxWidth="160dp"
-                android:minWidth="160dp"
-                android:singleLine="true" >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="@string/hello_world"
+        tools:context=".MainActivity" />
 
-            </EditText>
-            
-          
-        </LinearLayout> 
-       	
-       	 <Button 
-            	android:layout_height="wrap_content" 
-            	android:layout_width="fill_parent" 
-            	android:id="@+id/loginButton" 
-            	android:text="@string/login">
-        </Button>
-        
-        
-</LinearLayout>
-
-
+</RelativeLayout>

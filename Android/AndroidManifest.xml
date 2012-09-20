@@ -16,26 +16,41 @@
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name=".Game"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.GAME" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name=".HighScore"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.HIGHSCORE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".LevelChooserActivity"
+            android:label="@string/title_activity_level_chooser" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.MainActivity" />
+        </activity>
+        <activity
+            android:name=".DisplayHighscoreActivity"
+            android:label="@string/title_activity_display_highscore" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.MainActivity" />
         </activity>
     </application>
 

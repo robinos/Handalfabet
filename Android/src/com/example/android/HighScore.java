@@ -10,7 +10,7 @@ public class HighScore extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.high_score);
-        
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         
         
         final Button backButton = (Button) findViewById(R.id.back_Button);

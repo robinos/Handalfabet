@@ -48,4 +48,22 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
     }
+    /*
+     * Called when the user clicks the levelchooser button
+     */
+    public void goLevelChooser(View view) {
+    	
+    	Intent intent = new Intent(this, LevelChooserActivity.class);
+    	startActivity(intent);
+    	
+    }
+    
+    /*
+     * Called when the user clicks the highscore button
+     */
+    public void goTheHighscore(View view) {
+    	
+    	Intent intent = new Intent(this, DisplayHighscoreActivity.class);
+    	startActivity(intent);
+    }
 }

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/loginView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/login_view" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/loginView"
+        android:text="@string/back" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true" />
+
+    <Button
+        android:id="@+id/settings_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginView"
+        android:layout_centerHorizontal="true"
+        android:text="@string/menu_settings" />
+
+    <TextView
+        android:id="@+id/questionView"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/backButton"
+        android:text="@string/question_view"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/point_view"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_above="@+id/progressBar"
+        android:layout_alignParentLeft="true"
+        android:text="@string/point_view"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/total_point_view"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="21dp"
+        android:text="@string/total_point_view"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/highScoreButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/questionView"
+        android:layout_alignRight="@+id/total_point_view"
+        android:text="@string/highScore" />
+
+    <ImageButton
+        android:id="@+id/first_opt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/point_view"
+        android:layout_toRightOf="@+id/settings_button"
+        android:contentDescription="@string/first_opt_button"
+        android:src="@drawable/first_button" />
+
+    <ImageButton
+        android:id="@+id/second_opt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/first_opt_button"
+        android:contentDescription="@string/second_opt_button"
+        android:src="@drawable/second_button" />
+
+    <ImageButton
+        android:id="@+id/next_letter_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/settings_button"
+        android:layout_below="@+id/questionView"
+        android:contentDescription="@string/next_letter_button"
+        android:src="@drawable/next_letter_button" />
+
+    <ImageButton
+        android:id="@+id/third_opt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/total_point_view"
+        android:layout_marginLeft="14dp"
+        android:layout_toRightOf="@+id/next_letter_button"
+        android:contentDescription="@string/third_opt_button"
+        android:src="@drawable/third_button" />
+
+</RelativeLayout>

@@ -1,0 +1,23 @@
+<resources>
+	
+	<string name="back">Tillbacka</string>
+    <string name="highScore">Highscore</string>
+    <string name="username">Användarnamn</string>
+    <string name="login">Inloggning</string>
+    <string name="app_name">Android</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Inställningar</string>
+    <string name="title_activity_main">Svensk Handalfabet</string>
+    <string name="level_chooser">Svårighetsgrad</string>
+    <string name="title_activity_level_chooser">Svårighetsgradsväljare</string>
+    <string name="theHighscore">Highscore</string>
+    <string name="title_activity_display_highscore">Highscore</string>
+    <string name="login_view">x inloggad!</string>
+    <string name="first_opt_button">Först Knapp</string>
+    <string name="second_opt_button">Andra Knapp</string>
+    <string name="third_opt_button">Tredje Knapp</string>
+    <string name="question_view">Vad har -a- för tecken?</string>    
+    <string name="point_view">Poäng: 0 - 0</string>   
+    <string name="total_point_view">Total poäng: 0</string> 
+    <string name="next_letter_button">Nästa bokstav</string>                  
+</resources>

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 public class Game extends Activity {
 	@Override
@@ -14,6 +16,11 @@ public class Game extends Activity {
         
         final Button backButton = (Button) findViewById(R.id.backButton);
         final Button highScoreButton = (Button) findViewById(R.id.highScoreButton);
+        final ImageButton firstOptionButton = (ImageButton) findViewById(R.id.first_opt_button);
+        
+        TextView loginView = new TextView(this);
+        loginView.setTextSize(20);
+        loginView.setText(R.string.login_view);
         
         backButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -27,7 +34,12 @@ public class Game extends Activity {
 //				Intent intent = new Intent(getBaseContext(), Game.class);
 //				startActivityForResult(intent, 0);
 			}
-		});
+		});       
+        
+        firstOptionButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+			}
+		});        
         
     }
 

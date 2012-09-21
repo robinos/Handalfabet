@@ -4,24 +4,112 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/highScoreButton"
+    <TextView
+        android:id="@+id/loginView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="154dp"
-        android:layout_marginRight="20dp"
-        android:text="@string/highScore" />
+        android:text="@string/login_view" />
 
     <Button
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/highScoreButton"
-        android:layout_alignBottom="@+id/highScoreButton"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="48dp"
+        android:layout_below="@id/loginView"
         android:text="@string/back" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="36dp" />
+
+    <Button
+        android:id="@+id/settings_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/loginView"
+        android:text="@string/menu_settings" />
+
+    <TextView
+        android:id="@+id/questionView"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:text="@string/question_view"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/point_view"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/questionView"
+        android:text="@string/point_view"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/total_point_view"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/point_view"
+        android:text="@string/total_point_view"
+        android:textSize="30dp" />
+
+    <ImageButton
+        android:id="@+id/second_opt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/questionView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/second_opt_button"
+        android:src="@drawable/second_button" />
+
+    <ImageButton
+        android:id="@+id/first_opt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/second_opt_button"
+        android:contentDescription="@string/first_opt_button"
+        android:src="@drawable/first_button" />
+
+    <ImageButton
+        android:id="@+id/third_opt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/second_opt_button"
+        android:contentDescription="@string/third_opt_button"
+        android:src="@drawable/third_button" />
+
+    <ImageButton
+        android:id="@+id/next_letter_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/next_letter_button"
+        android:src="@drawable/next_letter_button" />
+
+    <Button
+        android:id="@+id/highScoreButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/settings_button"
+        android:layout_alignBottom="@+id/settings_button"
+        android:layout_centerHorizontal="true"
+        android:text="@string/highScore" />
 
 </RelativeLayout>

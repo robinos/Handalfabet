@@ -1,12 +1,25 @@
-<resources>
-	
+<resources>	
 	<string name="back">Back</string>
-    <string name="highScore">HighScore</string>
+    <string name="highScore">High Score</string>
     <string name="username">Username</string>
     <string name="login">Login</string>
     <string name="app_name">Android</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">TeckenSpråk</string>
-
+    <string name="title_activity_main">Swedish Sign Alphabet</string>
+    <string name="login_view">x logged in!</string>
+    <string name="first_opt_button">First Button</string>
+    <string name="second_opt_button">Second Button</string>
+    <string name="third_opt_button">Third Button</string>
+    <string name="fourth_opt_button">Fourth Button</string> 
+    <string name="question_view1">What is</string>   
+    <string name="question_view2">-a-</string> 
+    <string name="question_view3">for hand sign?</string> 
+    <string name="point_view1">Points: </string> 
+    <string name="point_view2">0</string>
+    <string name="point_view3">-</string>
+    <string name="point_view4">0</string>  
+    <string name="total_point_view1">Total points: </string>
+    <string name="total_point_view2">0</string>  
+    <string name="next_letter_button">Next Button</string>                  
 </resources>

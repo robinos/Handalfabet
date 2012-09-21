@@ -4,24 +4,183 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/highScoreButton"
+    <TextView
+        android:id="@+id/loginView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="154dp"
-        android:layout_marginRight="20dp"
-        android:text="@string/highScore" />
+        android:text="@string/login_view" />
 
     <Button
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/highScoreButton"
-        android:layout_alignBottom="@+id/highScoreButton"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="48dp"
+        android:layout_below="@id/loginView"
         android:text="@string/back" />
+
+    <ImageButton
+        android:id="@+id/first_opt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/backButton"
+        android:contentDescription="@string/first_opt_button"
+        android:src="@drawable/first_button" />
+
+    <ImageButton
+        android:id="@+id/second_opt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fourth_opt_button"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/second_opt_button"
+        android:src="@drawable/second_button" />
+
+    <ImageButton
+        android:id="@+id/fourth_opt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/first_opt_button"
+        android:layout_marginTop="19dp"
+        android:contentDescription="@string/fourth_opt_button"
+        android:src="@drawable/fourth_button" />
+
+    <TextView
+        android:id="@+id/questionView1"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/fourth_opt_button"
+        android:layout_marginTop="19dp"
+        android:text="@string/question_view1"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/questionView3"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/fourth_opt_button"
+        android:layout_marginTop="19dp"
+        android:text="@string/question_view3"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/questionView2"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignBaseline="@+id/questionView3"
+        android:layout_alignBottom="@+id/questionView3"
+        android:layout_alignLeft="@+id/second_opt_button"
+        android:text="@string/question_view2"
+        android:textSize="30dp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="36dp" />
+
+    <TextView
+        android:id="@+id/point_view1"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_above="@+id/progressBar"
+        android:layout_alignParentLeft="true"
+        android:text="@string/point_view1"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/point_view2"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignBaseline="@+id/point_view1"
+        android:layout_alignBottom="@+id/point_view1"
+        android:layout_alignLeft="@+id/second_opt_button"
+        android:text="@string/point_view2"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/point_view3"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignBaseline="@+id/point_view2"
+        android:layout_alignBottom="@+id/point_view2"
+        android:layout_centerHorizontal="true"
+        android:text="@string/point_view3"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/point_view4"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_above="@+id/progressBar"
+        android:layout_alignRight="@+id/second_opt_button"
+        android:text="@string/point_view4"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/total_point_view1"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@+id/progressBar"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="16dp"
+        android:text="@string/total_point_view1"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/total_point_view2"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignBaseline="@+id/total_point_view1"
+        android:layout_alignBottom="@+id/total_point_view1"
+        android:layout_alignLeft="@+id/point_view4"
+        android:text="@string/total_point_view2"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/settings_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/loginView"
+        android:text="@string/menu_settings" />
+
+    <ImageButton
+        android:id="@+id/next_letter_button"
+        android:src="@drawable/next_letter_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/total_point_view2"
+        android:contentDescription="@string/next_letter_button" />
+
+    <ImageButton
+        android:id="@+id/third_opt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fourth_opt_button"
+        android:layout_alignParentRight="true"
+        android:contentDescription="@string/third_opt_button"
+        android:src="@drawable/third_button" />
+
+    <Button
+        android:id="@+id/highScoreButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/second_opt_button"
+        android:layout_alignLeft="@+id/second_opt_button"
+        android:text="@string/highScore" />
 
 </RelativeLayout>

@@ -9,7 +9,7 @@ public class HighScore extends Activity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.high_score);
+        setContentView(R.layout.activity_display_highscore);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         
         

@@ -1,41 +1,55 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+<?xml version="1.0" encoding="utf-8"?>
 
-    <EditText
-        android:id="@+id/username"
-        android:layout_width="fill_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+	<include
+	    android:layout_height="wrap_content"
+	    layout="@layout/user_view" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutUser"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="18dp"
-        android:ems="10"
-        android:hint="@string/username" />
+        android:orientation="vertical" >
+        
+        
+    <Button
+        android:id="@+id/startaSpel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="newGame"
+        android:text="@string/newGame" />
+        
 
     <Button
-        android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/bytspelare"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/username"
-        android:layout_below="@+id/username"
-        android:layout_marginTop="18dp"
-        android:text="@string/login" />
+        android:onClick="newPlayer"
+        android:text="@string/newPlayer" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:id="@+id/svarighet"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:onClick="goLevelChooser"
-        android:text="@string/level_chooser" />
-    
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:onClick="goTheHighscore"
-        android:text="@string/theHighscore" />
+        android:onClick="level"
+        android:text="@string/level" />
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/highScore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="highScore"
+        android:text="@string/highScore" />
+
+    <Button
+        android:id="@+id/instruktioner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="instruktioner"
+        android:text="@string/instruktioner" />
+	</LinearLayout>    
+</LinearLayout>

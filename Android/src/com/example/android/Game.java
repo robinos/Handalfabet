@@ -30,7 +30,7 @@ public class Game extends Activity {
         
         highScoreButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				startActivity(new Intent("android.intent.action.HIGHSCORE")); 
+				startActivity(new Intent("android.intent.action.DISPLAYHIGHSCOREACTIVITY")); 
 //				Intent intent = new Intent(getBaseContext(), Game.class);
 //				startActivityForResult(intent, 0);
 			}

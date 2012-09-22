@@ -1,3 +1,4 @@
+
 <resources>	
 	<string name="back">Back</string>
     <string name="highScore">Highscore</string>
@@ -18,5 +19,11 @@
     <string name="question_view">What is -a- as a hand sign?</string>    
     <string name="point_view">Points: 0 - 0</string> 
     <string name="total_point_view">Total points: 0</string>  
-    <string name="next_letter_button">Next Button</string>                  
+    <string name="next_letter_button">Next Button</string>        
+    <string name="newGame">New Game</string>
+    <string name="newPlayer">New Player</string>
+    <string name="level">Level</string>
+    <string name="instruktioner">Instruktioner</string>
+    <string name="submit">Submit</string>
+	<string name="inloggad">Inloggad som</string>          
 </resources>

@@ -53,11 +53,11 @@ public class MainActivity extends Activity {
 	
 	/** Called when the user clicks the HighScore button */	
 	public void highScore(View v){
-		startActivity(new Intent("android.intent.action.HIGHSCORE")); 
+		startActivity(new Intent("android.intent.action.DISPLAYHIGHSCOREACTIVITY")); 
 	}
 	
 	 /** Called when the user clicks the Instruktioner button */
-	public void instruktioner(View v){
+	public void help(View v){
 		startActivity(new Intent("android.intent.action.HELP"));
 	}
 	

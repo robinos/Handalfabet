@@ -81,9 +81,9 @@ public final class R {
         public static final int back=0x7f040000;
         public static final int first_opt_button=0x7f04000d;
         public static final int hello_world=0x7f040005;
+        public static final int help=0x7f040017;
         public static final int highScore=0x7f040001;
         public static final int inloggad=0x7f040019;
-        public static final int instruktioner=0x7f040017;
         public static final int level=0x7f040016;
         public static final int level_chooser=0x7f040008;
         public static final int login=0x7f040003;

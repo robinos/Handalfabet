@@ -1,6 +1,6 @@
+<resources>
 
-<resources>	
-	<string name="back">Back</string>
+    <string name="back">Back</string>
     <string name="highScore">Highscore</string>
     <string name="username">Username</string>
     <string name="login">Login</string>
@@ -11,19 +11,22 @@
     <string name="level_chooser">Difficulty Level</string>
     <string name="title_activity_level_chooser">Choose Difficulty Level</string>
     <string name="theHighscore">Highscore</string>
-    <string name="title_activity_display_highscore">Highscore</string>    
-    <string name="login_view">x logged in!</string>
+    <string name="title_activity_display_highscore">Highscore</string>
     <string name="first_opt_button">First Button</string>
     <string name="second_opt_button">Second Button</string>
     <string name="third_opt_button">Third Button</string>
-    <string name="question_view">What is -a- as a hand sign?</string>    
-    <string name="point_view">Points: 0 - 0</string> 
-    <string name="total_point_view">Total points: 0</string>  
-    <string name="next_letter_button">Next Button</string>        
+    <string name="question_view">What is -a- as a hand sign?</string>
+    <string name="answer_view">3 out of 3 letters right!  The word was -and-.</string>
+    <string name="point_view">Points: 0 - 0</string>
+    <string name="total_point_view">Total points: 0</string>
+    <string name="next_letter_button">Next Letter Button</string>
+    <string name="next_word_button">Next Word Button</string>
+    <string name="sound_settings_button">Sound Settings</string>
+    <string name="profile_settings_button">Profile Settings</string>
     <string name="newGame">New Game</string>
     <string name="newPlayer">New Player</string>
     <string name="level">Level</string>
     <string name="help">Help</string>
     <string name="submit">Submit</string>
-	<string name="inloggad">Inloggad som</string>          
+    <string name="inloggad">Logged in as</string>
 </resources>

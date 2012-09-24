@@ -28,6 +28,10 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.MainActivity" />
         </activity>
         <activity
             android:name=".HighScore"
@@ -43,8 +47,10 @@
             android:label="@string/title_activity_level_chooser" >
             <intent-filter>
                 <action android:name="android.intent.action.LEVELCHOOSERACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.MainActivity" />
@@ -52,21 +58,25 @@
         <activity
             android:name=".User"
             android:label="@string/title_activity_level_chooser" >
-             <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.USER" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.MainActivity" />
         </activity>
-         <activity
+        <activity
             android:name=".Help"
             android:label="@string/title_activity_level_chooser" >
-             <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.HELP" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.MainActivity" />
@@ -74,13 +84,65 @@
         <activity
             android:name=".DisplayHighscoreActivity"
             android:label="@string/title_activity_display_highscore" >
-             <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.DISPLAYHIGHSCOREACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.MainActivity" />
+        </activity>
+        <activity
+            android:name=".GameSettingsActivity"
+            android:label="@string/title_activity_main" >
+            <intent-filter>
+                <action android:name="android.intent.action.GAMESETTINGSACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.Game" />
+        </activity>
+        <activity
+            android:name=".GameEnd"
+            android:label="@string/title_activity_main" >
+            <intent-filter>
+                <action android:name="android.intent.action.GAMEEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.Game" />
+        </activity>
+        <activity
+            android:name=".ProfileSettingsActivity"
+            android:label="@string/title_activity_main" >
+            <intent-filter>
+                <action android:name="android.intent.action.PROFILESETTINGSACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>            
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.GameSettingsActivity" />
+        </activity>
+        <activity
+            android:name=".SoundSettingsActivity"
+            android:label="@string/title_activity_main" >
+            <intent-filter>
+                <action android:name="android.intent.action.SOUNDSETTINGSACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>             
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.GameSettingsActivity" />
         </activity>
     </application>
 

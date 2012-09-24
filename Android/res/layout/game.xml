@@ -62,26 +62,27 @@
         android:layout_marginBottom="30dp"
         android:background="@drawable/second"
         android:contentDescription="@string/second_opt_button" />
-
+
     <TextView
         android:id="@+id/questionView"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:layout_above="@+id/second_opt_button"
         android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/next_letter_button"
         android:layout_marginBottom="34dp"
         android:background="#AA000000"
         android:text="@string/question_view"
         android:textColor="#ffffffff"
         android:textSize="30dp" />
 
-    <ImageButton
+    <Button
         android:id="@+id/first_opt_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/questionView"
         android:layout_toLeftOf="@+id/next_letter_button"
-        android:background="@drawable/first"
+        
         android:contentDescription="@string/first_opt_button" />
 
     <ImageButton
@@ -92,6 +93,13 @@
         android:layout_toRightOf="@+id/next_letter_button"
         android:background="@drawable/third"
         android:contentDescription="@string/third_opt_button" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/questionView"
+        android:layout_toRightOf="@+id/next_letter_button" />
 
 </RelativeLayout>
 

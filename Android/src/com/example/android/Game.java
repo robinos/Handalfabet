@@ -17,32 +17,13 @@ public class Game extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game);
         getActionBar().setDisplayHomeAsUpEnabled(true);        
-        
-        final Button backButton = (Button) findViewById(R.id.backButton);
-        final Button highScoreButton = (Button) findViewById(R.id.highScoreButton);
-        final Button gameSettingsButton = (Button) findViewById(R.id.settings_button);         
+               
         final ImageButton firstOptionButton = (ImageButton) findViewById(R.id.first_opt_button);
         final ImageButton secondOptionButton = (ImageButton) findViewById(R.id.second_opt_button);
         final ImageButton thirdOptionButton = (ImageButton) findViewById(R.id.third_opt_button);        
         final ImageButton nextLetterButton = (ImageButton) findViewById(R.id.next_letter_button);
         
-        backButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				finish();
-			}
-		});
-        
-        highScoreButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				startActivity(new Intent("android.intent.action.DISPLAYHIGHSCOREACTIVITY")); 
-			}
-		});       
-        
-        gameSettingsButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				startActivity(new Intent("android.intent.action.GAMESETTINGSACTIVITY")); 
-			}
-		});        
+
         
         firstOptionButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {							

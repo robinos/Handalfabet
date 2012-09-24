@@ -9,10 +9,10 @@
    <include
        android:layout_height="wrap_content"
        layout="@layout/user_view" />
-
+
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
     <ProgressBar
@@ -34,67 +34,6 @@
         android:background="@drawable/next_letter"
         android:contentDescription="@string/next_letter_button" />
 
-    <Button
-        android:id="@+id/settings_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="@string/menu_settings" />
-
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:text="@string/back" />
-
-    <ImageButton
-        android:id="@+id/first_opt_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/backButton"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/first"
-        android:contentDescription="@string/first_opt_button" />
-
-    <ImageButton
-        android:id="@+id/second_opt_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/first_opt_button"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/second"
-        android:contentDescription="@string/second_opt_button" />
-
-    <ImageButton
-        android:id="@+id/third_opt_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/second_opt_button"
-        android:background="@drawable/third"
-        android:contentDescription="@string/third_opt_button" />
-
-    <Button
-        android:id="@+id/highScoreButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/first_opt_button"
-        android:layout_alignRight="@+id/second_opt_button"
-        android:text="@string/highScore" />
-
-    <TextView
-        android:id="@+id/questionView"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:background="#AA000000"
-        android:text="@string/question_view"
-        android:textColor="#ffffffff"
-        android:textSize="30dp" />
-
     <TextView
         android:id="@+id/total_point_view"
         android:layout_width="wrap_content"
@@ -113,6 +52,46 @@
         android:layout_alignParentLeft="true"
         android:text="@string/point_view"
         android:textSize="30dp" />
+
+    <ImageButton
+        android:id="@+id/second_opt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/point_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/second"
+        android:contentDescription="@string/second_opt_button" />
+
+    <TextView
+        android:id="@+id/questionView"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_above="@+id/second_opt_button"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="34dp"
+        android:background="#AA000000"
+        android:text="@string/question_view"
+        android:textColor="#ffffffff"
+        android:textSize="30dp" />
+
+    <ImageButton
+        android:id="@+id/first_opt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/questionView"
+        android:layout_toLeftOf="@+id/next_letter_button"
+        android:background="@drawable/first"
+        android:contentDescription="@string/first_opt_button" />
+
+    <ImageButton
+        android:id="@+id/third_opt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/questionView"
+        android:layout_toRightOf="@+id/next_letter_button"
+        android:background="@drawable/third"
+        android:contentDescription="@string/third_opt_button" />
 
 </RelativeLayout>
 

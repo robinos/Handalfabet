@@ -9,21 +9,11 @@
    <include
        android:layout_height="wrap_content"
        layout="@layout/user_view" />
-
+
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="36dp" />
 
     <ImageButton
         android:id="@+id/next_letter_button"
@@ -44,33 +34,36 @@
         android:text="@string/total_point_view"
         android:textSize="30dp" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/next_letter_button"
+        android:contentDescription="@string/first_opt_button" />
+
+    <ProgressBar
+        android:id="@+id/timerBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_above="@+id/next_letter_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true" />
+
     <TextView
         android:id="@+id/point_view"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:layout_above="@+id/progressBar"
+        android:layout_above="@+id/timerBar"
         android:layout_alignParentLeft="true"
         android:text="@string/point_view"
         android:textSize="30dp" />
 
-    <ImageButton
-        android:id="@+id/second_opt_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/point_view"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/second"
-        android:contentDescription="@string/second_opt_button" />
-
     <TextView
         android:id="@+id/questionView"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
-        android:layout_above="@+id/second_opt_button"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/next_letter_button"
-        android:layout_marginBottom="34dp"
+        android:layout_alignRight="@+id/imageView"
         android:background="#AA000000"
         android:text="@string/question_view"
         android:textColor="#ffffffff"
@@ -81,25 +74,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/questionView"
+        android:layout_marginTop="36dp"
         android:layout_toLeftOf="@+id/next_letter_button"
-        
         android:contentDescription="@string/first_opt_button" />
-
-    <ImageButton
-        android:id="@+id/third_opt_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/questionView"
-        android:layout_toRightOf="@+id/next_letter_button"
-        android:background="@drawable/third"
-        android:contentDescription="@string/third_opt_button" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/questionView"
-        android:layout_toRightOf="@+id/next_letter_button" />
 
 </RelativeLayout>
 

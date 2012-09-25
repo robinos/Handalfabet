@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -24,6 +25,9 @@ public class Game extends Activity {
 	 ImageButton button;
 	 Button firstOptionButton;
 	 String str = randomLetter();
+	 ArrayList<String> usedSignList = new ArrayList<String>();	 
+	 
+	 
 	 @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +88,21 @@ public class Game extends Activity {
 			} 
 		});
 	}
-	
+	/**
+	 * Checks if a sign has already been used previus
+	 * 
+	 * @param signToCheck
+	 * @return A boolean if the words exits or not
+	 */
+	private boolean putUsedSignsInArray(String signToCheck) {
+		
+		if(usedSignList.contains(signToCheck))
+			return false;
+		else{
+			usedSignList.add(signToCheck);
+			return true;
+		}
+	}
 
 	
 	private String randomLetter()

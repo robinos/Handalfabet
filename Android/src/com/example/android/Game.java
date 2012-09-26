@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,9 +14,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 public class Game extends Activity {
@@ -24,22 +24,26 @@ public class Game extends Activity {
 	 ImageView image; 
 	 ImageButton button;
 	 Button firstOptionButton;
-	 String str = randomLetter();
-	 ArrayList<String> usedSignList = new ArrayList<String>();	 
+	 Button secondOptionButton;
+	 Button thirdOptionButton;
 	 
+	 Random rng = new Random();
+	
 	 
+	 private String str;
+	 private ArrayList<Integer> answerForButtons = new ArrayList<Integer>();
+	 ArrayList<String> usedSignList = new ArrayList<String>();
 	 @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game);
         getActionBar().setDisplayHomeAsUpEnabled(true);     
         
-       
+        str = randomLetter(randomNumber());
                
         firstOptionButton = (Button) findViewById(R.id.first_opt_button);
-        final ImageButton secondOptionButton = (ImageButton) findViewById(R.id.second_opt_button);
-        final ImageButton thirdOptionButton = (ImageButton) findViewById(R.id.third_opt_button);        
-//        final ImageButton nextLetterButton = (ImageButton) findViewById(R.id.next_letter_button);
+        secondOptionButton = (Button) findViewById(R.id.second_opt_button);
+        thirdOptionButton = (Button) findViewById(R.id.third_opt_button);        
         
         
         
@@ -57,15 +61,17 @@ public class Game extends Activity {
         thirdOptionButton.setOnClickListener(new View.OnClickListener() {
  			public void onClick(View v) {				
  			}
- 		});  
+ 		});   
         
+       
+     
         
         // Ändrar bild varje gång man klickar på next knappen
         switchPic();
-        
-        // Ändrar text på knappen
-        firstOptionButton.setText(str);
-        
+        deployTextButtons();
+//        // Ändrar text på knappen
+//        firstOptionButton.setText(str);
+//        
 //        nextLetterButton.setOnClickListener(new View.OnClickListener() {
 //			public void onClick(View v) {
 //					switchPic();
@@ -82,12 +88,40 @@ public class Game extends Activity {
 		
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
-				str = randomLetter();
-				firstOptionButton.setText(str);
-				image.setImageResource(picSetter(str));
+//				str = randomLetter(randomNumber());
+//				firstOptionButton.setText(str);
+//				image.setImageResource(picSetter(str));
+				deployTextButtons();
 			} 
 		});
 	}
+	
+	private void deployTextButtons(){
+		Random rnr = new Random();
+		randomizerLettersForAnswerButtons(randomNumber());
+		str = randomLetter(answerForButtons.get(0));
+		image.setImageResource(picSetter(str));
+		
+		int y = rnr.nextInt(3); 
+		
+		
+		Log.e("Första nr", "y: " + y);
+		Log.e("Första nr", "a.get(y): " + answerForButtons.get(y));
+		str = randomLetter(answerForButtons.get(y));
+		firstOptionButton.setText(str);
+		answerForButtons.remove(y);
+		y = rnr.nextInt(2);
+		str = randomLetter(answerForButtons.get(y));
+		secondOptionButton.setText(str);
+		answerForButtons.remove(y);
+		str = randomLetter(answerForButtons.get(0));
+		thirdOptionButton.setText(str);
+
+		
+		//Christers Medot
+		answerForButtons.clear();
+	}
+	
 	/**
 	 * Checks if a sign has already been used previus
 	 * 
@@ -105,22 +139,36 @@ public class Game extends Activity {
 	}
 
 	
-	private String randomLetter()
-	{
-		Random rng = new Random();
 	
+	private String randomLetter(int nr){
+//		Random rng = new Random();
 		String randomLetter = "abcdefghijklmnopqrestuvwz";
-		String name = Character.toString(randomLetter.charAt(rng.nextInt(25)));
+//		String name = Character.toString(randomLetter.charAt(rng.nextInt(25)));  // Ändra till 28 när vi lägger till å ä ö
+		String name = Character.toString(randomLetter.charAt(nr));
 		return name;
 	}
-	private int picSetter(String letter){
-		
-//		String randomLetter = "abcdefghijklmnopqrestuvwz";
-//		String name = Character.toString(randomNumber); // Ändra till 28 när vi lägger till å ä ö
-		
+	
+	
+	private int picSetter(String letter){		
 		int resource = getResources().getIdentifier(letter, "drawable", "com.example.android");
-		return resource;
-		
+		return resource;		
+	}
+	
+	private int randomNumber(){
+		int nr = rng.nextInt(25);
+		return nr;
+	}
+	
+	private void randomizerLettersForAnswerButtons(int x){
+		for(int y = 0; y < 3; y++){
+			if(!answerForButtons.contains(x)){
+				answerForButtons.add(x);
+				x = randomNumber();
+			}else{
+				x = randomNumber();
+				y--;
+			}
+		}	
 	}
 	
 	 @Override

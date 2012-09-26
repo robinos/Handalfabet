@@ -21,18 +21,25 @@ import java.util.Random;
 public class Game extends Activity {
 	
 	
-	 ImageView image; 
-	 ImageButton nextButton;
-	 Button firstOptionButton;
-	 Button secondOptionButton;
-	 Button thirdOptionButton;
+	 private ImageView image; 
+	 private ImageButton nextButton;
+	 private Button firstOptionButton;
+	 private Button secondOptionButton;
+	 private Button thirdOptionButton;
+	 private TextView totalPoint;
+	 private TextView roundPoint;
+	 private Random rng = new Random();
 	 
-	 Random rng = new Random();
 	 
+	 private int score = 0;
+	 private String correctSign;
+	 private int playRoundCounter = 10; //Antal spelrundor man kan köra.
 	 
 	 private String str;
 	 private ArrayList<Integer> answerForButtons = new ArrayList<Integer>();
-	 ArrayList<String> usedSignList = new ArrayList<String>();
+	 private ArrayList<String> usedSignList = new ArrayList<String>();
+	 
+	 
 	 @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,39 +47,108 @@ public class Game extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);     
         
         str = randomLetter(randomNumber());
-               
-        firstOptionButton = (Button) findViewById(R.id.first_opt_button);
-        secondOptionButton = (Button) findViewById(R.id.second_opt_button);
-        thirdOptionButton = (Button) findViewById(R.id.third_opt_button);        
-        
-        
-        
-        
-        firstOptionButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {							
-			}
-		});
-        
-        secondOptionButton.setOnClickListener(new View.OnClickListener() {
- 			public void onClick(View v) {				
- 			}
- 		});
-        
-        thirdOptionButton.setOnClickListener(new View.OnClickListener() {
- 			public void onClick(View v) {				
- 			}
- 		});   
-        
-       
-     
+        setButtonsAndTextView();
         
         // ƒndrar bild varje gÂng man klickar pÂ next knappen
         switchPic();
+<<<<<<< HEAD
         deployTextButtons();     
          
+=======
+        deployTextButtons();                
+>>>>>>> Feriz och Christer niv√• 1 √§r implementerad och k√∂rbar
     }
+	 
+	 
+	 /**
+	  * Intiatate buttons and textViews
+	  */
+	 private void setButtonsAndTextView() {
+		 
+	        firstOptionButton = (Button) findViewById(R.id.first_opt_button);
+	        secondOptionButton = (Button) findViewById(R.id.second_opt_button);
+	        thirdOptionButton = (Button) findViewById(R.id.third_opt_button);        
+	        
+	        totalPoint = (TextView) findViewById(R.id.show_total_point);
+	        roundPoint = (TextView) findViewById(R.id.show_round_points);
+	 }
+	 
+	 /**
+	  * Counts the score and display them on the screen
+	  */
+	 private void scoreCounter() {
+		 score++;
+		 totalPoint.setText(Integer.toString(score));
+		 roundPoint.setText("1");		 
+	 }
+	 
+	 /**
+	  * Counts the how many game rounds are left
+	  * 
+	  * @return true if the game rounds has reach 10 rounds
+	  */
+	 private boolean countDownRounds () {
+		 playRoundCounter--;
+		 if(playRoundCounter == 0)
+			 return true;
+		 else
+			 return false;
+	 }
+	 
+	 /**
+	  * Sets the green color on the button the player clicked 
+	  * for correct answer and red for wrong answer
+	  * 
+	  * @param v Clicked answerbutton
+	  */
+	 public void markButtonsAfterClicked(View v) {
+		 
+		 int button_id = v.getId();
+		 
+		 firstOptionButton.setEnabled(false);
+		 secondOptionButton.setEnabled(false);
+		 thirdOptionButton.setEnabled(false);
+		 
+		 switch(button_id) {
+		 
+		 	case R.id.first_opt_button: 
+		 		
+		 		if(correctSign.equals(firstOptionButton.getText())) {
+					firstOptionButton.setBackgroundColor(android.graphics.Color.GREEN);
+					scoreCounter();
+		 		}
+				else
+					firstOptionButton.setBackgroundColor(android.graphics.Color.RED);
+		 		break;
+		 	
+		 	case R.id.second_opt_button:
+		 		
+		 		if(correctSign.equals(secondOptionButton.getText())) {
+					secondOptionButton.setBackgroundColor(android.graphics.Color.GREEN);
+					scoreCounter();
+ 				}
+				else
+					secondOptionButton.setBackgroundColor(android.graphics.Color.RED);
+		 		break;
+		 		
+		 	case R.id.third_opt_button:
+		 		
+ 				if(correctSign.equals(thirdOptionButton.getText())){
+					thirdOptionButton.setBackgroundColor(android.graphics.Color.GREEN);
+					scoreCounter();
+ 				}
+				else
+					thirdOptionButton.setBackgroundColor(android.graphics.Color.RED);
+ 				break;
+ 				
+ 				
+		 }
+		 
+	 }
 	
-	
+	/**
+	 * Changes the sign image when nextButton is clicked
+	 */
 	private void switchPic(){
 		image = (ImageView) findViewById(R.id.imageView);
 		nextButton = (ImageButton) findViewById(R.id.next_letter_button);
@@ -80,18 +156,45 @@ public class Game extends Activity {
 		
 		nextButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
+<<<<<<< HEAD
+=======
+				firstOptionButton.setBackgroundColor(android.graphics.Color.LTGRAY);
+
+				secondOptionButton.setBackgroundColor(android.graphics.Color.LTGRAY);
+
+				thirdOptionButton.setBackgroundColor(android.graphics.Color.LTGRAY);
+				
+				firstOptionButton.setEnabled(true);
+				secondOptionButton.setEnabled(true);
+				thirdOptionButton.setEnabled(true);
+
+				deployTextButtons();
+				
+				if(countDownRounds())
+					startActivity(new Intent("android.intent.action.GAMEEND"));
+>>>>>>> Feriz och Christer niv√• 1 √§r implementerad och k√∂rbar
 			} 
 		}); 
 	}
 	
+	/**
+	 * Sets random letters to the buttons and
+	 * the correct letter for the shown sign.
+	 */
 	private void deployTextButtons(){
 		Random rnr = new Random();
 
 		while(true) {
 			randomizerLettersForAnswerButtons(randomNumber());
 			str = randomLetter(answerForButtons.get(0));
+<<<<<<< HEAD
 			
 			if(putUsedSignsInArray(str)){
+=======
+			correctSign = str;
+			if(putUsedSignsInArray(str)) {
+				Log.e(">>>>>>>", str);
+>>>>>>> Feriz och Christer niv√• 1 √§r implementerad och k√∂rbar
 				break;
 			}else{
 				answerForButtons.clear();
@@ -100,6 +203,10 @@ public class Game extends Activity {
 		image.setImageResource(picSetter(str));
 
 		int y = rnr.nextInt(3); 
+<<<<<<< HEAD
+=======
+
+>>>>>>> Feriz och Christer niv√• 1 √§r implementerad och k√∂rbar
 		str = randomLetter(answerForButtons.get(y));
 		firstOptionButton.setText(str);
 		answerForButtons.remove(y);
@@ -111,7 +218,11 @@ public class Game extends Activity {
 		
 		str = randomLetter(answerForButtons.get(0));
 		thirdOptionButton.setText(str);
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> Feriz och Christer niv√• 1 √§r implementerad och k√∂rbar
 		answerForButtons.clear();
 	}
 	
@@ -132,25 +243,50 @@ public class Game extends Activity {
 	}
 
 	
-	
+	/**
+	 * Randomize letters from the alfabet
+	 * 
+	 * @param nr a random number
+	 * @return a letter
+	 */
 	private String randomLetter(int nr){
+<<<<<<< HEAD
 		String randomLetter = "abcdefghijklmnopqrestuvwz";
 //		String name = Character.toString(randomLetter.charAt(rng.nextInt(25))); 
 		String name = Character.toString(randomLetter.charAt(nr)); // ƒndra till 28 n‰r vi l‰gger till Â ‰ ˆ
+=======
+		
+		String randomLetter = "abcdefghijklmnopqrestuvwz";
+		String name = Character.toString(randomLetter.charAt(nr));
+>>>>>>> Feriz och Christer niv√• 1 √§r implementerad och k√∂rbar
 		return name;
 	}
 	
-	
+	/**
+	 * Gets the id for the sign image letter
+	 * 
+	 * @param letter
+	 * @return the id number
+	 */
 	private int picSetter(String letter){		
 		int resource = getResources().getIdentifier(letter, "drawable", "com.example.android");
 		return resource;		
 	}
 	
+	/**
+	 * Randomizes a number between 0-25 the represnt number of letters in the alfabet
+	 * @return number
+	 */
 	private int randomNumber(){
 		int nr = rng.nextInt(25);
 		return nr;
 	}
 	
+	/**
+	 * Randomizes position for letters for the answer buttons
+	 * 
+	 * @param the position in the alfabet for correct answer
+	 */
 	private void randomizerLettersForAnswerButtons(int x){
 		for(int y = 0; y < 3; y++){
 			if(!answerForButtons.contains(x)){

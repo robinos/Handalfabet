@@ -17,8 +17,8 @@
     <string name="third_opt_button">Tredje Knapp</string>
     <string name="question_view">Vad har -a- för tecken?</string>
     <string name="answer_view">3 av 3 bokstaver rätt! Ordet var -och-.</string>           
-    <string name="point_view">Poäng: 0 - 0</string>   
-    <string name="total_point_view">Total poäng: 0</string> 
+    <string name="point_view">Poäng:</string>   
+    <string name="total_point_view">Total poäng:</string> 
     <string name="next_letter_button">Nästa bokstav</string>
     <string name="next_word_button">Nästa ord</string>  
     <string name="sound_settings_button">Ljud Inställningar</string>

@@ -17,8 +17,8 @@
     <string name="third_opt_button">Third Button</string>
     <string name="question_view">What is -a- as a hand sign?</string>
     <string name="answer_view">3 out of 3 letters right!  The word was -and-.</string>
-    <string name="point_view">Points: 0 - 0</string>
-    <string name="total_point_view">Total points: 0</string>
+    <string name="point_view">Points:</string>
+    <string name="total_point_view">Total points:</string>
     <string name="next_letter_button">Next Letter Button</string>
     <string name="next_word_button">Next Word Button</string>
     <string name="sound_settings_button">Sound Settings</string>

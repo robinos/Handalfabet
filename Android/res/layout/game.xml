@@ -45,6 +45,27 @@
         android:layout_marginBottom="20dp"
         android:text="@string/total_point_view"
         android:textSize="30dp" />
+    
+<TextView
+        android:id="@+id/show_round_points"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/total_point_view"
+        android:layout_alignRight="@+id/third_opt_button"
+        android:text="0"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/show_total_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/total_point_view"
+        android:layout_alignBottom="@+id/total_point_view"
+        android:layout_toRightOf="@+id/total_point_view"
+        android:text="0"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    
 
     <TextView
         android:id="@+id/point_view"
@@ -62,7 +83,9 @@
         android:layout_above="@+id/point_view"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
-        android:contentDescription="@string/second_opt_button" />
+        android:contentDescription="@string/second_opt_button"
+        android:onClick="markButtonsAfterClicked" 
+         />
 
 
 
@@ -85,7 +108,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/questionView"
         android:layout_toRightOf="@+id/next_letter_button"
-        android:contentDescription="@string/third_opt_button" />
+        android:contentDescription="@string/third_opt_button"
+        android:onClick="markButtonsAfterClicked" 
+         />
 
 
     <ImageView
@@ -103,7 +128,10 @@
         android:layout_alignBottom="@+id/second_opt_button"
         android:layout_alignTop="@+id/second_opt_button"
         android:layout_toLeftOf="@+id/next_letter_button"
-        android:contentDescription="@string/first_opt_button" />
+        android:contentDescription="@string/first_opt_button" 
+        
+        android:onClick="markButtonsAfterClicked" 
+        />
 
 </RelativeLayout>
 

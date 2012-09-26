@@ -22,13 +22,13 @@ public class Game extends Activity {
 	
 	
 	 ImageView image; 
-	 ImageButton button;
+	 ImageButton nextButton;
 	 Button firstOptionButton;
 	 Button secondOptionButton;
 	 Button thirdOptionButton;
 	 
 	 Random rng = new Random();
-	
+	 
 	 
 	 private String str;
 	 private ArrayList<Integer> answerForButtons = new ArrayList<Integer>();
@@ -83,10 +83,10 @@ public class Game extends Activity {
 	
 	private void switchPic(){
 		image = (ImageView) findViewById(R.id.imageView);
-		button = (ImageButton) findViewById(R.id.next_letter_button);
+		nextButton = (ImageButton) findViewById(R.id.next_letter_button);
 		image.setImageResource(picSetter(str));
 		
-		button.setOnClickListener(new OnClickListener() {
+		nextButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 //				str = randomLetter(randomNumber());
 //				firstOptionButton.setText(str);
@@ -98,15 +98,26 @@ public class Game extends Activity {
 	
 	private void deployTextButtons(){
 		Random rnr = new Random();
-		randomizerLettersForAnswerButtons(randomNumber());
-		str = randomLetter(answerForButtons.get(0));
+
+		while(true) {
+			randomizerLettersForAnswerButtons(randomNumber());
+			str = randomLetter(answerForButtons.get(0));
+			
+			if(putUsedSignsInArray(str)) {
+				Log.e(">>>>>>>", str);
+				break;
+			}
+			else
+				answerForButtons.clear();
+			
+		}
 		image.setImageResource(picSetter(str));
-		
+
 		int y = rnr.nextInt(3); 
 		
 		
-		Log.e("Första nr", "y: " + y);
-		Log.e("Första nr", "a.get(y): " + answerForButtons.get(y));
+		//Log.e("Första nr", "y: " + y);
+		//Log.e("Första nr", "a.get(y): " + answerForButtons.get(y));
 		str = randomLetter(answerForButtons.get(y));
 		firstOptionButton.setText(str);
 		answerForButtons.remove(y);

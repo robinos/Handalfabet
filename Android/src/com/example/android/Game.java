@@ -68,15 +68,7 @@ public class Game extends Activity {
         
         // Ändrar bild varje gång man klickar på next knappen
         switchPic();
-        deployTextButtons();
-//        // Ändrar text på knappen
-//        firstOptionButton.setText(str);
-//        
-//        nextLetterButton.setOnClickListener(new View.OnClickListener() {
-//			public void onClick(View v) {
-//					switchPic();
-//				}				
-//		});        
+        deployTextButtons();     
          
     }
 	
@@ -88,12 +80,8 @@ public class Game extends Activity {
 		
 		nextButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
-//				str = randomLetter(randomNumber());
-//				firstOptionButton.setText(str);
-//				image.setImageResource(picSetter(str));
-				deployTextButtons();
 			} 
-		});
+		}); 
 	}
 	
 	private void deployTextButtons(){
@@ -103,33 +91,27 @@ public class Game extends Activity {
 			randomizerLettersForAnswerButtons(randomNumber());
 			str = randomLetter(answerForButtons.get(0));
 			
-			if(putUsedSignsInArray(str)) {
-				Log.e(">>>>>>>", str);
+			if(putUsedSignsInArray(str)){
 				break;
-			}
-			else
+			}else{
 				answerForButtons.clear();
-			
+			}
 		}
 		image.setImageResource(picSetter(str));
 
 		int y = rnr.nextInt(3); 
-		
-		
-		//Log.e("Första nr", "y: " + y);
-		//Log.e("Första nr", "a.get(y): " + answerForButtons.get(y));
 		str = randomLetter(answerForButtons.get(y));
 		firstOptionButton.setText(str);
 		answerForButtons.remove(y);
+		
 		y = rnr.nextInt(2);
 		str = randomLetter(answerForButtons.get(y));
 		secondOptionButton.setText(str);
 		answerForButtons.remove(y);
+		
 		str = randomLetter(answerForButtons.get(0));
 		thirdOptionButton.setText(str);
-
-		
-		//Christers Medot
+	
 		answerForButtons.clear();
 	}
 	
@@ -152,10 +134,9 @@ public class Game extends Activity {
 	
 	
 	private String randomLetter(int nr){
-//		Random rng = new Random();
 		String randomLetter = "abcdefghijklmnopqrestuvwz";
-//		String name = Character.toString(randomLetter.charAt(rng.nextInt(25)));  // Ändra till 28 när vi lägger till å ä ö
-		String name = Character.toString(randomLetter.charAt(nr));
+//		String name = Character.toString(randomLetter.charAt(rng.nextInt(25))); 
+		String name = Character.toString(randomLetter.charAt(nr)); // Ändra till 28 när vi lägger till å ä ö
 		return name;
 	}
 	

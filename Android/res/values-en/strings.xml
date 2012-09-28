@@ -14,7 +14,7 @@
     <string name="first_opt_button">First Button</string>
     <string name="second_opt_button">Second Button</string>
     <string name="third_opt_button">Third Button</string>
-    <string name="question_view">What is -a- as a hand sign?</string>
+    <string name="question_view">Which letter is this hand sign?</string>
     <string name="answer_view">3 out of 3 letters right! The word was -and-.</string>       
     <string name="point_view">Points:</string> 
     <string name="total_point_view">Total points:</string>  

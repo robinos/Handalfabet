@@ -3,6 +3,7 @@ package com.example.android;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -13,13 +14,18 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * The Game class
+ * 
+ * @author  : Grupp02
+ * @version : 2012-09-28, v0.3 
+ */
 public class Game extends Activity {
-	
 	
 	 private ImageView image; 
 	 private ImageButton nextButton;
@@ -29,7 +35,12 @@ public class Game extends Activity {
 	 private TextView totalPoint;
 	 private TextView roundPoint;
 	 private Random rng = new Random();
-	 
+	 private ProgressBar timerBar;
+     private CountDownTimer countDownTimer;	 
+     private int timeCount = 10;
+     //timeLimit needs to add extra time at the beginning and end for the bar
+	 private int timeLimit = 12000; //12000 ms = 12s (needed instead of 10s)
+	 private int tickTime = 1000;  //1000 ms = 1s	 
 	 
 	 private int score = 0;
 	 private String correctSign;
@@ -45,18 +56,21 @@ public class Game extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game);
         getActionBar().setDisplayHomeAsUpEnabled(true);     
+        timerBar = (ProgressBar) findViewById(R.id.timer_bar);
         
         str = randomLetter(randomNumber());
         setButtonsAndTextView();
         
         // Ändrar bild varje gång man klickar på next knappen
         switchPic();
-        deployTextButtons();     
+        deployTextButtons(); 
+        //Initialises and starts the countdown timer
+        startTimer();
     }
 	 
 	 
 	 /**
-	  * Intiatate buttons and textViews
+	  * Initiate buttons and textViews
 	  */
 	 private void setButtonsAndTextView() {
 		 
@@ -72,9 +86,14 @@ public class Game extends Activity {
 	  * Counts the score and display them on the screen
 	  */
 	 private void scoreCounter() {
-		 score++;
+		 //timeCount is the number of seconds left on the counter
+		 //when a correct answer was given.  +1 is because timeCount
+		 //is actually always 1 less than it should be do to display
+		 //issues.
+		 int roundScore = 1 + timeCount;
+		 score += roundScore;
 		 totalPoint.setText(Integer.toString(score));
-		 roundPoint.setText("1");		 
+		 roundPoint.setText(Integer.toString(roundScore));		 
 	 }
 	 
 	 /**
@@ -97,6 +116,9 @@ public class Game extends Activity {
 	  * @param v Clicked answerbutton
 	  */
 	 public void markButtonsAfterClicked(View v) {
+		 
+		 //cancels the count down timer
+		 countDownTimer.cancel();		 
 		 
 		 int button_id = v.getId();
 		 
@@ -136,6 +158,7 @@ public class Game extends Activity {
 					thirdOptionButton.setBackgroundColor(android.graphics.Color.RED);
  				break;
 		 }
+		 
 		 nextButton.setEnabled(true);
 	 }
 	
@@ -143,7 +166,7 @@ public class Game extends Activity {
 	 * Changes the sign image when nextButton is clicked
 	 */
 	private void switchPic(){
-		image = (ImageView) findViewById(R.id.imageView);
+		image = (ImageView) findViewById(R.id.image_view);
 		nextButton = (ImageButton) findViewById(R.id.next_letter_button);
 		image.setImageResource(picSetter(str));
 		
@@ -163,6 +186,11 @@ public class Game extends Activity {
 
 				deployTextButtons();
 				nextButton.setEnabled(false);
+				
+				timerBar.setProgress(0);
+				timeCount = 10;
+				//(re)starts the count down timer				
+				countDownTimer.start();
 				
 				if(countDownRounds())
 					startActivity(new Intent("android.intent.action.GAMEEND"));
@@ -209,7 +237,7 @@ public class Game extends Activity {
 	}
 	
 	/**
-	 * Checks if a sign has already been used previus
+	 * Checks if a sign has already been used previously
 	 * 
 	 * @param signToCheck
 	 * @return A boolean if the words exits or not
@@ -226,7 +254,7 @@ public class Game extends Activity {
 
 	
 	/**
-	 * Randomize letters from the alfabet
+	 * Randomize letters from the alphabet
 	 * 
 	 * @param nr a random number
 	 * @return a letter
@@ -249,7 +277,7 @@ public class Game extends Activity {
 	}
 	
 	/**
-	 * Randomizes a number between 0-25 the represnt number of letters in the alfabet
+	 * Randomizes a number between 0-25 the represent number of letters in the alphabet
 	 * @return number
 	 */
 	private int randomNumber(){
@@ -260,7 +288,7 @@ public class Game extends Activity {
 	/**
 	 * Randomizes position for letters for the answer buttons
 	 * 
-	 * @param the position in the alfabet for correct answer
+	 * @param the position in the alphabet for correct answer
 	 */
 	private void randomizerLettersForAnswerButtons(int x){
 		for(int y = 0; y < 3; y++){
@@ -291,4 +319,33 @@ public class Game extends Activity {
 	     return super.onOptionsItemSelected(item);
 	 }	
 
+	 /**
+	  * The startTimer method starts the countdown timer for making a
+	  * choice in the game.
+	  * The variable timeCount is even used to determine bonus points
+	  * for quick answers in the scoreCounter() method.
+	  */
+	 public void startTimer() {
+	     countDownTimer = new CountDownTimer(timeLimit,tickTime) {
+	    	 private int factor = 10;
+	    	 
+	    	//a long is required by onTick, timeLeft is not used
+	         public void onTick(long timeLeft) 
+	         {
+	        	 //The progress bar goes from 100 to 0 while timeCount
+	        	 //is 10 to 0, so *factor for display
+	             timerBar.setProgress(timeCount*factor);
+	             timeCount--;
+	         }
+	        	 
+	         public void onFinish()
+	         {
+	             //on finish bonus points are -1, because timeCount is
+	        	 //always 1 point lower than it 'should be' due to display
+	        	 //issues
+	        	 timeCount = -1;
+	         }
+	     }.start();		 
+	 }	 
+	 
 }

@@ -15,7 +15,7 @@
     <string name="first_opt_button">Först Knapp</string>
     <string name="second_opt_button">Andra Knapp</string>
     <string name="third_opt_button">Tredje Knapp</string>
-    <string name="question_view">Vad har -a- för tecken?</string>
+    <string name="question_view">Vilket bostav är tecknet?</string>
     <string name="answer_view">3 av 3 bokstaver rätt! Ordet var -och-.</string>           
     <string name="point_view">Poäng:</string>   
     <string name="total_point_view">Total poäng:</string> 

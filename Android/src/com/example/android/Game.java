@@ -135,10 +135,8 @@ public class Game extends Activity {
 				else
 					thirdOptionButton.setBackgroundColor(android.graphics.Color.RED);
  				break;
- 				
- 				
 		 }
-		 
+		 nextButton.setEnabled(true);
 	 }
 	
 	/**
@@ -148,6 +146,8 @@ public class Game extends Activity {
 		image = (ImageView) findViewById(R.id.imageView);
 		nextButton = (ImageButton) findViewById(R.id.next_letter_button);
 		image.setImageResource(picSetter(str));
+		
+		nextButton.setEnabled(false);
 		
 		nextButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
@@ -162,6 +162,7 @@ public class Game extends Activity {
 				thirdOptionButton.setEnabled(true);
 
 				deployTextButtons();
+				nextButton.setEnabled(false);
 				
 				if(countDownRounds())
 					startActivity(new Intent("android.intent.action.GAMEEND"));

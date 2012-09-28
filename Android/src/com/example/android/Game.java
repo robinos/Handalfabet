@@ -51,12 +51,7 @@ public class Game extends Activity {
         
         // �ndrar bild varje g�ng man klickar p� next knappen
         switchPic();
-<<<<<<< HEAD
         deployTextButtons();     
-         
-=======
-        deployTextButtons();                
->>>>>>> Feriz och Christer nivå 1 är implementerad och körbar
     }
 	 
 	 
@@ -156,8 +151,6 @@ public class Game extends Activity {
 		
 		nextButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
-<<<<<<< HEAD
-=======
 				firstOptionButton.setBackgroundColor(android.graphics.Color.LTGRAY);
 
 				secondOptionButton.setBackgroundColor(android.graphics.Color.LTGRAY);
@@ -172,7 +165,6 @@ public class Game extends Activity {
 				
 				if(countDownRounds())
 					startActivity(new Intent("android.intent.action.GAMEEND"));
->>>>>>> Feriz och Christer nivå 1 är implementerad och körbar
 			} 
 		}); 
 	}
@@ -187,26 +179,19 @@ public class Game extends Activity {
 		while(true) {
 			randomizerLettersForAnswerButtons(randomNumber());
 			str = randomLetter(answerForButtons.get(0));
-<<<<<<< HEAD
-			
-			if(putUsedSignsInArray(str)){
-=======
 			correctSign = str;
-			if(putUsedSignsInArray(str)) {
+			if(putUsedSignsInArray(str)){
 				Log.e(">>>>>>>", str);
->>>>>>> Feriz och Christer nivå 1 är implementerad och körbar
 				break;
-			}else{
-				answerForButtons.clear();
 			}
+			else
+		        answerForButtons.clear();
 		}
+		
 		image.setImageResource(picSetter(str));
-
+		
 		int y = rnr.nextInt(3); 
-<<<<<<< HEAD
-=======
 
->>>>>>> Feriz och Christer nivå 1 är implementerad och körbar
 		str = randomLetter(answerForButtons.get(y));
 		firstOptionButton.setText(str);
 		answerForButtons.remove(y);
@@ -218,11 +203,7 @@ public class Game extends Activity {
 		
 		str = randomLetter(answerForButtons.get(0));
 		thirdOptionButton.setText(str);
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> Feriz och Christer nivå 1 är implementerad och körbar
 		answerForButtons.clear();
 	}
 	
@@ -250,15 +231,8 @@ public class Game extends Activity {
 	 * @return a letter
 	 */
 	private String randomLetter(int nr){
-<<<<<<< HEAD
-		String randomLetter = "abcdefghijklmnopqrestuvwz";
-//		String name = Character.toString(randomLetter.charAt(rng.nextInt(25))); 
-		String name = Character.toString(randomLetter.charAt(nr)); // �ndra till 28 n�r vi l�gger till � � �
-=======
-		
 		String randomLetter = "abcdefghijklmnopqrestuvwz";
 		String name = Character.toString(randomLetter.charAt(nr));
->>>>>>> Feriz och Christer nivå 1 är implementerad och körbar
 		return name;
 	}
 	

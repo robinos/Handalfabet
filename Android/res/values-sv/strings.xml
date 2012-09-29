@@ -1,7 +1,7 @@
 <resources>
 	
 	<string name="back">Tillbacka</string>
-    <string name="highScore">Highscore</string>
+    <string name="highScore">Högsta Rekord</string>
     <string name="username">Användarnamn</string>
     <string name="login">Inloggning</string>
     <string name="app_name">Android</string>
@@ -10,17 +10,21 @@
     <string name="title_activity_main">Svensk Handalfabet</string>
     <string name="level_chooser">Svårighetsgrad</string>
     <string name="title_activity_level_chooser">Svårighetsgradsväljare</string>
-    <string name="theHighscore">Highscore</string>
-    <string name="title_activity_display_highscore">Highscore</string>
+    <string name="theHighscore">Rekord</string>
+    <string name="title_activity_display_highscore">Högsta Rekord</string>
     <string name="first_opt_button">Först Knapp</string>
     <string name="second_opt_button">Andra Knapp</string>
     <string name="third_opt_button">Tredje Knapp</string>
     <string name="question_view">Vilket bostav är tecknet?</string>
-    <string name="answer_view">3 av 3 bokstaver rätt! Ordet var -och-.</string>           
+    <string name="answer_view">  av 10 rätt!</string>
+    <string name="average_view">Genomsnittlig tid (s):  </string>
+    <string name="high_view">Ny högsta rekord!</string>
+    <string name="low_view">Ingen ny rekord.</string>                     
     <string name="point_view">Poäng:</string>   
     <string name="total_point_view">Total poäng:</string> 
     <string name="next_letter_button">Nästa bokstav</string>
-    <string name="next_word_button">Nästa ord</string>  
+    <string name="next_word_button">Nästa ord</string>   
+    <string name="main_menu_button">Huvudmeny</string>     
     <string name="sound_settings_button">Ljud Inställningar</string>
     <string name="profile_settings_button">Profil Inställningar</string>       
     <string name="newGame">Ny Spelomgång</string>
@@ -28,5 +32,5 @@
     <string name="level">Nivå</string>
     <string name="help">Hjälp</string>
     <string name="submit">Skicka</string>
-	<string name="inloggad">Inloggad som</string>                   
+	<string name="inloggad">Inloggad som</string> 	                  
 </resources>

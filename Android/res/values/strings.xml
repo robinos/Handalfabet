@@ -16,11 +16,15 @@
     <string name="second_opt_button">Second Button</string>
     <string name="third_opt_button">Third Button</string>
     <string name="question_view">Which letter this hand sign?</string>
-    <string name="answer_view">3 out of 3 letters right!  The word was -and-.</string>
+    <string name="answer_view">  out of 10 right!</string>
+    <string name="average_view">Average time (s):  </string>
+    <string name="high_view">A new high score!</string> 
+    <string name="low_view">Not a new high score.</string>            
     <string name="point_view">Points:</string>
     <string name="total_point_view">Total points:</string>
     <string name="next_letter_button">Next Letter Button</string>
     <string name="next_word_button">Next Word Button</string>
+    <string name="main_menu_button">Main Menu Button</string>        
     <string name="sound_settings_button">Sound Settings</string>
     <string name="profile_settings_button">Profile Settings</string>
     <string name="newGame">New Game</string>
@@ -28,5 +32,5 @@
     <string name="level">Level</string>
     <string name="help">Help</string>
     <string name="submit">Submit</string>
-    <string name="inloggad">Logged in as</string>
+    <string name="inloggad">Logged in as</string>   
 </resources>

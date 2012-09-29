@@ -16,9 +16,10 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 	
 	private boolean firstClick = true;
-	public final static String EXTRA_MESSAGE = "com.example.mainActivity.MESSAGE";
+	private int difficulty = 1;
+	//DifficultyLevel
+	public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";
 	
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +39,7 @@ public class MainActivity extends Activity {
 	
 	/** Called when the user clicks the New Game button */
 	public void newGame (View v){
-		startActivity(new Intent("android.intent.action.GAME"));	
+		startActivity(new Intent("android.intent.action.GAME").putExtra(DIFFLEVEL, difficulty));	
 	}
 	
 	/** Called when the user clicks the New Player button */

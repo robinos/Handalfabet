@@ -1,183 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical" >
+    
+   <include
+       android:layout_height="wrap_content"
+       layout="@layout/user_view" />
 
-    <GridLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/gridView"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
-        android:columnWidth="50dp"
-        android:gravity="center"
-        android:numColumns="auto_fit"
-        android:stretchMode="columnWidth" >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
 
-        <include
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_columnSpan="2"
-            android:layout_row="0"
-            layout="@layout/user_view" />
-
-        <Button
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_gravity="left"
-            android:layout_row="0"
-            android:text="@string/back" />
-
-        <Button
-            android:id="@+id/highScoreButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="3"
-            android:layout_columnSpan="2"
-            android:layout_gravity="left"
-            android:layout_row="0"
-            android:text="@string/highScore" />
-
-        <Button
-            android:id="@+id/settings_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="5"
-            android:layout_columnSpan="2"
-            android:layout_gravity="left"
-            android:layout_row="0"
-            android:text="@string/menu_settings" />
-
-        <Space
-            android:layout_width="109dp"
-            android:layout_height="1dp"
-            android:layout_column="6"
-            android:layout_row="0" />
-
-        <Space
-            android:layout_width="191dp"
-            android:layout_height="1dp"
-            android:layout_column="0"
-            android:layout_row="0" />
-
-        <Space
-            android:layout_width="10dp"
-            android:layout_height="1dp"
-            android:layout_column="2"
-            android:layout_row="0" />
-
-        <Space
-            android:layout_width="41dp"
-            android:layout_height="1dp"
-            android:layout_column="1"
-            android:layout_row="0" />
-
-        <Space
-            android:layout_width="150dp"
-            android:layout_height="1dp"
-            android:layout_column="0"
-            android:layout_row="0" />
-
-        <Space
-            android:layout_width="1dp"
-            android:layout_height="56dp"
-            android:layout_column="0"
-            android:layout_row="0" />
-
-        <Space
-            android:layout_width="108dp"
-            android:layout_height="1dp"
-            android:layout_column="4"
-            android:layout_row="0" />
-
-        <Space
-            android:layout_width="18dp"
-            android:layout_height="1dp"
-            android:layout_column="5"
-            android:layout_row="0" />
-    </GridLayout>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true" />
-
     <TextView
         android:id="@+id/total_point_view"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_alignLeft="@+id/next_letter_button"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:text="@string/total_point_view"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@+id/image_view"
+        android:layout_alignBottom="@+id/third_opt_button"                      
+        android:layout_above="@+id/timer_bar"                
+        android:text="@string/total_point_view"        
         android:textSize="30dp" />
 
-    <ImageButton
-        android:id="@+id/first_opt_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/gridView"
-        android:background="@drawable/first"
-        android:contentDescription="@string/first_opt_button" />
-
     <TextView
-        android:id="@+id/questionView"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/third_opt_button"
-        android:layout_below="@+id/first_opt_button"
-        android:layout_marginTop="15dp"
-        android:background="#AA000000"
-        android:text="@string/question_view"
-        android:textColor="#ffffffff"
-        android:textSize="25dp" />
-
-    <ImageButton
-        android:id="@+id/second_opt_button"
+        android:id="@+id/show_round_points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/questionView"
-        android:layout_marginLeft="19dp"
-        android:layout_toRightOf="@+id/first_opt_button"
-        android:background="@drawable/second"
-        android:contentDescription="@string/second_opt_button" />
+        android:layout_alignBaseline="@+id/point_view"
+        android:layout_alignBottom="@+id/point_view"
+        android:layout_toRightOf="@+id/point_view"
+        android:text="0"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="30dp" />
 
-    <ImageButton
-        android:id="@+id/third_opt_button"
+    <TextView
+        android:id="@+id/show_total_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/questionView"
-        android:layout_marginLeft="23dp"
-        android:layout_toRightOf="@+id/second_opt_button"
-        android:background="@drawable/third"
-        android:contentDescription="@string/third_opt_button" />
-
+        android:layout_alignBaseline="@+id/total_point_view"
+        android:layout_alignBottom="@+id/total_point_view"
+        android:layout_toRightOf="@+id/total_point_view"
+        android:text="0"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="30dp" />
+
     <TextView
         android:id="@+id/point_view"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_above="@+id/questionView"
-        android:layout_alignLeft="@+id/total_point_view"
-        android:layout_alignParentRight="true"
-        android:text="@string/point_view"
+        android:layout_height="40dp"        
+        android:layout_above="@+id/total_point_view"
+        android:layout_toRightOf="@+id/image_view"
+        android:text="@string/point_view"        
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/question_view"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="#AA000000"
+        android:text="@string/question_view"
+        android:textColor="#ffffffff"
         android:textSize="30dp" />
 
+    <Button
+        android:id="@+id/third_opt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"       
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/question_view"   
+        android:layout_toRightOf="@+id/second_opt_button"
+        android:layout_marginLeft="30dp"              
+        android:contentDescription="@string/third_opt_button"
+        android:onClick="markButtonsAfterClicked" />
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/question_view"
+        android:layout_toRightOf="@+id/question_view"
+        android:background="@drawable/a"
+        android:contentDescription="@string/third_opt_button" />
+
+    <Button
+        android:id="@+id/first_opt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"        
+        android:layout_below="@+id/question_view"
+        android:layout_alignParentLeft="true"
+        android:contentDescription="@string/first_opt_button"
+        android:onClick="markButtonsAfterClicked" />
+
+    <ProgressBar
+        android:id="@+id/timer_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="20dp"         
+        android:layout_alignParentRight="true" />
+
     <ImageButton
         android:id="@+id/next_letter_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/total_point_view"
-        android:layout_marginLeft="47dp"
-        android:layout_toRightOf="@+id/questionView"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/show_total_point"       
         android:background="@drawable/next_letter"
         android:contentDescription="@string/next_letter_button" />
 
+    <Button
+        android:id="@+id/second_opt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/question_view"
+        android:layout_marginTop="30dp"         
+        android:layout_toRightOf="@+id/first_opt_button"
+        android:layout_marginLeft="30dp"                   
+        android:contentDescription="@string/second_opt_button"
+        android:onClick="markButtonsAfterClicked" />
+
 </RelativeLayout>
+
+</LinearLayout>

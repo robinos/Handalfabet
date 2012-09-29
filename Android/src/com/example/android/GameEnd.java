@@ -1,5 +1,6 @@
 package com.example.android;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
 public class GameEnd extends Activity {
@@ -16,36 +18,46 @@ public class GameEnd extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_end);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
         
-        final Button backButton = (Button) findViewById(R.id.backButton);
-        final Button highScoreButton = (Button) findViewById(R.id.highScoreButton);
-        final Button gameSettingsButton = (Button) findViewById(R.id.settings_button);        
-        final ImageButton nextWordButton = (ImageButton) findViewById(R.id.next_word_button);        
+        // Make sure we're running on Honeycomb or higher to use ActionBar APIs
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }         
+               
+        final ImageButton newGameButton = (ImageButton) findViewById(R.id.new_game_button);                
+        final ImageButton highScoreButton = (ImageButton) findViewById(R.id.high_scores_button); 
+        final ImageButton mainMenuButton = (ImageButton) findViewById(R.id.main_menu_button); 
         
-        backButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				finish();
-			}
-		});
+        int numCorrect = getIntent().getIntExtra( Game.NUMCORRECT, 0 );         
+        int totalScore = getIntent().getIntExtra( Game.TOTALSCORE, 0 ); 
+        int averageTime = getIntent().getIntExtra( Game.AVERAGETIME, 0 ); 
         
-        highScoreButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				startActivity(new Intent("android.intent.action.DISPLAYHIGHSCOREACTIVITY")); 
-			}
-		});
-        
-        gameSettingsButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				startActivity(new Intent("android.intent.action.GAMESETTINGSACTIVITY")); 
-			}
-		});        
-        
-        nextWordButton.setOnClickListener(new View.OnClickListener() {
+        newGameButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				startActivity(new Intent("android.intent.action.GAME")); 				
 			}
-		});         
+		}); 
+        
+        highScoreButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				startActivity(new Intent("android.intent.action.DISPLAYHIGHSCOREACTIVITY")); 				
+			}
+		}); 
+        
+        TextView totalPoints = ( TextView ) findViewById( R.id.show_total_point );        
+		totalPoints.setText( Integer.toString( totalScore ) );        
+
+        TextView correctView = ( TextView ) findViewById( R.id.show_answers );        
+        correctView.setText( Integer.toString( numCorrect ) );
+	
+        TextView averageView = ( TextView ) findViewById( R.id.show_average );        
+        averageView.setText( Integer.toString( averageTime ) );		
+		
+        //mainMenuButton.setOnClickListener(new View.OnClickListener() {
+		//	public void onClick(View v) {
+		//		startActivity(new Intent("android.intent.action.MAIN")); 				
+		//	}
+		//});         
     }
 
     @Override

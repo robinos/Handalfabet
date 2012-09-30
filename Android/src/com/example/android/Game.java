@@ -1,13 +1,11 @@
 package com.example.android;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,9 +15,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ProgressBar;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * The Game class
@@ -46,20 +41,10 @@ public class Game extends Activity {
 	 private Button thirdOptionButton;
 	 private TextView totalPoint;
 	 private TextView roundPoint;
-	 //private Random rng = new Random();
-	 private ProgressBar timerBar;
-     private CountDownTimer countDownTimer;	 
-     private int timeCount = 10;
-     //timeLimit needs to add extra time at the beginning and end for the bar
-	 private int timeLimit = 12000; //12000 ms = 12s (needed instead of 10s)
-	 private int tickTime = 1000;  //1000 ms = 1s	 
-	 private int averageTime = 0;
-	 private int numCorrect = 0;
-	 
-	 private int totalScore = 0;	 
+	 private ProgressBar timerBar;	 
 	 
 	 @Override
-    public void onCreate (Bundle savedInstanceState ) {
+    public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.game );     
         
@@ -68,10 +53,10 @@ public class Game extends Activity {
             getActionBar().setDisplayHomeAsUpEnabled( true );
         }         
         
-        //default level 1
+        //game difficulty, default level 1
         int difficulty = getIntent().getIntExtra( MainActivity.DIFFLEVEL, 1 ); 
         //The game logic object
-        gameLogic = new GameLogic( difficulty );        
+        gameLogic = new GameLogic( difficulty, this );        
          
         //GUI variables
         timerBar = ( ProgressBar ) findViewById (R.id.timer_bar );
@@ -84,10 +69,17 @@ public class Game extends Activity {
         //Resets for a new round
         nextRound();
         //Changes the picture and button text
-        deployTextButtons(); 
-        //Initializes and starts the count down timer
-        startTimer();    
+        deployTextButtons();    
     }
+	 
+	 /**
+	  * getTimerBAr
+	  * 
+	  * @return : returns the ProgressBar object timerBar
+	  */
+	 public ProgressBar getTimerBar() {
+		 return timerBar;
+	 }
 	 
 	 /**
 	  * Initiate buttons and textViews
@@ -103,21 +95,13 @@ public class Game extends Activity {
 	 }
 	 
 	 /**
-	  * Counts the score and displays it on the screen
+	  * Displays the score on the screen
 	  */
 	 private void scoreCounter() {
-		 
-		 //timeCount is the number of seconds left on the counter
-		 //when a correct answer was given.  +1 is because timeCount
-		 //is actually always 1 less than it should be do to display
-		 //issues.
-		 int roundScore = 1 + timeCount;
-		 totalScore += roundScore;
-		 averageTime += timeCount;
-		 numCorrect++;
-		 totalPoint.setText( Integer.toString( totalScore ) );
-		 roundPoint.setText( Integer.toString( roundScore ) );		 
-	 }
+		 gameLogic.scoreCounter();
+		 totalPoint.setText( Integer.toString( gameLogic.getTotalScore() ) );
+		 roundPoint.setText( Integer.toString( gameLogic.getRoundScore() ) );		 
+	 }	 
 	 
 	 /**
 	  * Sets the green color on the button the player clicked 
@@ -128,7 +112,7 @@ public class Game extends Activity {
 	 public void markButtonsAfterClicked( View v ) {	
 		 
 		 //cancels the count down timer
-		 countDownTimer.cancel();		 
+		 gameLogic.getCountDownTimer().cancel();		 
 		 
 		 int button_id = v.getId();
 		 
@@ -177,41 +161,43 @@ public class Game extends Activity {
 	 * Changes the sign image when nextButton is clicked
 	 */
 	private void nextRound() {		
-		
-	    //Reset round points to 0
-		roundPoint.setText( Integer.toString( 0 ) );
 		 
 		//Disable the next letter/word button
 		nextButton.setEnabled( false );
 		
-		nextButton.setOnClickListener( new OnClickListener() {
+		nextButton.setOnClickListener( new OnClickListener() {		
 			public void onClick( View arg0 ) {
+			    //Reset round points to 0
+				roundPoint.setText( Integer.toString( 0 ) );					
+				
+				//Reset answer button backgrounds
 				firstOptionButton.setBackgroundColor( android.graphics.Color.LTGRAY );
-
 				secondOptionButton.setBackgroundColor( android.graphics.Color.LTGRAY );
-
 				thirdOptionButton.setBackgroundColor( android.graphics.Color.LTGRAY );
 				
+				//Enable answer buttons
 				firstOptionButton.setEnabled( true );
 				secondOptionButton.setEnabled( true );
 				thirdOptionButton.setEnabled( true );
 
+				//Get text for buttons and disable next button
 				deployTextButtons();
 				nextButton.setEnabled( false );
 				
+				//Reset the timer
 				timerBar.setProgress( 0 );
-				timeCount = 10;
+				gameLogic.resetTimeCount();
 				//(re)starts the count down timer				
-				countDownTimer.start();
+				gameLogic.getCountDownTimer().start();
 				
+				//If all game rounds have completed, bring up the end screen
 				if( gameLogic.countDownRounds() ) {
-					averageTime /= 10;
 				    Intent endIntent = new Intent( "android.intent.action.GAMEEND" );
-				    endIntent.putExtra( NUMCORRECT, numCorrect );
-				    endIntent.putExtra( TOTALSCORE, totalScore );
-				    endIntent.putExtra( AVERAGETIME, averageTime );				    
+				    endIntent.putExtra( NUMCORRECT, gameLogic.getNumCorrect() );
+				    endIntent.putExtra( TOTALSCORE, gameLogic.getTotalScore() );
+				    endIntent.putExtra( AVERAGETIME, gameLogic.getAverageTime() );				    
 				    startActivity( endIntent );		
-				}
+				}				
 			} 
 		} ); 
 	}
@@ -224,8 +210,10 @@ public class Game extends Activity {
 		//Determine sign picture and button text
 		gameLogic.determineChoices();		
 		
+		//Set the picture
 		image.setImageResource( picSetter( gameLogic.getPicture() ) );
 		
+		//Set the button text
 		firstOptionButton.setText( gameLogic.getFirstButtonString() );
 		secondOptionButton.setText( gameLogic.getSecondButtonString() );
 		thirdOptionButton.setText( gameLogic.getThirdButtonString() );
@@ -256,35 +244,6 @@ public class Game extends Activity {
 	              return true;
 	     }
 	     return super.onOptionsItemSelected( item );
-	 }	
-
-	 /**
-	  * The startTimer method starts the countdown timer for making a
-	  * choice in the game.
-	  * The variable timeCount is even used to determine bonus points
-	  * for quick answers in the scoreCounter() method.
-	  */
-	 public void startTimer() {
-	     countDownTimer = new CountDownTimer( timeLimit, tickTime ) {
-	    	 private int factor = 10;
-	    	 
-	    	//a long is required by onTick, timeLeft is not used
-	         public void onTick( long timeLeft ) 
-	         {
-	        	 //The progress bar goes from 100 to 0 while timeCount
-	        	 //is 10 to 0, so *factor for display
-	             timerBar.setProgress( timeCount*factor );
-	             timeCount--;
-	         }
-	        	 
-	         public void onFinish()
-	         {
-	             //on finish bonus points are -1, because timeCount is
-	        	 //always 1 point lower than it 'should be' due to display
-	        	 //issues
-	        	 timeCount = -1;
-	         }
-	     }.start();		 
-	 }	 
+	 }		 
 	 
 }

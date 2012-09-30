@@ -19,11 +19,31 @@ public class GameLogic
 	 //A variable for debugging purposes
  	 private boolean debug;
  	 	
+ 	 //The Game
+ 	 private Game game;
+ 	 
  	 //Difficulty Level
  	 private int diffLevel;	
 	 
 	 //Number of allowed rounds
 	 private int playRoundCounter; 
+	 
+	 //The count down timer and time variables
+     private CountDownTimer countDownTimer;	 
+     private int timeCount;
+     //maxCount is the maximum value of time count, which is 10s
+     private int maxCount = 10;
+     //timeLimit needs to add extra time at the beginning and end for the bar
+	 private int timeLimit = 12000; //12000 ms = 12s (needed instead of 10s)
+	 private int tickTime = 1000;  //1000 ms = 1s	 
+	 
+	 //statistic variables
+	 private int totalTime;
+	 private int numCorrect;
+	 
+	 //score variables
+	 private int totalScore;	 
+	 private int roundScore;
 	 
 	 //Random generator
 	 Random randomGen;
@@ -45,35 +65,51 @@ public class GameLogic
 	/**
 	 * The GameLogic Constructor
 	 */
-	public GameLogic(int diffLevel) {
+	public GameLogic( int diffLevel, Game game ) {
 		//debugging mode
 		debug = true;		
 	    
-	    playRoundCounter = 10;  //Number of rounds one may play
+		//Number of rounds one may play
+	    playRoundCounter = 10;  
 	    
+	    //Initialize start scores and statistics to 0
+		totalTime = 0;
+		numCorrect = 0;
+		totalScore = 0;	 
+		roundScore = 0;	    
+	    
+		//10 max seconds in a round (this decrements down to 0 under a round)
+		timeCount = maxCount; 
+		
 	    //Initialize arrays
-	    answerForButtons = new ArrayList<Integer>();
-	    usedSignList = new ArrayList<String>();
+	    answerForButtons = new ArrayList< Integer >();
+	    usedSignList = new ArrayList< String >();
 	    
 	    //Initialize lists of letter or word strings	    
-	    wordList = new ArrayList<String>();	    
+	    wordList = new ArrayList< String >();	    
 	    
 		//Difficulty Level between 1 and 3 (Default 1)
-		if(diffLevel > 0 && diffLevel < 4)
+		if( diffLevel > 0 && diffLevel < 4 )
 		    this.diffLevel = diffLevel;
 		else {
 			diffLevel = 1;
 			
-			if(debug) {
-				System.err.println("Error choosing difficulty.");
+			if( debug ) {
+				System.err.println( "Error choosing difficulty." );
 			}
 		}	   
 	    
-	    //Initalize random generator
+        //The Game object (for updating the timer bar)		
+		this.game = game;
+		
+	    //Initialize random generator
 	    randomGen = new Random();
 	    
 	    //Sets the list of words or letters
-	    setWordList();    
+	    setWordList(); 
+	    
+        //Initializes and starts the count down timer
+        startTimer(); 	    
 	}
 	
 	/**
@@ -82,32 +118,112 @@ public class GameLogic
 	private void setWordList() {
 		
 		//Initialize word list based on difficulty level
-	    if(diffLevel == 3) {
+	    if( diffLevel == 3 ) {
 	    	
 	    }
-	    else if (diffLevel == 2) {
+	    else if ( diffLevel == 2 ) {
 	    	
 	    }
 	    else { //difficulty level 1
 	    	String alphabet = "a b c d e f g h i j k l m n o p q r e s t u v w z å ä ö";
 	    	String[] stringArray = alphabet.split(" ");
-	    	Collections.addAll(wordList, stringArray);
+	    	Collections.addAll( wordList, stringArray );
 	    }
 	}	 
 	 
 	 /**
-	  * Counts the how many game rounds are left
+	  * Counts the current score.
+	  */
+	 public void scoreCounter() {
+		 
+		 //timeCount is the number of seconds left on the counter
+		 //when a correct answer was given.  +1 is because timeCount
+		 //is actually always 1 less than it should be do to display
+		 //issues.
+		 roundScore = 1 + timeCount;
+		 totalScore += roundScore;
+		 totalTime += 10-timeCount; //10 seconds to answer - time taken
+		 numCorrect++;		 
+	 }	
+	 
+	 /**
+	  * The getTotalScore method returns the total score.
+	  * 
+	  * @return : an integer representing the total score
+	  */
+	 public int getTotalScore() {
+		 return totalScore;
+	 }
+	 
+	 /**
+	  * The getRoundScore method returns the round score.
+	  * 
+	  * @return : an integer representing the round score
+	  */
+	 public int getRoundScore() {
+		 return roundScore;
+	 }	 
+	
+	 /**
+	  * The clearRoundScore method clears (sets to 0) the round score.
+	  */
+	 public void clearRoundScore() {
+		 roundScore = 0;
+	 }	 
+	 
+	 /**
+	  * The getCountDownTimer method returns the count down timer.
+	  * object
+	  * 
+	  * @return : the CountDownTimer object
+	  */
+	 public CountDownTimer getCountDownTimer() {
+		 return countDownTimer;
+	 }		 
+	 
+	 /**
+	  * Decrements game rounds and determines how many game rounds
+	  * are left
 	  * 
 	  * @return : true if the game rounds has reached 10 rounds
 	  */
 	 public boolean countDownRounds () {
 		 playRoundCounter--;
-		 if(playRoundCounter == 0)
+		 if( playRoundCounter == 0 )
 			 return true;
 		 else
 			 return false;
 	 }	
 	
+	 /**
+	  * Resets time left to max.
+	  * 
+	  * @param max : an integer representing max time left
+	  */
+	 public void resetTimeCount() {
+		 timeCount = maxCount;
+	 }	 
+	 
+	 /**
+	  * The getAverageTime method returns the average answering
+	  * time at the end of 10 rounds.
+	  * 
+	  * @return : an integer representing the round score
+	  */
+	 public int getAverageTime() {
+		 return ( totalTime / 10 );
+	 }	 
+	 
+	 /**
+	  * The getNumCorrect method returns the number of correct
+	  * answers after 10 rounds.
+	  * 
+	  * @return : an integer representing the round score
+	  */
+	 public int getNumCorrect() {
+		 return numCorrect;
+	 }		 
+	 
 	/**
 	 * Returns the number (1, 2, or 3) of the button with the
 	 * correct answer.
@@ -116,15 +232,15 @@ public class GameLogic
 	 *    correct button
 	 */
 	public int getCorrectButton() {
-		if(correctSign.equals(firstButtonString))
+		if( correctSign.equals( firstButtonString ) )
 			return 1;
-		else if(correctSign.equals(secondButtonString))
+		else if( correctSign.equals(secondButtonString ) )
 			return 2;		
-		else if(correctSign.equals(secondButtonString))
+		else if( correctSign.equals(thirdButtonString ) )
 			return 3;		
 		else {
 			if( debug ) {
-			    System.err.println("Invalid correct sign.");
+			    System.err.println( "Invalid correct sign." );
 			}
 			return 1;
 		}
@@ -178,13 +294,13 @@ public class GameLogic
 		while(true) {			
 			//Randomize 3 different words/letters by position number,
 			//one of which is the right answer (into answerForButtons)
-			randomizeLettersForAnswerButtons(randomNumber());
+			randomizeLettersForAnswerButtons( randomNumber() );
 			//The first number in answerForButtons is the correct one
-			str = randomWord(answerForButtons.get(0));
+			str = randomWord( answerForButtons.get(0) );
 			correctSign = str;
 			
-			if( putUsedSignsInArray(str) ){
-				Log.e(">>>>>>>", str);
+			if( putUsedSignsInArray( str ) ){
+				Log.e( ">>>>>>>", str );
 				break;
 			}
 			else
@@ -193,18 +309,18 @@ public class GameLogic
 		
 		picture = str;
 		
-		int y = randomGen.nextInt(3); 
+		int y = randomGen.nextInt( 3 ); 
 
-		str = randomWord(answerForButtons.get(y));
+		str = randomWord( answerForButtons.get( y ) );
 		firstButtonString = str;
-		answerForButtons.remove(y);
+		answerForButtons.remove( y );
 		
 		y = randomGen.nextInt(2);
-		str = randomWord(answerForButtons.get(y));
+		str = randomWord( answerForButtons.get( y ) );
 		secondButtonString = str;
 		answerForButtons.remove(y);
 		
-		str = randomWord(answerForButtons.get(0));
+		str = randomWord( answerForButtons.get( 0 ) );
 		thirdButtonString = str;
 
 		answerForButtons.clear();
@@ -216,12 +332,12 @@ public class GameLogic
 	 * @param signToCheck
 	 * @return A boolean if the words exits or not
 	 */
-	private boolean putUsedSignsInArray(String signToCheck) {
+	private boolean putUsedSignsInArray( String signToCheck ) {
 		
-		if(usedSignList.contains(signToCheck))
+		if( usedSignList.contains( signToCheck ) )
 			return false;
 		else{
-			usedSignList.add(signToCheck);
+			usedSignList.add( signToCheck );
 			return true;
 		}
 	}
@@ -235,7 +351,7 @@ public class GameLogic
 	 *     word in the word list
 	 * @return : a letter or word as a String
 	 */
-	public String randomWord(int position){
+	public String randomWord( int position ){
 		//if(diffLevel > 1) {
 		//}	
 		//else {
@@ -243,14 +359,14 @@ public class GameLogic
 		    String randomLetter;
 		
 		    //Choose a letter from the alphabet based on the given position
-		    if(debug) randomLetter = "abcdefghijklmnopqrestuvwz";
-		    else randomLetter = wordList.get(position);
+		    if( debug ) randomLetter = "abcdefghijklmnopqrestuvwz";
+		    else randomLetter = wordList.get( position );
 		    		
-		    String name = Character.toString(randomLetter.charAt(position));
+		    String name = Character.toString( randomLetter.charAt( position ) );
 		
 		    //Debug help
-		    if(name == null) {
-			    System.err.println("No letter at given position.");
+		    if( name == null ) {
+			    System.err.println( "No letter at given position." );
 			    name = "err";
 		    }
 		//}
@@ -263,7 +379,7 @@ public class GameLogic
 	 * @return number
 	 */
 	public int randomNumber(){
-		int number = randomGen.nextInt(25);
+		int number = randomGen.nextInt( 25 );
 		return number;
 	}
 	
@@ -272,16 +388,44 @@ public class GameLogic
 	 * 
 	 * @param the position in the alphabet for correct answer
 	 */
-	private void randomizeLettersForAnswerButtons(int x){
-		for(int y = 0; y < 3; y++){
-			if(!answerForButtons.contains(x)){
-				answerForButtons.add(x);
+	private void randomizeLettersForAnswerButtons( int x ){
+		for( int y = 0; y < 3; y++ ){
+			if( !answerForButtons.contains( x ) ){
+				answerForButtons.add( x );
 				x = randomNumber();
-			}else{
+			} else {
 				x = randomNumber();
 				y--;
 			}
 		}	
-	}		 	
+	}
 	
+	 /**
+	  * The startTimer method starts the count down timer for making a
+	  * choice in the game.
+	  * The variable timeCount is even used to determine bonus points
+	  * for quick answers in the scoreCounter() method.
+	  */
+	 public void startTimer() {
+	     countDownTimer = new CountDownTimer( timeLimit, tickTime ) {
+	    	 private int factor = 10;
+	    	 
+	    	//a long is required by onTick, timeLeft is not used
+	         public void onTick( long timeLeft ) 
+	         {
+	        	 //The progress bar goes from 100 to 0 while timeCount
+	        	 //is 10 to 0, so *factor for display
+	             game.getTimerBar().setProgress( timeCount*factor );
+	             timeCount--;
+	         }
+	        	 
+	         public void onFinish()
+	         {
+	             //on finish bonus points are -1, because timeCount is
+	        	 //always 1 point lower than it 'should be' due to display
+	        	 //issues
+	        	 timeCount = -1;
+	         }
+	     }.start();		 
+	 }		
 }

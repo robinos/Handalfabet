@@ -144,7 +144,7 @@ public class GameLogic
 		 totalScore += roundScore;
 		 totalTime += 10-timeCount; //10 seconds to answer - time taken
 		 numCorrect++;		 
-	 }	
+	 }	 
 	 
 	 /**
 	  * The getTotalScore method returns the total score.

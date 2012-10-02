@@ -1,12 +1,11 @@
 package com.example.android;
 
-
-
-
-
+import android.os.Build;
 import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -20,32 +19,88 @@ public class MainActivity extends Activity {
 	//DifficultyLevel
 	public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";
 	
-    @Override
+	TextView nameField;
+
+	private TextView userStatus;
+	
+	public String name;
+	private String playerName;
+	private Button startGameButton;
+	private Button newPlayerButton;
+    
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);   
         
+        userStatus = (TextView)findViewById(R.id.textView1);
+        nameField = (TextView) findViewById( R.id.textView2 );  
+        startGameButton = (Button)findViewById(R.id.startaSpel);
         
-    }
-    
-//    /** Called when the user clicks the Login button */
-//	public void login(View view){			
-//		Intent intent = new Intent(this, User.class);
-//	    EditText userName = (EditText) findViewById(R.id.username);
-//	    String message = userName.getText().toString();
-//	    intent.putExtra(EXTRA_MESSAGE, message);
-//	    startActivity(intent);
+        newPlayerButton = (Button)findViewById(R.id.bytspelare);
+        startGameButton.setEnabled(false);
+        
+//        newPlayerButton.setOnClickListener(new View.OnClickListener() {
+//			public void onClick(View v) {
+//				Intent intent = new Intent("android.intent.action.USERACTIVITY");
+//			    startActivityForResult(intent, 1);	
+//			}
+//		});
+    } 
+//	@Override
+//	public void onResume() {
+//		super.onResume();
+//		nameField.setText(name);
+//		userStatus.setText(R.string.inloggad);
+//		Log.e( ">>>>>>>", "OnResum har används" );
+		
+//		userStatus.setText(R.string.inloggad);
+//		//TODO
+//		String str2 =  nameField.getText().toString();
+//		String str = userStatus.getText().toString();
+//		
+//		Log.e( ">>>>>>>", str2); 
+//		Log.e( ">>>>>>>", str);
 //	}
+//    
+//	protected void onPause(){
+//        super.onPause();
+//        playerName = name;
+//        nameField.setText(playerName);
+//        Log.e( ">>>>>>>", name);
+        
+//	}
+ 
 	
 	/** Called when the user clicks the New Game button */
 	public void newGame (View v){
-		startActivity(new Intent("android.intent.action.GAME").putExtra(DIFFLEVEL, difficulty));	
+		startActivity(new Intent("android.intent.action.GAME").putExtra(DIFFLEVEL, difficulty)
+				.putExtra("Name", name));	
 	}
 	
 	/** Called when the user clicks the New Player button */
 	public void newPlayer(View v){
-		startActivity(new Intent("android.intent.action.USER"));		
+		Intent intent = new Intent(this, UserActivity.class);
+	    startActivityForResult(intent, 1);		
 	}
+	
+	@Override
+	 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		 super.onActivityResult(requestCode, resultCode, data);
+//		 userStatus = (TextView)findViewById(R.id.textView1);
+		 if(resultCode==RESULT_OK && requestCode==1){
+			 name = data.getStringExtra("PlayerName");
+			 nameField.setText(name);
+		 }
+		 userStatus.setText(R.string.inloggad);
+		 
+		 if(nameField.getText().length() < 5 ){
+	       	startGameButton.setEnabled(false);
+	     }else{
+	      	startGameButton.setEnabled(true);
+	     }
+	     playerName = name;
+	 }
 	
 	 /** Called when the user clicks the Level button */
 	public void level(View v){

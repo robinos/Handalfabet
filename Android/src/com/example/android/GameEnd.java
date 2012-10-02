@@ -26,12 +26,19 @@ public class GameEnd extends Activity {
                
         final ImageButton newGameButton = ( ImageButton ) findViewById( R.id.new_game_button );                
         final ImageButton highScoreButton = ( ImageButton ) findViewById( R.id.high_scores_button ); 
-        final ImageButton mainMenuButton = ( ImageButton ) findViewById( R.id.main_menu_button ); 
+        final ImageButton mainMenuButton = ( ImageButton ) findViewById( R.id.main_menu_button );
+        
+        final TextView userStatus = (TextView)findViewById(R.id.textView1);
+        final TextView userName = (TextView)findViewById(R.id.textView2);
         
         int numCorrect = getIntent().getIntExtra( Game.NUMCORRECT, 0 );         
         int totalScore = getIntent().getIntExtra( Game.TOTALSCORE, 0 ); 
         int averageTime = getIntent().getIntExtra( Game.AVERAGETIME, 0 ); 
         
+        //Displays the userName
+        userStatus.setText(R.string.inloggad);
+		userName.setText(getIntent().getStringExtra("name"));
+
         newGameButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
 				startActivity( new Intent( "android.intent.action.GAME" ) ); 				

@@ -32,5 +32,6 @@
     <string name="level">Nivå</string>
     <string name="help">Hjälp</string>
     <string name="submit">Skicka</string>
-	<string name="inloggad">Inloggad som</string> 	                  
+	<string name="inloggad">Inloggad som</string>
+	<string name="utloggad">Ej inloggad</string>  		                  
 </resources>

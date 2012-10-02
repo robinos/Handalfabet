@@ -179,6 +179,7 @@ public final class R {
         public static final int title_activity_main=0x7f040007;
         public static final int total_point_view=0x7f040015;
         public static final int username=0x7f040002;
+        public static final int utloggad=0x7f040021;
     }
     public static final class style {
         public static final int AppTheme=0x7f050000;

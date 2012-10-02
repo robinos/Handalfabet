@@ -1,23 +1,26 @@
 package com.example.android;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ProgressBar;
 
 /**
- * The Game class
+ * The Game class 
  * 
  * @author  : Grupp02
  * @version : 2012-09-28, v0.3 
@@ -42,16 +45,22 @@ public class Game extends Activity {
 	 private TextView totalPoint;
 	 private TextView roundPoint;
 	 private ProgressBar timerBar;	 
-	 
-	 @Override
+	 private TextView userName;
+	 private TextView userStatus;
+//	 public String name;
+	  
+	
+	@Override
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.game );     
         
         // Make sure we're running on Honeycomb or higher to use ActionBar APIs
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
-            getActionBar().setDisplayHomeAsUpEnabled( true );
-        }         
+        	 getActionBar().setDisplayHomeAsUpEnabled( true );
+        }     
+        
+        
         
         //game difficulty, default level 1
         int difficulty = getIntent().getIntExtra( MainActivity.DIFFLEVEL, 1 ); 
@@ -63,8 +72,15 @@ public class Game extends Activity {
 		image = ( ImageView ) findViewById( R.id.image_view );
 		nextButton = ( ImageButton ) findViewById( R.id.next_letter_button );        
         
+		userStatus = (TextView)findViewById(R.id.textView1);
+		userStatus.setText(R.string.inloggad);
+		//Displays the username
+		userName = (TextView) findViewById(R.id.textView2);
+//		name = getIntent().getStringExtra("Name");
+		userName.setText(getIntent().getStringExtra("Name"));
+		
 		//Initialize the layout
-        setButtonsAndTextView();                      
+        setButtonsAndTextView();                    
         
         //Resets for a new round
         nextRound();
@@ -195,7 +211,8 @@ public class Game extends Activity {
 				    Intent endIntent = new Intent( "android.intent.action.GAMEEND" );
 				    endIntent.putExtra( NUMCORRECT, gameLogic.getNumCorrect() );
 				    endIntent.putExtra( TOTALSCORE, gameLogic.getTotalScore() );
-				    endIntent.putExtra( AVERAGETIME, gameLogic.getAverageTime() );				    
+				    endIntent.putExtra( AVERAGETIME, gameLogic.getAverageTime() );	
+				    endIntent.putExtra("name", getIntent().getStringExtra("Name"));
 				    startActivity( endIntent );		
 				}				
 			} 
@@ -224,7 +241,7 @@ public class Game extends Activity {
 	 * 
 	 * @param word
 	 * @return the id number
-	 */
+	 */ 
 	private int picSetter( String word ) {		
 		int resource = getResources().getIdentifier( word, "drawable", "com.example.android" );
 		return resource;		

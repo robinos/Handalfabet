@@ -31,5 +31,6 @@
     <string name="level">Level</string>
     <string name="help">Help</string>
     <string name="submit">Submit</string>
-	<string name="inloggad">Logged in as</string>                  
+	<string name="inloggad">Logged in as</string>    
+	<string name="utloggad">Not logged in</string>  	
 </resources>

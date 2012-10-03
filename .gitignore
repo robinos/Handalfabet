@@ -9,3 +9,8 @@ Android/bin/classes/com/example/android/*.class
 .DS_Store
 
 *.apk
+
+*.dex
+
+*.ap_
+

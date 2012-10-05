@@ -40,7 +40,7 @@
         android:layout_above="@id/timer_bar"
         android:layout_alignBottom="@id/timer_bar"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="30dp"
         android:text="@string/total_point_view"
         android:textSize="30dp" />
 
@@ -65,7 +65,7 @@
         android:textSize="30dp" />
 
     <TextView
-        android:id="@+id/show_total_point"
+        android:id="@+id/show_total_points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/total_point_view"
@@ -82,7 +82,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:background="#AA000000"
-        android:text="@string/word_view"
+        android:text="@string/letter_view"
         android:textColor="#ffffffff"
         android:textSize="30dp" />
 
@@ -102,7 +102,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/image_view1"
         android:layout_toRightOf="@+id/image_view1"
-        android:background="@drawable/b"
+        android:background="@drawable/b"        
         android:contentDescription="@string/third_opt_button" />
 
     <ImageView
@@ -111,26 +111,26 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/image_view2"
         android:layout_toRightOf="@+id/image_view2"
-        android:background="@drawable/c"
+        android:background="@drawable/c"        
         android:contentDescription="@string/third_opt_button" />
-
-    <Button
-        android:id="@+id/second_opt_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:contentDescription="@string/second_opt_button"
-        android:onClick="markButtonsAfterClicked"
-        android:text="abc" />
 
     <Button
         android:id="@+id/first_opt_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/next_button"
         android:contentDescription="@string/first_opt_button"
+        android:onClick="markButtonsAfterClicked"
+        android:text="abc" />
+
+    <Button
+        android:id="@+id/second_opt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/show_round_points"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/second_opt_button"
         android:onClick="markButtonsAfterClicked"
         android:text="abc" />
 
@@ -139,7 +139,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/next_button"
+        android:layout_toRightOf="@+id/show_total_points"
         android:contentDescription="@string/third_opt_button"
         android:onClick="markButtonsAfterClicked"
         android:text="abc" />

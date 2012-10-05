@@ -15,7 +15,6 @@
     <string name="first_opt_button">First Button</string>
     <string name="second_opt_button">Second Button</string>
     <string name="third_opt_button">Third Button</string>
-    <string name="question_view">Which letter is this hand sign?</string>
     <string name="letter_view">Which letter is this hand sign?</string>    
     <string name="word_view">Which word are these hand signs?</string>    
     <string name="answer_view">  out of 10 right!</string>

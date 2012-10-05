@@ -57,15 +57,20 @@ public class Game extends Activity {
         
         //game difficulty, default level 1
         int difficulty = getIntent().getIntExtra( MainActivity.DIFFLEVEL, 1 ); 
+        
         //The game logic object
         gameLogic = new GameLogic( difficulty, this );        
          
         //GUI variables
         timerBar = ( ProgressBar ) findViewById (R.id.timer_bar );
 		image1 = ( ImageView ) findViewById( R.id.image_view1 );
-		image2 = ( ImageView ) findViewById( R.id.image_view1 );
-		image3 = ( ImageView ) findViewById( R.id.image_view1 );		
+		image2 = ( ImageView ) findViewById( R.id.image_view2 );
+		image3 = ( ImageView ) findViewById( R.id.image_view3 );		
 		nextButton = ( ImageButton ) findViewById( R.id.next_button );        		
+		String pic_blank = "blank";
+		
+		image2.setImageResource( picSetter( pic_blank ) );
+		image3.setImageResource( picSetter( pic_blank ) );
 		
 		//Initialize the layout
         setButtonsAndTextView();                      
@@ -94,7 +99,7 @@ public class Game extends Activity {
 	        secondOptionButton = ( Button ) findViewById( R.id.second_opt_button );
 	        thirdOptionButton = ( Button ) findViewById( R.id.third_opt_button );        
 	        
-	        totalPoint = ( TextView ) findViewById( R.id.show_total_point );
+	        totalPoint = ( TextView ) findViewById( R.id.show_total_points );
 	        roundPoint = ( TextView ) findViewById( R.id.show_round_points );
 	 }
 	 

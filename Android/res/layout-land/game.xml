@@ -9,50 +9,54 @@
    <include
        android:layout_height="wrap_content"
        layout="@layout/user_view" />
-
+
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
+    <ImageButton
+        android:id="@+id/next_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/question_view"
+        android:background="@drawable/next_letter"
+        android:contentDescription="@string/next_letter_button" />
+
     <TextView
         android:id="@+id/show_round_points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/point_view"
-        android:layout_alignBottom="@+id/point_view"
-        android:layout_toRightOf="@+id/point_view"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/next_button"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="20dp"        
         android:text="0"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="30dp" />
+        android:textSize="25dp" />
 
     <TextView
-        android:id="@+id/total_point_view"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_alignTop="@+id/third_opt_button"
-        android:layout_marginRight="20dp"
-        android:text="@string/total_point_view"
-        android:textSize="30dp" />    
-    
-    <TextView
-        android:id="@+id/show_total_point"
+        android:id="@+id/show_total_points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/show_round_points"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="20dp"        
         android:text="0"
-        android:layout_alignBaseline="@+id/total_point_view"
-        android:layout_alignBottom="@+id/total_point_view"
-        android:layout_toRightOf="@+id/total_point_view"        
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="30dp" />
+        android:textSize="25dp" />
 
     <TextView
         android:id="@+id/point_view"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_toRightOf="@+id/image_view"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/next_button"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@id/show_round_points"
         android:text="@string/point_view"
-        android:textSize="30dp" />
+        android:textSize="25dp" />
 
     <TextView
         android:id="@+id/question_view"
@@ -62,7 +66,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:background="#AA000000"
-        android:text="@string/question_view"
+        android:text="@string/letter_view"
         android:textColor="#ffffffff"
         android:textSize="30dp" />
 
@@ -70,8 +74,8 @@
         android:id="@+id/image_view1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/question_view"
-        android:layout_toRightOf="@+id/question_view"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/question_view"
         android:background="@drawable/a"
         android:contentDescription="@string/third_opt_button" />
 
@@ -85,57 +89,66 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="20dp" />
 
+    <ImageView
+        android:id="@+id/image_view2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/question_view"
+        android:layout_toRightOf="@id/image_view1"
+        android:background="@drawable/b"        
+        android:contentDescription="@string/third_opt_button" />
+
+    <ImageView
+        android:id="@+id/image_view3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/question_view"
+        android:layout_toRightOf="@id/image_view2"
+        android:background="@drawable/c"        
+        android:contentDescription="@string/third_opt_button" />
+
+    <TextView
+        android:id="@+id/total_point_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/show_total_points"
+        android:layout_alignBottom="@+id/show_total_points"
+        android:layout_alignRight="@+id/point_view"
+        android:text="@string/total_point_view"
+        android:textSize="25dp" />
+
+    <Button
+        android:id="@+id/second_opt_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_view2"
+        android:layout_toRightOf="@+id/image_view1"
+        android:contentDescription="@string/second_opt_button"
+        android:text="abc"        
+        android:onClick="markButtonsAfterClicked" />
+
     <Button
         android:id="@+id/first_opt_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignBaseline="@+id/second_opt_button"
+        android:layout_alignBottom="@+id/second_opt_button"
+        android:layout_alignParentLeft="true"
         android:contentDescription="@string/first_opt_button"
+        android:text="abc"         
         android:onClick="markButtonsAfterClicked" />
 
     <Button
         android:id="@+id/third_opt_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignBaseline="@+id/second_opt_button"
+        android:layout_alignBottom="@+id/second_opt_button"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/second_opt_button"
         android:contentDescription="@string/third_opt_button"
-        android:onClick="markButtonsAfterClicked" />
-
-    <ImageButton
-        android:id="@+id/next_letter_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/question_view"
-        android:background="@drawable/next_letter"
-        android:contentDescription="@string/next_letter_button" />
-
-    <ImageView
-        android:id="@+id/image_view2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/first_opt_button"
-        android:layout_alignLeft="@+id/show_round_points"
-        android:background="@drawable/b"
-        android:contentDescription="@string/third_opt_button" />
-
-    <Button
-        android:id="@+id/second_opt_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/total_point_view"
-        android:layout_alignLeft="@+id/image_view2"
-        android:contentDescription="@string/second_opt_button"
-        android:onClick="markButtonsAfterClicked" />
-
-    <ImageView
-        android:id="@+id/image_view3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/second_opt_button"
-        android:layout_toRightOf="@+id/image_view2"
-        android:background="@drawable/c"
-        android:contentDescription="@string/third_opt_button" />
+        android:onClick="markButtonsAfterClicked"
+        android:text="abc" />
 
 </RelativeLayout>
 

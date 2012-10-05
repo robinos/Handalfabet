@@ -16,6 +16,8 @@
     <string name="second_opt_button">Andra Knapp</string>
     <string name="third_opt_button">Tredje Knapp</string>
     <string name="question_view">Vilket bostav är tecknet?</string>
+    <string name="letter_view">Vilket bokstav är tecknet?</string>    
+    <string name="word_view">Vilket ord är tecknen?</string>      
     <string name="answer_view">  av 10 rätt!</string>
     <string name="average_view">Genomsnittlig tid (s):  </string>
     <string name="high_view">Ny högsta rekord!</string>

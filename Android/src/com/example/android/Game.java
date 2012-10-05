@@ -34,7 +34,9 @@ public class Game extends Activity {
 	 GameLogic gameLogic;
 	
 	 //Instance Variables
-	 private ImageView image; 
+	 private ImageView image1;
+	 private ImageView image2;
+	 private ImageView image3;	 
 	 private ImageButton nextButton;
 	 private Button firstOptionButton;
 	 private Button secondOptionButton;
@@ -60,9 +62,11 @@ public class Game extends Activity {
          
         //GUI variables
         timerBar = ( ProgressBar ) findViewById (R.id.timer_bar );
-		image = ( ImageView ) findViewById( R.id.image_view );
-		nextButton = ( ImageButton ) findViewById( R.id.next_letter_button );        
-        
+		image1 = ( ImageView ) findViewById( R.id.image_view1 );
+		image2 = ( ImageView ) findViewById( R.id.image_view1 );
+		image3 = ( ImageView ) findViewById( R.id.image_view1 );		
+		nextButton = ( ImageButton ) findViewById( R.id.next_button );        		
+		
 		//Initialize the layout
         setButtonsAndTextView();                      
         
@@ -211,7 +215,7 @@ public class Game extends Activity {
 		gameLogic.determineChoices();		
 		
 		//Set the picture
-		image.setImageResource( picSetter( gameLogic.getPicture() ) );
+		image1.setImageResource( picSetter( gameLogic.getPicture() ) );
 		
 		//Set the button text
 		firstOptionButton.setText( gameLogic.getFirstButtonString() );

@@ -67,7 +67,7 @@ public class GameLogic
 	 */
 	public GameLogic( int diffLevel, Game game ) {
 		//debugging mode
-		debug = true;		
+		debug = false;		
 	    
 		//Number of rounds one may play
 	    playRoundCounter = 10;  
@@ -357,13 +357,17 @@ public class GameLogic
 		//else {
 		    //For Level 1 - a letter only
 		    String randomLetter;
-		
+		    String name;
+		    
 		    //Choose a letter from the alphabet based on the given position
 		    if( debug ) randomLetter = "abcdefghijklmnopqrestuvwz";
 		    else randomLetter = wordList.get( position );
 		    		
-		    String name = Character.toString( randomLetter.charAt( position ) );
-		
+		    if( debug ) {
+		        name = Character.toString( randomLetter.charAt( position ) );
+		    }
+		    else name = randomLetter;
+		        
 		    //Debug help
 		    if( name == null ) {
 			    System.err.println( "No letter at given position." );

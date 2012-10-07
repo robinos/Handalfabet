@@ -4,6 +4,7 @@ import com.example.android.*;
 
 
 import android.test.AndroidTestCase;
+import android.util.Log;
 
 /**
  *     This file is part of Handalfabetet.
@@ -40,7 +41,7 @@ public class GameLogicTest extends AndroidTestCase {
 	protected void setUp() throws Exception {
 		game = new Game();
 		gameLogic = new GameLogic(1,game);
-		gameLogic.scoreCounter();
+		
 		super.setUp();
 	}
 
@@ -52,21 +53,66 @@ public class GameLogicTest extends AndroidTestCase {
 	 *  A simple test for score value
 	 */
 	public void simpleTestScore() {
-		
-		assertEquals(gameLogic.getRoundScore(),11);
+		gameLogic.scoreCounter();
+		assertEquals(gameLogic.getRoundScore(), gameLogic.getTotalScore() );   
 	}
+	
 	/**
-	 * Test the tree answersbuttons gets unique strings. 
+	 * Simulates a test for score after 10 rounds
+	 */
+	public void simpleTestScore10times() {
+		for(int i = 0; i < 10; i++) {
+			simpleTestScore();
+		}
+	}
+	
+	
+	/**
+	 * Tests if the tree answersbuttons gets unique strings. 
 	 */
 	public void testUniqueRandomizedLetters() {
+		
 		gameLogic.determineChoices();
-		assertFalse(gameLogic.getFirstButtonString().equals(gameLogic.getSecondButtonString()));
-		assertFalse(gameLogic.getFirstButtonString().equals(gameLogic.getThirdButtonString()));
-		assertFalse(gameLogic.getSecondButtonString().equals(gameLogic.getThirdButtonString()));
+		assertFalse(gameLogic.getFirstButtonString()
+							 .equals(
+				    gameLogic.getSecondButtonString()));
+		
+		assertFalse(gameLogic.getFirstButtonString()
+							 .equals(
+					gameLogic.getThirdButtonString()));
+		
+		assertFalse(gameLogic.getSecondButtonString()
+							 .equals(
+					gameLogic.getThirdButtonString()));
+		
+		
+		Log.e("",gameLogic.getFirstButtonString());
+		Log.e("",gameLogic.getSecondButtonString());
+		Log.e("",gameLogic.getThirdButtonString());
+		
+		
+	}
+	
+	public void testIfAnswersButtonsContainsTheCorrextAnswer() {
+		
+		gameLogic.determineChoices();
+		
+		Log.e("","<<<"+	gameLogic.getPicture());
+		Log.e("","<<<"+	gameLogic.getFirstButtonString());
+		
+		assertTrue(	gameLogic.getFirstButtonString().equals(gameLogic.getPicture())
+					||
+					gameLogic.getSecondButtonString().equals(gameLogic.getPicture()) 
+					||
+					gameLogic.getThirdButtonString().equals(gameLogic.getPicture()) 
+					);
+		
+		
 	}
 	
 	/**
 	 * Runs the tests method 10 times
+	 * This tests has the O(n^3) so this limits the test to 10 rounds
 	 */
 	public void testUniqueRandomizedLetters10times() {
 		for(int i = 0; i < 10; i++) {

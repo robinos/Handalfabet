@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.support.v4.app.NavUtils;
 
 public class GameEnd extends Activity {
 	
+	private DatabaseHelper db;
+	
     @Override
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
@@ -23,7 +26,9 @@ public class GameEnd extends Activity {
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
             getActionBar().setDisplayHomeAsUpEnabled( true );
         }         
-               
+             
+        db = new DatabaseHelper(this);
+        
         final ImageButton newGameButton = ( ImageButton ) findViewById( R.id.new_game_button );                
         final ImageButton highScoreButton = ( ImageButton ) findViewById( R.id.high_scores_button ); 
         final ImageButton mainMenuButton = ( ImageButton ) findViewById( R.id.main_menu_button );
@@ -33,11 +38,20 @@ public class GameEnd extends Activity {
         
         int numCorrect = getIntent().getIntExtra( Game.NUMCORRECT, 0 );         
         int totalScore = getIntent().getIntExtra( Game.TOTALSCORE, 0 ); 
-        int averageTime = getIntent().getIntExtra( Game.AVERAGETIME, 0 ); 
+        int averageTime = getIntent().getIntExtra( Game.AVERAGETIME, 0 );    
+        
         
         //Displays the userName
         userStatus.setText(R.string.inloggad);
 		userName.setText(getIntent().getStringExtra("name"));
+		
+		User user = db.getUser(userName.getText().toString());
+		  
+		// Update HighScore 
+		if(user.getHighScore() < totalScore){
+			user.setHighScore(totalScore);
+			db.updateUserHighScore(user);
+		}
 
         newGameButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {

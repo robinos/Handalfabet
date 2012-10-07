@@ -14,13 +14,12 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	
-	private boolean firstClick = true;
 	private int difficulty = 1;
 	//DifficultyLevel
 	public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";
 	
 	TextView nameField;
-
+	private String feriz = "peci";
 	private TextView userStatus;
 	
 	public String name;
@@ -33,23 +32,48 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);   
         
+     // Check whether we're recreating a previously destroyed instance
+        if (savedInstanceState != null) {
+        	name = savedInstanceState.getString(playerName);
+        	nameField.setText(name);
+        	userStatus.setText(R.string.inloggad);
+        }
+        
+        
         userStatus = (TextView)findViewById(R.id.textView1);
         nameField = (TextView) findViewById( R.id.textView2 );  
         startGameButton = (Button)findViewById(R.id.startaSpel);
         
         newPlayerButton = (Button)findViewById(R.id.bytspelare);
-        startGameButton.setEnabled(false);
-        
-//        newPlayerButton.setOnClickListener(new View.OnClickListener() {
-//			public void onClick(View v) {
-//				Intent intent = new Intent("android.intent.action.USERACTIVITY");
-//			    startActivityForResult(intent, 1);	
-//			}
-//		});
+        startGameButton.setEnabled(false); 
     } 
+	
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+	    // Save the user's current game state
+	    savedInstanceState.putString(playerName, feriz);
+	    
+	    // Always call the superclass so it can save the view hierarchy state
+	    super.onSaveInstanceState(savedInstanceState);
+	} 
+	
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+	    // Always call the superclass so it can restore the view hierarchy
+	    super.onRestoreInstanceState(savedInstanceState);
+	   
+	    // Restore state members from saved instance
+	    name = savedInstanceState.getString(playerName);
+	}
 //	@Override
 //	public void onResume() {
 //		super.onResume();
+//		nameField.setText(playerName);
+//	}
+//		userStatus.setText(R.string.inloggad);
+//		nameField.setText(playerName);
+//		Log.e( ">>>>>>>onP", playerName);
+//		
+//		nameField.setText(playerName);
 //		nameField.setText(name);
 //		userStatus.setText(R.string.inloggad);
 //		Log.e( ">>>>>>>", "OnResum har används" );
@@ -61,9 +85,11 @@ public class MainActivity extends Activity {
 //		
 //		Log.e( ">>>>>>>", str2); 
 //		Log.e( ">>>>>>>", str);
-//	}
-//    
+//	} 
+
 //	protected void onPause(){
+//		playerName = nameField.getText().toString();
+//		Log.e( ">>>>>>>onP", playerName);
 //        super.onPause();
 //        playerName = name;
 //        nameField.setText(playerName);
@@ -94,11 +120,7 @@ public class MainActivity extends Activity {
 		 }
 		 userStatus.setText(R.string.inloggad);
 		 
-		 if(nameField.getText().length() < 5 ){
-	       	startGameButton.setEnabled(false);
-	     }else{
-	      	startGameButton.setEnabled(true);
-	     }
+		 startGameButton.setEnabled(true);
 	     playerName = name;
 	 }
 	

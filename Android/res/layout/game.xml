@@ -116,30 +116,37 @@
 
     <Button
         android:id="@+id/first_opt_button"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
+        android:layout_centerVertical="true"  
+        android:layout_alignLeft="@id/image_view1"             
         android:contentDescription="@string/first_opt_button"
         android:onClick="markButtonsAfterClicked"
         android:text="abc" />
 
     <Button
         android:id="@+id/second_opt_button"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/show_round_points"
-        android:layout_centerVertical="true"
+        android:layout_alignBaseline="@id/first_opt_button"
+        android:layout_alignBottom="@id/first_opt_button"
+        android:layout_toRightOf="@id/first_opt_button"
+        android:layout_alignLeft="@id/image_view2"          
+        android:layout_centerVertical="true"      
         android:contentDescription="@string/second_opt_button"
         android:onClick="markButtonsAfterClicked"
         android:text="abc" />
 
     <Button
         android:id="@+id/third_opt_button"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/show_total_points"
+        android:layout_alignBaseline="@id/second_opt_button"
+        android:layout_alignBottom="@id/second_opt_button"
+        android:layout_toRightOf="@id/second_opt_button"
+        android:layout_alignLeft="@id/image_view3"                   
         android:contentDescription="@string/third_opt_button"
         android:onClick="markButtonsAfterClicked"
         android:text="abc" />

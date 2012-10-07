@@ -5,6 +5,9 @@ ax
 be
 bi
 bo
+bu
+by
+bä
 de
 du
 då
@@ -31,12 +34,15 @@ kö
 le
 lä
 må
+mö
 ni
 nu
 ny
 nå
+nä
 oj
 om
+pi
 på
 ro
 rå

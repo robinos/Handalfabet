@@ -3,9 +3,12 @@ package com.example.android;
 import android.os.CountDownTimer;
 import android.util.Log;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Collections;
+import java.util.Scanner;
 
 /**
  * The GameLogic class is meant to hold all game logic for Game.
@@ -48,6 +51,11 @@ public class GameLogic
 	 //Random generator
 	 Random randomGen;
 	 
+	 //file reading variables
+     private Scanner fileScanner;	 
+	 final private String level2 = "level2.txt";
+	 final private String level3 = "level3.txt";	 
+	 
 	 //Answer string logic variables
 	 private String correctSign;	 
 	 private ArrayList<Integer> answerForButtons;
@@ -60,10 +68,16 @@ public class GameLogic
 	 private String firstButtonString = "";
 	 private String secondButtonString = "";
 	 private String thirdButtonString = "";	
-	 private String picture = "";		 
+	 private String first_picture = "blank";		 
+	 private String second_picture = "blank";	
+	 private String third_picture = "blank";	 
+	 
 	 
 	/**
 	 * The GameLogic Constructor
+	 * 
+	 * @param diffLevel : The difficulty level of the game
+	 * @param game : The GameActivity object
 	 */
 	public GameLogic( int diffLevel, Game game ) {
 		//debugging mode
@@ -117,20 +131,92 @@ public class GameLogic
 	 */
 	private void setWordList() {
 		
+    	String alphabet = "a b c d e f g h i j k l m n o p q r e s t u v w z å ä ö";
+    	
+    	//test/default case 60 words
+		String[] secondList = new String[] {"av","ax","be","bo","by","de","du","då","dö","ed",
+                                            "ej","ek","el","en","er","få","ge","gå","ha","hy",
+                                            "hö","in","is","ja","ju","ko","kö","le","lä","må",
+                                            "ni","nu","ny","nå","oj","om","på","ro","rå","sa",
+                                            "se","sy","så","ta","te","tå","ur","ut","uv","vi",
+                                            "vy","yr","ål","år","år","åt","än","är","öl","öm"};
+		
+		//test/default case 120 words
+		String[] thirdList = new String[] {"all","apa","att","bad","bar","bil","bio","blå","bok","bra",
+                                           "båt","bör","dag","dal","den","det","dig","din","dom","dra",
+                                           "dyr","döv","eld","ett","far","fel","fly","fot","fru","får",
+                                           "för","gav","get","god","gud","gul","gås","haj","han","hat",
+                                           "hav","hem","het","hit","hos","hot","hop","hud","hur","hus",
+                                           "hår","här","hög","jag","jul","kam","kex","klä","knä","kul",
+                                           "kyl","kär","köa","kök","köp","kör","led","lek","liv","lov",
+                                           "lår","lån","lök","lön","man","med","men","mer","mod","mor",
+                                           "mus","myt","mål","ned","nej","när","näs","och","ont","oro",
+                                           "oss","ost","par","ren","rum","råd","rök","ser","sig","sin",
+                                           "sko","små","son","syn","tal","toa","tog","tom","tre","tur",
+                                           "två","ugn","ung","vem","vid","åka","ägg","öga","öka","öst"};		
+		
 		//Initialize word list based on difficulty level
 	    if( diffLevel == 3 ) {
-	    	
+	         //Read in word list from file
+	    	 try {
+	    	     readFile( level3 );
+	    	 }
+	    	 catch (IOException ie) {
+	    	     if ( debug ) System.err.println("IOException : Opening level3 file");
+	    	     Collections.addAll( wordList, thirdList ); //default	    	     			
+	    	 }
+	    	 
+	    	 //if something else went wrong, like an empty file, also use the default list
+	    	 if( wordList.size() <= 0) {
+	    	     if ( debug ) System.err.println("Error : Empty level3 file");
+	    	     Collections.addAll( wordList, thirdList ); //default		    		 
+	    	 }
 	    }
 	    else if ( diffLevel == 2 ) {
-	    	
+	         //Read in word list from file
+	    	 try {
+	    	     readFile( level2 );
+	    	 }
+	    	 catch (IOException ie) {
+	    	     if ( debug ) System.err.println("IOException : Opening level2 file");
+	    	     Collections.addAll( wordList, secondList ); //default	    	     			
+	    	 }   	
+	    	 
+	    	 //if something else went wrong, like an empty file, also use the default list
+	    	 if( wordList.size() <= 0) {
+	    	     if ( debug ) System.err.println("Error : Empty level2 file");
+	    	     Collections.addAll( wordList, secondList ); //default		    		 
+	    	 }	    	 
 	    }
 	    else { //difficulty level 1
-	    	String alphabet = "a b c d e f g h i j k l m n o p q r e s t u v w z å ä ö";
 	    	String[] stringArray = alphabet.split(" ");
 	    	Collections.addAll( wordList, stringArray );
 	    }
 	}	 
 	 
+	
+	/**
+	 * The readFile method reads from a text file, expecting a single word
+	 * per line.  Each word is read into the ArrayList wordList, which is
+	 * an array list of strings. 
+	 * 
+	 * @param filename : a String representing the filename to be read from
+	 */
+	private void readFile( String filename ) throws IOException {	
+		
+        //initialize the file stream scanner 	        
+        File listFile = new File( filename );
+        fileScanner = new Scanner( listFile );
+        
+	    // Read the file into wordList.
+	    // The file is a simple text file. One word per line.
+	    while( fileScanner.hasNextLine() ) {
+	        String word = fileScanner.nextLine();
+	        wordList.add( word );
+	    }	 	    
+	}	
+	
+	
 	 /**
 	  * Counts the current score.
 	  */
@@ -274,12 +360,30 @@ public class GameLogic
 	}	
 	
 	/**
-	 * Returns the picture string for the hand sign
+	 * Returns the picture string for the first hand sign
 	 * 
 	 * return : the String representing the hand sign
 	 */
-	public String getPicture() {
-	    return picture;	
+	public String getFirstPicture() {
+	    return first_picture;	
+	}	
+	
+	/**
+	 * Returns the picture string for the second hand sign
+	 * 
+	 * return : the String representing the hand sign
+	 */
+	public String getSecondPicture() {
+	    return second_picture;	
+	}
+	
+	/**
+	 * Returns the picture string for the third hand sign
+	 * 
+	 * return : the String representing the hand sign
+	 */
+	public String getThirdPicture() {
+	    return third_picture;	
 	}	
 	
 	/**
@@ -287,14 +391,14 @@ public class GameLogic
 	 * the correct letter/word for the shown sign.
 	 */
 	public void determineChoices(){
-		//Re-initialise the random generator, to increase randomness
+		//Re-initialize the random generator, to increase randomness
 		//randomGen = new Random();
         String str;
 		
 		while(true) {			
 			//Randomize 3 different words/letters by position number,
 			//one of which is the right answer (into answerForButtons)
-			randomizeLettersForAnswerButtons( randomNumber() );
+			randomizeWordsForAnswerButtons( randomNumber() );
 			//The first number in answerForButtons is the correct one
 			str = randomWord( answerForButtons.get(0) );
 			correctSign = str;
@@ -307,7 +411,16 @@ public class GameLogic
 		        answerForButtons.clear();
 		}
 		
-		picture = str;
+		if( diffLevel == 3) {
+	    	first_picture = Character.toString( str.charAt( 0 ) );	
+	    	second_picture = Character.toString( str.charAt( 1 ) );
+	    	third_picture = Character.toString( str.charAt( 2 ) );	    	
+		}
+		else if( diffLevel == 2) {
+	    	first_picture = Character.toString( str.charAt( 0 ) );	
+	    	second_picture = Character.toString( str.charAt( 1 ) );			
+		}
+		else first_picture = str;
 		
 		int y = randomGen.nextInt( 3 ); 
 
@@ -383,16 +496,16 @@ public class GameLogic
 	 * @return number
 	 */
 	public int randomNumber(){
-		int number = randomGen.nextInt( 25 );
-		return number;
+		int position = randomGen.nextInt( wordList.size()-1 );
+		return position;
 	}
 	
 	/**
-	 * Randomizes position for letters for the answer buttons
+	 * Randomizes position for letters/words for the answer buttons
 	 * 
 	 * @param the position in the alphabet for correct answer
 	 */
-	private void randomizeLettersForAnswerButtons( int x ){
+	private void randomizeWordsForAnswerButtons( int x ){
 		for( int y = 0; y < 3; y++ ){
 			if( !answerForButtons.contains( x ) ){
 				answerForButtons.add( x );

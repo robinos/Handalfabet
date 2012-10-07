@@ -43,7 +43,8 @@ public class Game extends Activity {
 	 private Button thirdOptionButton;
 	 private TextView totalPoint;
 	 private TextView roundPoint;
-	 private ProgressBar timerBar;	 
+	 private ProgressBar timerBar;
+	 private int difficulty;	 
 	 
 	 @Override
     public void onCreate( Bundle savedInstanceState ) {
@@ -56,7 +57,8 @@ public class Game extends Activity {
         }         
         
         //game difficulty, default level 1
-        int difficulty = getIntent().getIntExtra( MainActivity.DIFFLEVEL, 1 ); 
+        difficulty = getIntent().getIntExtra( MainActivity.DIFFLEVEL, 1 ); 
+        //difficulty = 2;
         
         //The game logic object
         gameLogic = new GameLogic( difficulty, this );        
@@ -69,8 +71,12 @@ public class Game extends Activity {
 		nextButton = ( ImageButton ) findViewById( R.id.next_button );        		
 		String pic_blank = "blank";
 		
-		image2.setImageResource( picSetter( pic_blank ) );
-		image3.setImageResource( picSetter( pic_blank ) );
+		//Have certain pictures blank depending on difficulty level
+		if( difficulty == 2 ) image3.setImageResource( picSetter( pic_blank ) ); 
+		else if( difficulty == 1 ) {
+		    image2.setImageResource( picSetter( pic_blank ) );
+		    image3.setImageResource( picSetter( pic_blank ) );
+		}
 		
 		//Initialize the layout
         setButtonsAndTextView();                      
@@ -220,7 +226,10 @@ public class Game extends Activity {
 		gameLogic.determineChoices();		
 		
 		//Set the picture
-		image1.setImageResource( picSetter( gameLogic.getPicture() ) );
+		image1.setImageResource( picSetter( gameLogic.getFirstPicture() ) );		
+		
+		if( difficulty >= 2 ) image2.setImageResource( picSetter( gameLogic.getSecondPicture() ) );
+		if( difficulty == 3 ) image3.setImageResource( picSetter( gameLogic.getThirdPicture() ) );
 		
 		//Set the button text
 		firstOptionButton.setText( gameLogic.getFirstButtonString() );
@@ -235,7 +244,16 @@ public class Game extends Activity {
 	 * @return the id number
 	 */
 	private int picSetter( String word ) {		
-		int resource = getResources().getIdentifier( word, "drawable", "com.example.android" );
+		int resource;
+		
+		if( word.equals( Character.toString( 'ä' ) ) )
+			resource = getResources().getIdentifier( "ae", "drawable", "com.example.android" );
+	    else if( word.equals( Character.toString( 'å' ) ) ) 
+		    resource = getResources().getIdentifier( "ao", "drawable", "com.example.android" );
+		else if( word.equals( Character.toString( 'ö' ) ) )
+		    resource = getResources().getIdentifier( "oe", "drawable", "com.example.android" );			
+		else resource = getResources().getIdentifier( word, "drawable", "com.example.android" );
+		
 		return resource;		
 	}
 	

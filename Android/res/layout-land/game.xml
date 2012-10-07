@@ -31,7 +31,8 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/next_button"
         android:layout_marginTop="5dp"
-        android:layout_marginLeft="20dp"        
+        android:layout_marginLeft="20dp" 
+        android:layout_marginRight="20dp"                
         android:text="0"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="25dp" />
@@ -43,7 +44,8 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/show_round_points"
         android:layout_marginTop="5dp"
-        android:layout_marginLeft="20dp"        
+        android:layout_marginLeft="20dp" 
+        android:layout_marginRight="20dp"                 
         android:text="0"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="25dp" />
@@ -119,33 +121,35 @@
 
     <Button
         android:id="@+id/second_opt_button"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/image_view2"
         android:layout_toRightOf="@+id/image_view1"
+        android:layout_alignLeft="@id/image_view2"           
         android:contentDescription="@string/second_opt_button"
         android:text="abc"        
         android:onClick="markButtonsAfterClicked" />
 
     <Button
         android:id="@+id/first_opt_button"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/second_opt_button"
         android:layout_alignBottom="@+id/second_opt_button"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentLeft="true"   
+        android:layout_alignLeft="@id/image_view1"         
         android:contentDescription="@string/first_opt_button"
         android:text="abc"         
         android:onClick="markButtonsAfterClicked" />
 
     <Button
         android:id="@+id/third_opt_button"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/second_opt_button"
         android:layout_alignBottom="@+id/second_opt_button"
-        android:layout_marginLeft="20dp"
         android:layout_toRightOf="@+id/second_opt_button"
+        android:layout_alignLeft="@id/image_view3"           
         android:contentDescription="@string/third_opt_button"
         android:onClick="markButtonsAfterClicked"
         android:text="abc" />

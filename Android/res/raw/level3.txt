@@ -322,6 +322,7 @@ sak
 sal
 sed
 seg
+ser
 ses
 sex
 sig

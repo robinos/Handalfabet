@@ -97,14 +97,14 @@ public class GameLogicTest extends AndroidTestCase {
 		
 		gameLogic.determineChoices();
 		
-		Log.e("","<<<"+	gameLogic.getPicture());
+		Log.e("","<<<"+	gameLogic.getFirstPicture());
 		Log.e("","<<<"+	gameLogic.getFirstButtonString());
 		
-		assertTrue(	gameLogic.getFirstButtonString().equals(gameLogic.getPicture())
+		assertTrue(	gameLogic.getFirstButtonString().equals(gameLogic.getFirstPicture())
 					||
-					gameLogic.getSecondButtonString().equals(gameLogic.getPicture()) 
+					gameLogic.getSecondButtonString().equals(gameLogic.getFirstPicture()) 
 					||
-					gameLogic.getThirdButtonString().equals(gameLogic.getPicture()) 
+					gameLogic.getThirdButtonString().equals(gameLogic.getFirstPicture()) 
 					);
 		
 		

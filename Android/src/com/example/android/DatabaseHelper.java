@@ -94,17 +94,21 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         List<User> userList = new ArrayList<User>();
         // Select All Query
         String selectQuery = "SELECT * FROM " + USER_TABLE;
-     
+        
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+//        Cursor cursor = db.rawQuery(selectQuery, null);
+      
+        // Sort list
+        Cursor cursor = db.query(USER_TABLE, new String[] {
+        						colName, colPassword, colHighScore}, 
+        							null, null, null, null,	colHighScore + " DESC");
      
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                //User user = new User();
-         	   User user = new User();
+            	User user = new User();
                 user.setName(cursor.getString(0));
-                //          user.setPassword(cursor.getString(1));
+             // user.setPassword(cursor.getString(1));
                 user.setHighScore(cursor.getInt(2));
                 // Adding user to list
                 userList.add(user);

@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.ProgressBar;
 
 /**
-<<<<<<< HEAD
  *   This file is part of Handalfabetet.
  *
  *   Handalfabetet is free software: you can redistribute it and/or modify
@@ -35,13 +34,6 @@ import android.widget.ProgressBar;
  *
  *   You should have received a copy of the GNU General Public License
  *   along with Handalfabetet.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-/**
- * The Game class
-=======
- * The Game class 
->>>>>>> HighScore
  * 
  * @author  : Grupp02
  * @version : 2012-10-08, v0.4

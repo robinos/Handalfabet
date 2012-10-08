@@ -41,7 +41,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	
-	private int difficulty = 1;
+	private int difficulty = 3;
 	//DifficultyLevel
 	public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";
 	

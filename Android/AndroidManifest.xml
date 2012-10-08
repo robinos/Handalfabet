@@ -56,7 +56,7 @@
                 android:value="com.example.android.MainActivity" />
         </activity>
         <activity
-            android:name=".User"
+            android:name=".UserActivity"
             android:label="@string/title_activity_level_chooser" >
             <intent-filter>
                 <action android:name="android.intent.action.USER" />

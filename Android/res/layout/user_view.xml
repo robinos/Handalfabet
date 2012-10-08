@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="5pt"
         android:src="@drawable/ic_launcher" />
-
+
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5pt"
-                android:text="@string/inloggad"
+                android:text="@string/utloggad"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
@@ -32,7 +32,6 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textSize="8pt"
                 android:textStyle="bold"
-                android:text="Feriz"
                 android:typeface="sans" />
         </LinearLayout>
 </LinearLayout>

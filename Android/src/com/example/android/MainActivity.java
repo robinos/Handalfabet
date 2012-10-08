@@ -1,3 +1,16 @@
+package com.example.android;
+
+import android.os.Build;
+import android.os.Bundle;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
+import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  *   This file is part of Handalfabetet.
@@ -20,30 +33,12 @@
  * The MainActivity class.
  * 
  * @author  : Grupp02
- * @version : 2012-10-08, v0.4
+ * @version : 2012-10-08, v0.5
  * @License : GPLv3
  * @Copyright : Copyright© 2012, Grupp02
  *
  */
-package com.example.android;
-
-import android.os.Build;
-import android.os.Bundle;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
-import android.util.Log;
-import android.view.Menu;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
 public class MainActivity extends Activity {
-	
-	private int difficulty = 3;
-	//DifficultyLevel
-	public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";
 	
 	TextView nameField;
 	private String feriz = "peci";
@@ -127,8 +122,8 @@ public class MainActivity extends Activity {
 	
 	/** Called when the user clicks the New Game button */
 	public void newGame (View v){
-		startActivity(new Intent("android.intent.action.GAME").putExtra(DIFFLEVEL, difficulty)
-				.putExtra("Name", name));	
+		//Starts the level chooser activity
+		startActivity(new Intent("android.intent.action.LEVELCHOOSERACTIVITY").putExtra("Name", name));		
 	}
 	
 	/** Called when the user clicks the New Player button */
@@ -153,7 +148,7 @@ public class MainActivity extends Activity {
 	
 	 /** Called when the user clicks the Level button */
 	public void level(View v){
-		startActivity(new Intent("android.intent.action.LEVELCHOOSERACTIVITY"));
+		startActivity(new Intent("android.intent.action.GAMESETTINGSACTIVITY").putExtra("Name", name));	
 	}													
 	
 	/** Called when the user clicks the HighScore button */	
@@ -163,7 +158,7 @@ public class MainActivity extends Activity {
 	
 	 /** Called when the user clicks the Instruktioner button */
 	public void help(View v){
-		startActivity(new Intent("android.intent.action.HELP"));
+		startActivity(new Intent("android.intent.action.HELP").putExtra("Name", name));	
 	}
 	
     @Override

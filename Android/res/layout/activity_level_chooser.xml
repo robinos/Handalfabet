@@ -1,34 +1,47 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+   <include
+       android:layout_height="wrap_content"
+       layout="@layout/user_view" />
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LevelChooserActivity" >
 
     <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
+        android:id="@+id/firstLevelButton"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="65dp"
         android:text="Ett tecken" />
 
     <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
+        android:id="@+id/secondLevelButton"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_below="@+id/button1"
-        android:layout_marginTop="42dp"
+        android:layout_alignLeft="@+id/firstLevelButton"
+        android:layout_below="@+id/firstLevelButton"
+        android:layout_marginTop="44dp"
         android:text="Två tecken" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
+        android:id="@+id/thirdLevelButton"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/button3"
-        android:layout_below="@+id/button3"
-        android:layout_marginTop="55dp"
+        android:layout_alignLeft="@+id/secondLevelButton"
+        android:layout_centerVertical="true"
         android:text="Tre tecken" />
 
 </RelativeLayout>
+
+</LinearLayout>

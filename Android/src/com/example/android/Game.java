@@ -1,19 +1,15 @@
 package com.example.android;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,9 +30,11 @@ import android.widget.ProgressBar;
  *
  *   You should have received a copy of the GNU General Public License
  *   along with Handalfabetet.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ */
+
+ /** 
  * @author  : Grupp02
- * @version : 2012-10-08, v0.4
+ * @version : 2012-10-08, v0.5
  * @License : GPLv3
  * @Copyright :Copyright© 2012, Grupp02  
  */
@@ -47,7 +45,8 @@ public class Game extends Activity {
 	 public final static String NUMCORRECT = "com.example.Android.NUMCORRECT";	
 	 public final static String TOTALSCORE = "com.example.Android.TOTALSCORE";	
 	 public final static String AVERAGETIME = "com.example.Android.AVERAGETIME";
-	
+     public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";
+	 
 	 //GameLogic object
 	 GameLogic gameLogic;
 	
@@ -82,8 +81,7 @@ public class Game extends Activity {
         
         
         //game difficulty, default level 1
-        difficulty = getIntent().getIntExtra( MainActivity.DIFFLEVEL, 1 ); 
-        //difficulty = 2;
+        difficulty = getIntent().getIntExtra( LevelChooserActivity.DIFFLEVEL, 1 ); 
         
         //The game logic object
         gameLogic = new GameLogic( difficulty, this );        
@@ -243,7 +241,8 @@ public class Game extends Activity {
 				    Intent endIntent = new Intent( "android.intent.action.GAMEEND" );
 				    endIntent.putExtra( NUMCORRECT, gameLogic.getNumCorrect() );
 				    endIntent.putExtra( TOTALSCORE, gameLogic.getTotalScore() );
-				    endIntent.putExtra( AVERAGETIME, gameLogic.getAverageTime() );	
+				    endIntent.putExtra( AVERAGETIME, gameLogic.getAverageTime() );
+				    endIntent.putExtra( DIFFLEVEL, difficulty ); 				    
 				    endIntent.putExtra("name", getIntent().getStringExtra("Name"));
 				    startActivity( endIntent );		
 				}				

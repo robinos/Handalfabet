@@ -1,3 +1,17 @@
+package com.example.android;
+
+import android.os.Build;
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.support.v4.app.NavUtils;
 
 /**
  *   This file is part of Handalfabetet.
@@ -20,31 +34,18 @@
  * The GameEnd class.
  * 
  * @author  : Grupp02
- * @version : 2012-10-08, v0.4
+ * @version : 2012-10-08, v0.5
  * @License : GPLv3
  * @Copyright :Copyright© 2012, Grupp02
  *
  */
-
-package com.example.android;
-
-import android.os.Build;
-import android.os.Bundle;
-import android.app.Activity;
-import android.content.Intent;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.support.v4.app.NavUtils;
-
 public class GameEnd extends Activity {
 	
 	private DatabaseHelper db;
+	private int difficulty;
 	
+    public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";
+    
     @Override
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
@@ -54,7 +55,9 @@ public class GameEnd extends Activity {
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
             //getActionBar().setDisplayHomeAsUpEnabled( true );
         }         
-             
+         
+        difficulty = getIntent().getIntExtra( Game.DIFFLEVEL, 1 );         
+        
         db = new DatabaseHelper(this);
         
         final ImageButton newGameButton = ( ImageButton ) findViewById( R.id.new_game_button );                
@@ -83,7 +86,9 @@ public class GameEnd extends Activity {
 
         newGameButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
-				startActivity( new Intent( "android.intent.action.GAME" ) ); 				
+				startActivity( new Intent( "android.intent.action.GAME" )
+		        .putExtra( DIFFLEVEL, difficulty ) 
+		        .putExtra( "Name", userName.getText().toString() ) );				
 			}
 		} ); 
         

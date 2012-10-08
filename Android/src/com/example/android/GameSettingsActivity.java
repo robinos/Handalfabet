@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
 /**
@@ -31,54 +32,63 @@ import android.support.v4.app.NavUtils;
  * The GameSettingsAcitivty class.
  * 
  * @author  : Grupp02
- * @version : 2012-10-08, v0.4
+ * @version : 2012-10-08, v0.5
  * @License : GPLv3
  * @Copyright : Copyright© 2012, Grupp02
  *
  */
 public class GameSettingsActivity extends Activity {
 
+    private TextView userName;
+	private TextView userStatus;	
+	
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_settings);
+    public void onCreate( Bundle savedInstanceState ) {
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_game_settings );
         
         // Make sure we're running on Honeycomb or higher to use ActionBar APIs
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
+            //getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         
-        final Button soundSettingsButton = (Button) findViewById(R.id.sound_settings_button); 
-        final Button profileSettingsButton = (Button) findViewById(R.id.profile_settings_button);         
+		userStatus = ( TextView )findViewById( R.id.textView1 );
+		userStatus.setText( R.string.inloggad );
+		//Displays the username
+		userName = ( TextView ) findViewById( R.id.textView2 );
+		userName.setText(getIntent().getStringExtra( "Name" ) );         
+        
+        final Button soundSettingsButton = ( Button ) findViewById( R.id.sound_settings_button ); 
+        final Button profileSettingsButton = ( Button ) findViewById( R.id.profile_settings_button );         
 
-        soundSettingsButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				startActivity(new Intent("android.intent.action.SOUNDSETTINGSACTIVITY")); 				
+        soundSettingsButton.setOnClickListener( new View.OnClickListener() {
+			public void onClick( View v ) {
+				startActivity( new Intent( "android.intent.action.SOUNDSETTINGSACTIVITY" ).putExtra( "Name", userName.getText().toString() ) );				
 			}
 		});        
         
-        profileSettingsButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				startActivity(new Intent("android.intent.action.PROFILESETTINGSACTIVITY")); 				
+        profileSettingsButton.setOnClickListener( new View.OnClickListener() {
+			public void onClick( View v ) {
+				startActivity( new Intent( "android.intent.action.PROFILESETTINGSACTIVITY" ).putExtra( "Name", userName.getText().toString() ) );				
 			}
 		});         
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_game_settings, menu);
+    public boolean onCreateOptionsMenu( Menu menu ) {
+        getMenuInflater().inflate( R.menu.activity_game_settings, menu );
         return true;
     }
 
     
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+    public boolean onOptionsItemSelected( MenuItem item ) {
+        switch ( item.getItemId() ) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                NavUtils.navigateUpFromSameTask( this );
                 return true;
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected( item );
     }
 
 }

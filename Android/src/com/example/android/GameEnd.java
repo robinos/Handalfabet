@@ -64,6 +64,8 @@ public class GameEnd extends Activity {
         final ImageButton highScoreButton = ( ImageButton ) findViewById( R.id.high_scores_button ); 
         final ImageButton mainMenuButton = ( ImageButton ) findViewById( R.id.main_menu_button );
         
+        final TextView highView = (TextView)findViewById(R.id.high_view);
+        
         final TextView userStatus = (TextView)findViewById(R.id.textView1);
         final TextView userName = (TextView)findViewById(R.id.textView2);
         
@@ -82,6 +84,12 @@ public class GameEnd extends Activity {
 		if(user.getHighScore() < totalScore){
 			user.setHighScore(totalScore);
 			db.updateUserHighScore(user);
+			//Display congratulations to user
+			highView.setText(R.string.high_view);
+		}
+		else {
+			//Display no new high score to user
+			highView.setText(R.string.low_view);			
 		}
 
         newGameButton.setOnClickListener( new View.OnClickListener() {

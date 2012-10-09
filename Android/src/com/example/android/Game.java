@@ -1,9 +1,14 @@
 package com.example.android;
 
+import java.util.HashSet;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,8 +50,8 @@ public class Game extends Activity {
 	 public final static String NUMCORRECT = "com.example.Android.NUMCORRECT";	
 	 public final static String TOTALSCORE = "com.example.Android.TOTALSCORE";	
 	 public final static String AVERAGETIME = "com.example.Android.AVERAGETIME";
-     public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";
-	 
+     public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";     
+     
 	 //GameLogic object
 	 GameLogic gameLogic;
 	
@@ -66,8 +71,17 @@ public class Game extends Activity {
 	 private TextView userName;
 	 private TextView userStatus;
 
+	 private Vibrator vibrator;	 
 	  
-	
+	 //Modified from example from http://android.konreu.com/developer-how-to/
+	 //vibration-examples-for-android-phone-development/
+	 private int right_buzz = 200;      // A short pulse
+	 private int wrong_buzz = 500;     // A medium pulse
+	 private int short_pause = 200;    // A short pause
+	 private long[] right = {
+	         0,  // Start immediately
+	         right_buzz, short_pause, right_buzz };
+	  
 	@Override
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
@@ -79,6 +93,8 @@ public class Game extends Activity {
         }     
         
         
+        // Get instance of Vibrator from current Context
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);  
         
         //game difficulty, default level 1
         difficulty = getIntent().getIntExtra( LevelChooserActivity.DIFFLEVEL, 1 ); 
@@ -88,7 +104,7 @@ public class Game extends Activity {
          
         //GUI variables
         timerBar = ( ProgressBar ) findViewById (R.id.timer_bar );
-
+        
 		image1 = ( ImageView ) findViewById( R.id.image_view1 );
 		image2 = ( ImageView ) findViewById( R.id.image_view2 );
 		image3 = ( ImageView ) findViewById( R.id.image_view3 );		
@@ -116,6 +132,9 @@ public class Game extends Activity {
         nextRound();
         //Changes the picture and button text
         deployTextButtons();    
+        
+        //Start the ticking noise
+        playTicking();
     }
 	 
 	 /**
@@ -157,6 +176,10 @@ public class Game extends Activity {
 	  */
 	 public void markButtonsAfterClicked( View v ) {	
 		 
+		 //play the button sound
+		 stopTicking();		 
+		 playButton();
+		 
 		 //cancels the count down timer
 		 gameLogic.getCountDownTimer().cancel();		 
 		 
@@ -173,9 +196,12 @@ public class Game extends Activity {
 		 		if( gameLogic.getCorrectButton() == 1 ) {
 					firstOptionButton.setBackgroundColor( android.graphics.Color.GREEN );
 					scoreCounter();
+					playRightChoice();
 		 		}
-				else
+				else {
 					firstOptionButton.setBackgroundColor( android.graphics.Color.RED );
+					playWrongChoice();	
+				}
 		 		break;
 		 	
 		 	case R.id.second_opt_button:
@@ -183,9 +209,12 @@ public class Game extends Activity {
 		 		if( gameLogic.getCorrectButton() == 2 ) {
 					secondOptionButton.setBackgroundColor( android.graphics.Color.GREEN );
 					scoreCounter();
+					playRightChoice();					
  				}
-				else
+				else {
 					secondOptionButton.setBackgroundColor( android.graphics.Color.RED );
+				    playWrongChoice();
+				}
 		 		break;
 		 		
 		 	case R.id.third_opt_button:
@@ -193,15 +222,50 @@ public class Game extends Activity {
 		 		if( gameLogic.getCorrectButton() == 3 ) {
 					thirdOptionButton.setBackgroundColor( android.graphics.Color.GREEN );
 					scoreCounter();
+					playRightChoice();					
  				}
-				else
+				else {
 					thirdOptionButton.setBackgroundColor( android.graphics.Color.RED );
+				    playWrongChoice();
+				}
  				break;
 		 }
 		 
 		 //Enable the next letter/word button
 		 nextButton.setEnabled( true );
 	 }
+	
+	public void playRightChoice() {
+		//Use the right answer pattern (short vibration, pause, short vibration)
+		//vibrator.vibrate( right,-1 );		
+		
+		SoundPlayer.play(this, R.raw.mp3_right);
+	}
+
+	public void playWrongChoice() {
+		
+		SoundPlayer.play(this, R.raw.mp3_wrong);		
+	}	
+
+	public void playTimeout() {
+		
+		SoundPlayer.play(this, R.raw.mp3_timeout);		
+	}	
+
+	public void playButton() {
+		
+		SoundPlayer.play(this, R.raw.mp3_button);		
+	}	
+
+	public void playTicking() {
+		
+		SoundPlayer.play(this, R.raw.mp3_clockticking);		
+	}
+	
+	public void stopTicking() {
+		
+		SoundPlayer.stop();		
+	}	
 	
 	/**
 	 * Changes the sign image when nextButton is clicked
@@ -212,29 +276,9 @@ public class Game extends Activity {
 		nextButton.setEnabled( false );
 		
 		nextButton.setOnClickListener( new OnClickListener() {		
-			public void onClick( View arg0 ) {
-			    //Reset round points to 0
-				roundPoint.setText( Integer.toString( 0 ) );					
-				
-				//Reset answer button backgrounds
-				firstOptionButton.setBackgroundColor( android.graphics.Color.LTGRAY );
-				secondOptionButton.setBackgroundColor( android.graphics.Color.LTGRAY );
-				thirdOptionButton.setBackgroundColor( android.graphics.Color.LTGRAY );
-				
-				//Enable answer buttons
-				firstOptionButton.setEnabled( true );
-				secondOptionButton.setEnabled( true );
-				thirdOptionButton.setEnabled( true );
-
-				//Get text for buttons and disable next button
-				deployTextButtons();
-				nextButton.setEnabled( false );
-				
-				//Reset the timer
-				timerBar.setProgress( 0 );
-				gameLogic.resetTimeCount();
-				//(re)starts the count down timer				
-				gameLogic.getCountDownTimer().start();
+			public void onClick( View arg0 ) {				
+				//play the button sound
+				playButton();
 				
 				//If all game rounds have completed, bring up the end screen
 				if( gameLogic.countDownRounds() ) {
@@ -245,7 +289,34 @@ public class Game extends Activity {
 				    endIntent.putExtra( DIFFLEVEL, difficulty ); 				    
 				    endIntent.putExtra("name", getIntent().getStringExtra("Name"));
 				    startActivity( endIntent );		
-				}				
+				}
+				else {
+					//start clock ticking
+					playTicking();
+					
+					//Reset round points to 0
+					roundPoint.setText( Integer.toString( 0 ) );					
+					
+					//Reset answer button backgrounds
+					firstOptionButton.setBackgroundColor( android.graphics.Color.LTGRAY );
+					secondOptionButton.setBackgroundColor( android.graphics.Color.LTGRAY );
+					thirdOptionButton.setBackgroundColor( android.graphics.Color.LTGRAY );
+					
+					//Enable answer buttons
+					firstOptionButton.setEnabled( true );
+					secondOptionButton.setEnabled( true );
+					thirdOptionButton.setEnabled( true );
+	
+					//Get text for buttons and disable next button
+					deployTextButtons();
+					nextButton.setEnabled( false );
+					
+					//Reset the timer
+					timerBar.setProgress( 0 );
+					gameLogic.resetTimeCount();
+					//(re)starts the count down timer				
+					gameLogic.getCountDownTimer().start();	
+				}
 			} 
 		} ); 
 	}
@@ -306,4 +377,36 @@ public class Game extends Activity {
 	     return super.onOptionsItemSelected( item );
 	 }		 
 	 
+
+	//Based on PlaySound code from
+	//http://blog.endpoint.com/2011/03/api-gaps-android-mediaplayer-example.html
+	 
+	 /*
+	final private static class PlaySound {
+	    private static HashSet<MediaPlayer> mpSet = new HashSet<MediaPlayer>();
+	
+	    public static void play(Context context, int resId) {
+	        MediaPlayer mp = MediaPlayer.create(context, resId);
+	        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+	            public void onCompletion(MediaPlayer mp) {
+	                mpSet.remove(mp);
+	                mp.stop();
+	                mp.release();
+	            }
+	        });
+	        mpSet.add(mp);
+	        mp.start();
+	    }
+	
+	    public static void stop() {
+	        for (MediaPlayer mp : mpSet) {
+	            if (mp != null) {
+	                mp.stop();
+	                mp.release();
+	            }
+	        }
+	        mpSet.clear();
+	    }
+	}*/
+	
 }

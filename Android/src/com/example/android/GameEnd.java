@@ -1,5 +1,6 @@
 package com.example.android;
 
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
@@ -56,6 +57,8 @@ public class GameEnd extends Activity {
             //getActionBar().setDisplayHomeAsUpEnabled( true );
         }         
          
+        //temporary sound test
+        
         difficulty = getIntent().getIntExtra( Game.DIFFLEVEL, 1 );         
         
         db = new DatabaseHelper(this);
@@ -86,6 +89,7 @@ public class GameEnd extends Activity {
 			db.updateUserHighScore(user);
 			//Display congratulations to user
 			highView.setText(R.string.high_view);
+			SoundPlayer.play( this, R.raw.mp3_applause );
 		}
 		else {
 			//Display no new high score to user

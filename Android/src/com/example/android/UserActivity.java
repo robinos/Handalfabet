@@ -1,99 +1,105 @@
 package com.example.android;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
+
+import java.util.List;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class UserActivity extends Activity {
 	
-	private Button loginButton;
-	private EditText userName; 
+
+	private Button loginButton; 
 	private ListView listView;
-	private List<String> list;
+	private List<User> list;
 	User player;
 	private DatabaseHelper db;
 	String playerName;
 	
-
+	private Bitmap bitImg;
+	private TextView userName;
 	
+	 
 	@Override 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
         
-        db = new DatabaseHelper(this);
+        db = new DatabaseHelper(this); 
          
          //Make sure we're running on Honeycomb or higher to use ActionBar APIs
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            //getActionBar().setDisplayHomeAsUpEnabled(true);
+//          getActionBar().setDisplayHomeAsUpEnabled(true);
         }	
-           
-        userName = (EditText) findViewById(R.id.username);
+        
+        
+        listView =(ListView)findViewById(R.id.list);
+        userName = (TextView) findViewById(R.id.textView1);
         loginButton = (Button) findViewById(R.id.login);
-        listView = (ListView) findViewById(android.R.id.list);
         
         loginButton.setEnabled(false);
         
         playerName = userName.getText().toString();
        
         enableLoginButton();
-             
-        // lägger till spelare i databasen 
-        addUsers();    
-       
-        list = db.getAllUsersName();
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		 
+		list = db.getAllUsersName();
         // Create ArrayAdapter using the user list.  
-        ArrayAdapter<String> userList = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
-        listView.setAdapter(userList);
+		UserArrayAdapter adapter = new UserArrayAdapter(this, R.layout.activity_user_array_adapter, list);
+        adapter.inflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        listView.setAdapter(adapter);
        
         listView.setOnItemClickListener(new OnItemClickListener() {
         	  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        		  userName.setText(list.get(position).toString());
+        		  User user = list.get(position);
+           		  userName.setText(user.getName());
+        		  bitImg = user.getUserImg();
         	  }
-        }); 
-	}
-	 
-	private void addUsers(){
-
-        // Inserting Users
-        Log.d("Insert: ", "Inserting ..");
-//        db.addUser(new User("Feriz", 52));
-//        db.addUser(new User("Christer", 23));
-//        db.addUser(new User("Robin", 26));
-//        db.addUser(new User("Anas", 12));
-//        db.addUser(new User("Henrik", 0));
-//         Reading all Users
-        Log.d("Reading: ", "Reading all Users..");
-        List<User> User = db.getAllUsers();       
- 
-        for (User cn : User) {
-            String log = "Name: "+cn.getName() +" ,HighScore: " + cn.getHighScore();
-                // Writing Contacts to log
-        Log.d("Name: ", log);
+        });
         
-        }
+//		list = db.getAllUsersName();
+//        // Create ArrayAdapter using the user list.  
+//        ArrayAdapter<String> userList = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+//        listView.setAdapter(userList);
+//       
+//        listView.setOnItemClickListener(new OnItemClickListener() {
+//        	  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//        		  userName.setText(list.get(position).toString());
+//        		  User user = db.getUser(userName.getText().toString());
+//        		  bitImg = user.getUserImg();
+//        	  }
+//        });
 	}
 	
+	/** Called when the user clicks the Create New Player button */
+	public void createNewPlayer(View v){
+		startActivity(new Intent("android.intent.action.CREATENEWPLAYER"));
+	}
 	
 	private void enableLoginButton(){
 		userName.addTextChangedListener(new TextWatcher(){
@@ -113,18 +119,30 @@ public class UserActivity extends Activity {
 	    }); 
 	}
 	
+	/** Scales down User picture */
+	private static Bitmap scaleDownBitmap(Bitmap photo, int newHeight, Context context) {
+
+		 final float densityMultiplier = context.getResources().getDisplayMetrics().density;        
+
+		 int h= (int) (newHeight*densityMultiplier);
+		 int w= (int) (h * photo.getWidth()/((double) photo.getHeight()));
+
+		 photo=Bitmap.createScaledBitmap(photo, w, h, true);
+
+		 return photo;
+	}
+	
+	
 	/** Called when the user clicks the New Game button */
 	public void Login (View v){
-		// If user does´t exist create new User
-		if(!list.contains(userName.getText().toString())){
-			db.addUser(new User(userName.getText().toString(), 0));
-		}
+		Bitmap img = scaleDownBitmap(bitImg, 55 ,this);
+		
 		Intent intent = getIntent();              
-        intent.putExtra("PlayerName", userName.getText().toString());                                       
+        intent.putExtra("PlayerName", userName.getText().toString()); 
+        intent.putExtra("userImg", img );
         setResult(RESULT_OK,intent);
         finish();   
-	}
- 
+	}		 
 	
 	/** Skappar knappen högst upp i menyn */   
 	@Override
@@ -142,8 +160,6 @@ public class UserActivity extends Activity {
 	                return true;
 	        }
 	        return super.onOptionsItemSelected(item);
-	    }
-	 
-	 
+	    } 
 	 
 }

@@ -62,12 +62,10 @@ public class DisplayHighscoreActivity extends Activity {
         }      
           
         listView = (ListView) findViewById(R.id.list_highscore);
-//        db.sortUsers();
-        list = db.getAllUsers();
-           
+        list = db.getAllUsers();   
        
         // Create ArrayAdapter using the user list.  
-        UserArrayAdapter adapter = new UserArrayAdapter(this, R.layout.show_user_highscore, list);
+        HighScoreArrayAdapter adapter = new HighScoreArrayAdapter(this, R.layout.show_user_highscore, list);
         adapter.inflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         listView.setAdapter(adapter);
     }  

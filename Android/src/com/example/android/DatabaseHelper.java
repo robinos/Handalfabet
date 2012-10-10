@@ -1,5 +1,6 @@
 package com.example.android;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,10 +10,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
-	
+	 
 	// Database Version
 	private static final int DATABASE_VERSION = 1;
 	// Database Name
@@ -21,6 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 	public static final String USER_TABLE = "Users";
 	
 	// UTable Columns names
+	private static final String colImage = "image";
 	private static final String colName = "Username";
 	private static final String colPassword = "Password";
 	private static final String colHighScore = "HighScore";
@@ -28,6 +32,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 	static final String USER_VIEW = "UserVeiw";
 	
 	private static final String DATABASE_CREATE = "CREATE TABLE "+ USER_TABLE +   
+								"(" + colName + " VARCHAR(36) PRIMARY KEY,"+ 
+									  colPassword + " TEXT,"+ 
+								      colHighScore + " INTEGER, " + 
+									  colImage + " blob)";
+	
+
+	private static final String DATABASE_CREATEe = "CREATE TABLE "+ USER_TABLE +   
 								"(" + colName + " VARCHAR(36) PRIMARY KEY,"+ colPassword + 
 														" TEXT,"+ colHighScore + " INTEGER )";
 	
@@ -63,12 +74,15 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     // Adding new User
     public void addUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
+        
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        user.getUserImg().compress(Bitmap.CompressFormat.PNG, 100, out);
  
         ContentValues values = new ContentValues();
         values.put(colName, user.getName()); // User Name
         values.put(colPassword, user.getPassword()); // User Password
         values.put(colHighScore, user.getHighScore()); // User Highscore
-        
+        values.put(colImage, out.toByteArray()); // User Image
         // Inserting Row
         db.insert(USER_TABLE, null, values);
         db.close(); // Closing database connection
@@ -79,12 +93,16 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getReadableDatabase();
      
         Cursor cursor = db.query(USER_TABLE, new String[] { colName,
-                colPassword, colHighScore }, colName + "=?",
+                colPassword, colHighScore, colImage }, colName + "=?",
                 new String[] { String.valueOf(userName) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
-     
-        User user = new User(cursor.getString(0),cursor.getString(1),cursor.getInt(2));
+     // retriving user image from SQlite 
+        byte[] blob = cursor.getBlob(cursor.getColumnIndex(colImage));
+        Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0, blob.length);
+        User user = new User(cursor.getString(0),cursor.getInt(2), bmp);
+        
+        db.close();
         // return user
         return user;
     }
@@ -93,14 +111,14 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<User>();
         // Select All Query
-        String selectQuery = "SELECT * FROM " + USER_TABLE;
+//        String selectQuery = "SELECT * FROM " + USER_TABLE;
         
         SQLiteDatabase db = this.getWritableDatabase();
 //        Cursor cursor = db.rawQuery(selectQuery, null);
       
         // Sort list
         Cursor cursor = db.query(USER_TABLE, new String[] {
-        						colName, colPassword, colHighScore}, 
+        						colName, colPassword, colHighScore, colImage}, 
         							null, null, null, null,	colHighScore + " DESC");
      
         // looping through all rows and adding to list
@@ -110,37 +128,81 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 user.setName(cursor.getString(0));
              // user.setPassword(cursor.getString(1));
                 user.setHighScore(cursor.getInt(2));
+                // retriving user image from SQlite
+                byte[] blob = cursor.getBlob(cursor.getColumnIndex(colImage));
+                Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0, blob.length);
+                user.setUserImg(bmp);
                 // Adding user to list
                 userList.add(user);
             } while (cursor.moveToNext());
         }
      
-//         return user list
+        db.close(); 
+//      return user list
         return userList;
     }
     
+    
+//  Getting All Users 
+    public List<User> getAllUsersName() {
+        List<User> userList = new ArrayList<User>();
+        // Select All Query
+//        String selectQuery = "SELECT * FROM " + USER_TABLE;
+        
+        SQLiteDatabase db = this.getWritableDatabase();
+//        Cursor cursor = db.rawQuery(selectQuery, null);
+      
+        // Sort list
+        Cursor cursor = db.query(USER_TABLE, new String[] {
+        						colName, colPassword, colHighScore, colImage}, 
+        							null, null, null, null, null);
+     
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+            	User user = new User();
+                user.setName(cursor.getString(0));
+             // user.setPassword(cursor.getString(1));
+                user.setHighScore(cursor.getInt(2));
+                // retriving user image from SQlite
+                byte[] blob = cursor.getBlob(cursor.getColumnIndex(colImage));
+                Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0, blob.length);
+                user.setUserImg(bmp);
+                // Adding user to list
+                userList.add(user);
+            } while (cursor.moveToNext());
+        }
+     
+        db.close(); 
+//      return user list
+        return userList;
+    }
+    
+    
+    
 //     Getting All Users name
-    public List<String> getAllUsersName() {
-       List<String> userList = new ArrayList<String>();
-       // Select All Query
-       String selectQuery = "SELECT * FROM " + USER_TABLE;
-    
-       SQLiteDatabase db = this.getWritableDatabase();
-       Cursor cursor = db.rawQuery(selectQuery, null);
-    
-       // looping through all rows and adding to list
-       if (cursor.moveToFirst()) {
-           do {
-               //User user = new User();
-        	   String user = cursor.getString(0);
-               // Adding user to list
-               userList.add(user);
-           } while (cursor.moveToNext());
-       }
-    
-       // return user list
-       return userList;
-   }
+//    public List<String> getAllUsersName() {
+//       List<String> userList = new ArrayList<String>();
+//       // Select All Query
+//       String selectQuery = "SELECT * FROM " + USER_TABLE;
+//    
+//       SQLiteDatabase db = this.getWritableDatabase();
+//       Cursor cursor = db.rawQuery(selectQuery, null);
+//    
+//       // looping through all rows and adding to list
+//       if (cursor.moveToFirst()) {
+//           do {
+//               //User user = new User();
+//        	   String user = cursor.getString(0);
+//               // Adding user to list
+//               userList.add(user);
+//           } while (cursor.moveToNext());
+//       }
+//    
+//       db.close();
+//       // return user list
+//       return userList;
+//   }
     
  // Updating single user
     public int updateUserHighScore(User user) {

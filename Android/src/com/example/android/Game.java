@@ -2,6 +2,7 @@ package com.example.android;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -66,6 +67,8 @@ public class Game extends Activity {
 	 private TextView userName;
 	 private TextView userStatus;
 
+	 private Bitmap img;
+	 private ImageView userImg;
 	  
 	
 	@Override
@@ -103,6 +106,11 @@ public class Game extends Activity {
 		}
        
         
+		// User Image      
+        userImg = (ImageView)findViewById(R.id.userpic);
+        img = (Bitmap)( getIntent().getExtras().getParcelable("userImg"));
+		userImg.setImageBitmap(img);
+		
 		userStatus = (TextView)findViewById(R.id.textView1);
 		userStatus.setText(R.string.inloggad);
 		//Displays the username
@@ -244,6 +252,7 @@ public class Game extends Activity {
 				    endIntent.putExtra( AVERAGETIME, gameLogic.getAverageTime() );
 				    endIntent.putExtra( DIFFLEVEL, difficulty ); 				    
 				    endIntent.putExtra("name", getIntent().getStringExtra("Name"));
+				    endIntent.putExtra("userImg", img );
 				    startActivity( endIntent );		
 				}				
 			} 

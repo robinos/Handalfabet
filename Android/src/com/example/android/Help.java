@@ -5,11 +5,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -40,9 +42,11 @@ import android.widget.TextView;
  */
 public class Help extends Activity {
 
+	private Bitmap img;
+	private ImageView userImg;
     private TextView userName;
 	private TextView userStatus;	
-	
+	 
 	@Override
 	public void onCreate( Bundle savedInstanceState ) {
 		super.onCreate( savedInstanceState );
@@ -52,6 +56,11 @@ public class Help extends Activity {
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
             //getActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        
+     // User Image      
+        userImg = (ImageView)findViewById(R.id.userpic);
+        img = (Bitmap)( getIntent().getExtras().getParcelable("userImg"));
+		userImg.setImageBitmap(img);
         
 		userStatus = ( TextView )findViewById( R.id.textView1 );
 		userStatus.setText( R.string.inloggad );

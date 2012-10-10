@@ -4,12 +4,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -32,28 +36,36 @@ import android.widget.TextView;
 /**
  * The MainActivity class.
  * 
- * @author  : Grupp02
+ * @author  : Grupp02 
  * @version : 2012-10-08, v0.5
  * @License : GPLv3
  * @Copyright : Copyright© 2012, Grupp02
  *
  */
 public class MainActivity extends Activity {
-	
+	 
 	TextView nameField;
 	private String feriz = "peci";
 	private TextView userStatus;
+	private ImageView userImg;
 	
 	public String name;
 	private String playerName;
 	private Button startGameButton;
 	private Button newPlayerButton;
-    
+	private Bitmap img;
+
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);   
+        setContentView(R.layout.activity_main); 
         
+        //Make sure we're running on Honeycomb or higher to use ActionBar APIs
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }	
+          
      // Check whether we're recreating a previously destroyed instance
         if (savedInstanceState != null) {
         	name = savedInstanceState.getString(playerName);
@@ -61,7 +73,7 @@ public class MainActivity extends Activity {
         	userStatus.setText(R.string.inloggad);
         }
         
-        
+        userImg = (ImageView)findViewById(R.id.userpic);
         userStatus = (TextView)findViewById(R.id.textView1);
         nameField = (TextView) findViewById( R.id.textView2 );  
         startGameButton = (Button)findViewById(R.id.startaSpel);
@@ -123,8 +135,17 @@ public class MainActivity extends Activity {
 	/** Called when the user clicks the New Game button */
 	public void newGame (View v){
 		//Starts the level chooser activity
-		startActivity(new Intent("android.intent.action.LEVELCHOOSERACTIVITY").putExtra("Name", name));		
+		Intent intent = new Intent("android.intent.action.LEVELCHOOSERACTIVITY");
+		intent.putExtra("Name", name);
+		intent.putExtra("userImg", img );
+		startActivity(intent);		
 	}
+	
+//	/** Called when the user clicks the New Player button */
+//	public void newPlayer(View v){
+//		Intent intent = new Intent(this, UserActivity.class);
+//	    startActivityForResult(intent, 1);		
+//	}
 	
 	/** Called when the user clicks the New Player button */
 	public void newPlayer(View v){
@@ -135,30 +156,43 @@ public class MainActivity extends Activity {
 	@Override
 	 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		 super.onActivityResult(requestCode, resultCode, data);
-//		 userStatus = (TextView)findViewById(R.id.textView1);
 		 if(resultCode==RESULT_OK && requestCode==1){
 			 name = data.getStringExtra("PlayerName");
-			 nameField.setText(name);
-		 }
-		 userStatus.setText(R.string.inloggad);
+			 nameField.setText(name);		 
+			 
+			 img = (Bitmap) data.getExtras().getParcelable("userImg");
+			 userImg.setImageBitmap(img);
+			 
+		 } 
 		 
-		 startGameButton.setEnabled(true);
-	     playerName = name;
+		 userStatus.setText(R.string.inloggad);
+		 startGameButton.setEnabled(true); 
+	    
+
+	     playerName = name;	 
+		 
+		 
 	 }
 	
 	 /** Called when the user clicks the Level button */
 	public void level(View v){
-		startActivity(new Intent("android.intent.action.GAMESETTINGSACTIVITY").putExtra("Name", name));	
+		Intent intent = new Intent("android.intent.action.GAMESETTINGSACTIVITY");
+		intent.putExtra("Name", name);
+		intent.putExtra("userImg", img );
+		startActivity(intent);	
 	}													
 	
 	/** Called when the user clicks the HighScore button */	
 	public void highScore(View v){
 		startActivity(new Intent("android.intent.action.DISPLAYHIGHSCOREACTIVITY")); 
 	}
-	
+
 	 /** Called when the user clicks the Instruktioner button */
 	public void help(View v){
-		startActivity(new Intent("android.intent.action.HELP").putExtra("Name", name));	
+		Intent intent = new Intent("android.intent.action.HELP");
+		intent.putExtra("Name", name);
+		intent.putExtra("userImg", img );
+		startActivity(intent);
 	}
 	
     @Override

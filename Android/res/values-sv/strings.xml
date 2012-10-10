@@ -34,5 +34,9 @@
     <string name="help">Hjälp</string>
     <string name="submit">Skicka</string>
 	<string name="inloggad">Inloggad som</string>
-	<string name="utloggad">Ej inloggad</string>  		                  
+	<string name="utloggad">Ej inloggad</string> 
+	<string name="take_photo">Ta Bild</string>	
+	<string name="chooseImage">Välj bild</string>
+	<string name="createNewPlayer">Skapa Ny Spelare</string>	
+	<string name="createPlayer">Skapa Spelare</string>			                  
 </resources>

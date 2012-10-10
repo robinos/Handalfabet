@@ -30,11 +30,15 @@
 
 package com.example.android;
 
+import android.graphics.Bitmap;
+import android.widget.ImageView;
+
 public class User {
 	
 	private String userName;
 	private String password;
-	private int highScore = 0;
+	private int highScore;
+	private Bitmap userImg;
 	
 	public User(){}
 	
@@ -42,19 +46,19 @@ public class User {
 		this.userName = userName;
 	}
 	
-	public User(String userName, String password){
-		this.userName = userName;
-		this.password = password;		
-	}
-	
 	public User(String userName, int highScore){
 		this.userName = userName;
 		this.highScore = highScore;		
 	}
 	
-	public User(String userName, String password, int highScore){
+	public User(String userName, Bitmap userImg){
 		this.userName = userName;
-		this.password = password;	
+		this.userImg = userImg;		
+	}
+	
+	public User(String userName, int highScore, Bitmap userImg){
+		this.userImg = userImg;	
+		this.userName = userName;
 		this.highScore = highScore;
 	}
 	
@@ -70,6 +74,10 @@ public class User {
 		return password;
 	}
 	
+	public Bitmap getUserImg(){
+		return userImg;
+	}
+	
 	public void setName(String userName){
 		this.userName = userName;
 	}
@@ -80,6 +88,10 @@ public class User {
 
 	public void setPassword(String password){
 		this.password = password;
+	}
+	
+	public void setUserImg(Bitmap userImg){
+		this.userImg = userImg;
 	}
 }
 

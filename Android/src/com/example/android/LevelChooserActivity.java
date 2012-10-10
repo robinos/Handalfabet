@@ -4,10 +4,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
@@ -48,7 +50,10 @@ public class LevelChooserActivity extends Activity {
 	private Button thirdLevelButton;	
 	
     private TextView userName;
-	private TextView userStatus;	
+	private TextView userStatus;
+	private Bitmap img;
+	private ImageView userImg;
+	
 	
     @Override
     public void onCreate( Bundle savedInstanceState ) {
@@ -60,11 +65,20 @@ public class LevelChooserActivity extends Activity {
             //getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         
+        // User Image      
+        userImg = (ImageView)findViewById(R.id.userpic);
+        img = (Bitmap)( getIntent().getExtras().getParcelable("userImg"));
+		userImg.setImageBitmap(img);
+        
+        
+        
 		userStatus = ( TextView )findViewById( R.id.textView1 );
 		userStatus.setText( R.string.inloggad );
 		//Displays the username
 		userName = ( TextView ) findViewById( R.id.textView2 );
-		userName.setText( getIntent().getStringExtra( "Name" ) );        
+		userName.setText( getIntent().getStringExtra( "Name" ) );   
+		
+		 
         
 		
         firstLevelButton = ( Button )findViewById( R.id.firstLevelButton );  
@@ -112,8 +126,10 @@ public class LevelChooserActivity extends Activity {
     
 	/** Called when the user clicks a difficulty button*/
 	public void chooseDifficulty( View v ) {
-		startActivity( new Intent( "android.intent.action.GAME" )
-		        .putExtra( DIFFLEVEL, difficulty ) 
-		        .putExtra( "Name", userName.getText().toString() ) );		
+		Intent intent = new Intent("android.intent.action.GAME");
+		intent.putExtra( DIFFLEVEL, difficulty );
+		intent.putExtra("Name", userName.getText().toString());
+		intent.putExtra("userImg", img );
+		startActivity(intent);		
 	}     
 }

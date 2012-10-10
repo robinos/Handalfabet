@@ -4,12 +4,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
@@ -46,6 +48,9 @@ public class GameEnd extends Activity {
 	
     public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";
     
+    private Bitmap img;
+	private ImageView userImg;
+    
     @Override
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
@@ -71,6 +76,11 @@ public class GameEnd extends Activity {
         int totalScore = getIntent().getIntExtra( Game.TOTALSCORE, 0 ); 
         int averageTime = getIntent().getIntExtra( Game.AVERAGETIME, 0 );    
         
+        
+     // User Image      
+        userImg = (ImageView)findViewById(R.id.userpic);
+        img = (Bitmap)( getIntent().getExtras().getParcelable("userImg"));
+		userImg.setImageBitmap(img);
         
         //Displays the userName
         userStatus.setText(R.string.inloggad);

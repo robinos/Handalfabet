@@ -34,5 +34,8 @@
     <string name="help">Hjälp</string>
     <string name="submit">Skicka</string>
 	<string name="inloggad">Inloggad som</string>
-	<string name="utloggad">Ej inloggad</string>  		                  
+	<string name="utloggad">Ej inloggad</string>  	
+    <string name="one_letter">Ett tecken</string>
+    <string name="two_letters">Två tecken</string>
+    <string name="three_letters">Tre tecken</string>  		                  
 </resources>

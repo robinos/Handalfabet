@@ -67,8 +67,7 @@ public class UserActivity extends Activity {
         listView.setAdapter(userList);
        
         listView.setOnItemClickListener(new OnItemClickListener() {        	
-        	  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        		  SoundPlayer.playButton(UserActivity.this);        		  
+        	  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {        		  
         		  userName.setText(list.get(position).toString());
         	  }
         }); 
@@ -116,6 +115,8 @@ public class UserActivity extends Activity {
 	
 	/** Called when the user clicks the New Game button */
 	public void Login (View v){
+		//Play the button sound
+		SoundPlayer.playButton(UserActivity.this);		
 		// If user does´t exist create new User
 		if(!list.contains(userName.getText().toString())){
 			db.addUser(new User(userName.getText().toString(), 0));

@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Ett tecken" />
+        android:text="@string/one_letter" />
 
     <Button
         android:id="@+id/secondLevelButton"
@@ -32,7 +32,7 @@
         android:layout_alignLeft="@+id/firstLevelButton"
         android:layout_below="@+id/firstLevelButton"
         android:layout_marginTop="44dp"
-        android:text="Två tecken" />
+        android:text="@string/two_letters" />
 
     <Button
         android:id="@+id/thirdLevelButton"
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/secondLevelButton"
         android:layout_centerVertical="true"
-        android:text="Tre tecken" />
+        android:text="@string/three_letters" />
 
 </RelativeLayout>
 

@@ -100,8 +100,8 @@ public class GameEnd extends Activity {
 			public void onClick( View v ) {
 				SoundPlayer.playButton(GameEnd.this);				
 				startActivity( new Intent( "android.intent.action.GAME" )
-		        .putExtra( DIFFLEVEL, difficulty ) 
-		        .putExtra( "Name", userName.getText().toString() ) );				
+		            .putExtra( DIFFLEVEL, difficulty ) 
+		            .putExtra( "Name", userName.getText().toString() ) );				
 			}
 		} ); 
         
@@ -114,8 +114,11 @@ public class GameEnd extends Activity {
         
         mainMenuButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
-		        SoundPlayer.playButton(GameEnd.this);        
-		//		startActivity( new Intent( "android.intent.action.MAIN" ) );  			
+		        SoundPlayer.playButton(GameEnd.this);
+		        //This version of Intent is needed to avoid crashing, since
+		        //MainActivity is also our launcher
+		        startActivity( new Intent( GameEnd.this, MainActivity.class ) );
+		            //.putExtra( "Name", userName.getText().toString() ) );  			
 			}
 		});         
         

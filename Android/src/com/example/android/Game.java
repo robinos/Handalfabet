@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.NavUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -399,6 +400,32 @@ public class Game extends Activity {
 	              return true;
 	     }
 	     return super.onOptionsItemSelected( item );
-	 }		 
+	 }	
+	 
+	 @Override
+	 /**
+	  * onKeyDown overrides onKeyDown and allows code to be executed when
+	  * the back button is pushed in the simulator / on the mobile phone 
+	  * 
+	  * @param keyCode : code of the key pressed
+	  * @param event   : the event for the key pressed
+	  */
+	 public boolean onKeyDown(int keyCode, KeyEvent event)  {
+	     if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			 
+	    	 //cancels the count down timer
+			 gameLogic.getCountDownTimer().cancel();
+			 
+	         // cancel the ticking noise
+	    	 SoundPlayer.stop();
+	         
+	    	 // continue backwards
+	    	 finish();
+	    	 
+	    	 return true;
+	     }
+
+	     return super.onKeyDown(keyCode, event);
+	 }	 
 	 
 }

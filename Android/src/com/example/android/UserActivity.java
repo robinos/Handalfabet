@@ -66,8 +66,9 @@ public class UserActivity extends Activity {
         ArrayAdapter<String> userList = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
         listView.setAdapter(userList);
        
-        listView.setOnItemClickListener(new OnItemClickListener() {
+        listView.setOnItemClickListener(new OnItemClickListener() {        	
         	  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        		  SoundPlayer.playButton(UserActivity.this);        		  
         		  userName.setText(list.get(position).toString());
         	  }
         }); 

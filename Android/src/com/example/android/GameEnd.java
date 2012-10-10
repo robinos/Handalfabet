@@ -89,7 +89,7 @@ public class GameEnd extends Activity {
 			db.updateUserHighScore(user);
 			//Display congratulations to user
 			highView.setText(R.string.high_view);
-			SoundPlayer.play( this, R.raw.mp3_applause );
+			SoundPlayer.playApplause(this);
 		}
 		else {
 			//Display no new high score to user
@@ -98,6 +98,7 @@ public class GameEnd extends Activity {
 
         newGameButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
+				SoundPlayer.playButton(GameEnd.this);				
 				startActivity( new Intent( "android.intent.action.GAME" )
 		        .putExtra( DIFFLEVEL, difficulty ) 
 		        .putExtra( "Name", userName.getText().toString() ) );				
@@ -106,15 +107,17 @@ public class GameEnd extends Activity {
         
         highScoreButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
+				SoundPlayer.playButton(GameEnd.this);				
 				startActivity( new Intent( "android.intent.action.DISPLAYHIGHSCOREACTIVITY" ) ); 				
 			}
 		}); 
         
-        //mainMenuButton.setOnClickListener( new View.OnClickListener() {
-		//	public void onClick( View v ) {
+        mainMenuButton.setOnClickListener( new View.OnClickListener() {
+			public void onClick( View v ) {
+		        SoundPlayer.playButton(GameEnd.this);        
 		//		startActivity( new Intent( "android.intent.action.MAIN" ) );  			
-		//	}
-		//});         
+			}
+		});         
         
         TextView totalPoints = ( TextView ) findViewById( R.id.show_total_point );        
 		totalPoints.setText( "  " + Integer.toString( totalScore ) );        

@@ -61,7 +61,6 @@ public class MainActivity extends Activity {
         	userStatus.setText(R.string.inloggad);
         }
         
-        
         userStatus = (TextView)findViewById(R.id.textView1);
         nameField = (TextView) findViewById( R.id.textView2 );  
         startGameButton = (Button)findViewById(R.id.startaSpel);
@@ -123,11 +122,13 @@ public class MainActivity extends Activity {
 	/** Called when the user clicks the New Game button */
 	public void newGame (View v){
 		//Starts the level chooser activity
+		SoundPlayer.playButton(MainActivity.this);		
 		startActivity(new Intent("android.intent.action.LEVELCHOOSERACTIVITY").putExtra("Name", name));		
 	}
 	
 	/** Called when the user clicks the New Player button */
 	public void newPlayer(View v){
+		SoundPlayer.playButton(MainActivity.this);		
 		Intent intent = new Intent(this, UserActivity.class);
 	    startActivityForResult(intent, 1);		
 	}
@@ -148,17 +149,20 @@ public class MainActivity extends Activity {
 	
 	 /** Called when the user clicks the Level button */
 	public void level(View v){
-		startActivity(new Intent("android.intent.action.GAMESETTINGSACTIVITY").putExtra("Name", name));	
+		SoundPlayer.playButton(MainActivity.this);		
+		startActivity(new Intent("android.intent.action.GAMESETTINGSACTIVITY").putExtra("Name", name).putExtra("User", userStatus.getText()));	
 	}													
 	
 	/** Called when the user clicks the HighScore button */	
 	public void highScore(View v){
+		SoundPlayer.playButton(MainActivity.this);		
 		startActivity(new Intent("android.intent.action.DISPLAYHIGHSCOREACTIVITY")); 
 	}
 	
 	 /** Called when the user clicks the Instruktioner button */
 	public void help(View v){
-		startActivity(new Intent("android.intent.action.HELP").putExtra("Name", name));	
+		SoundPlayer.playButton(MainActivity.this);		
+		startActivity(new Intent("android.intent.action.HELP").putExtra("Name", name).putExtra("User", userStatus.getText()));	
 	}
 	
     @Override

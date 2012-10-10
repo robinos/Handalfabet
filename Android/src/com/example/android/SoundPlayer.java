@@ -57,4 +57,40 @@ import android.media.MediaPlayer;
         }
         mpSet.clear();
     }
+    
+	/**
+	 * playTimeout plays the timeout sound in the given context
+	 * 
+	 * @param context
+	 */
+	public static void playTimeout(Context context) {	
+		play(context, R.raw.mp3_timeout);		
+	}	
+
+	/**
+	 * playButton plays the button sound in the given context
+	 * 
+	 * @param context
+	 */	
+	public static void playButton(Context context) {		
+		play(context, R.raw.mp3_button);		
+	}
+
+	/**
+	 * playTicking plays the ticking sound in the given context
+	 * 
+	 * @param context
+	 */	
+	public static void playTicking(Context context) {		
+		play(context, R.raw.mp3_clockticking);		
+	}	
+	
+	/**
+	 * playAplause plays the aplause sound in the given context
+	 * 
+	 * @param context
+	 */	
+	public static void playApplause(Context context) {		
+		play(context, R.raw.mp3_applause);		
+	}	
 }

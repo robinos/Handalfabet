@@ -92,6 +92,7 @@ public class Game extends Activity {
         	 //getActionBar().setDisplayHomeAsUpEnabled( true );
         }     
         
+        TextView questionView = ( TextView ) findViewById( R.id.question_view );
         
         // Get instance of Vibrator from current Context
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);  
@@ -110,6 +111,15 @@ public class Game extends Activity {
 		image3 = ( ImageView ) findViewById( R.id.image_view3 );		
 		nextButton = ( ImageButton ) findViewById( R.id.next_button );        		
 		String pic_blank = "blank";
+		
+		if( difficulty > 1 ) {
+			questionView.setText( R.string.word_view );
+			nextButton.setBackgroundResource(R.drawable.next_word);
+		}
+		else {
+			questionView.setText( R.string.letter_view );
+			nextButton.setBackgroundResource(R.drawable.next_letter);			
+		}
 		
 		//Have certain pictures blank depending on difficulty level
 		if( difficulty == 2 ) image3.setImageResource( picSetter( pic_blank ) ); 
@@ -134,7 +144,7 @@ public class Game extends Activity {
         deployTextButtons();    
         
         //Start the ticking noise
-        playTicking();
+        SoundPlayer.playTicking(this);
     }
 	 
 	 /**
@@ -177,8 +187,8 @@ public class Game extends Activity {
 	 public void markButtonsAfterClicked( View v ) {	
 		 
 		 //play the button sound
-		 stopTicking();		 
-		 playButton();
+		 SoundPlayer.stop();		 
+		 SoundPlayer.playButton(this);
 		 
 		 //cancels the count down timer
 		 gameLogic.getCountDownTimer().cancel();		 
@@ -237,35 +247,49 @@ public class Game extends Activity {
 	
 	public void playRightChoice() {
 		//Use the right answer pattern (short vibration, pause, short vibration)
-		//vibrator.vibrate( right,-1 );		
+		vibrator.vibrate( right,-1 );		
 		
 		SoundPlayer.play(this, R.raw.mp3_right);
 	}
 
 	public void playWrongChoice() {
+		//Use the medium length buzz for a wrong answer
+		vibrator.vibrate( wrong_buzz );
 		
 		SoundPlayer.play(this, R.raw.mp3_wrong);		
 	}	
 
-	public void playTimeout() {
+	/**
+	 * playTimeout
+	 */
+	//public void playTimeout() {
 		
-		SoundPlayer.play(this, R.raw.mp3_timeout);		
-	}	
+	//	SoundPlayer.play(this, R.raw.mp3_timeout);		
+	//}	
 
-	public void playButton() {
+	/**
+	 * playButton
+	 */	
+	//public void playButton() {
 		
-		SoundPlayer.play(this, R.raw.mp3_button);		
-	}	
+	//	SoundPlayer.play(this, R.raw.mp3_button);		
+	//}	
 
-	public void playTicking() {
+	/**
+	 * playTicking
+	 */	
+	//public void playTicking() {
 		
-		SoundPlayer.play(this, R.raw.mp3_clockticking);		
-	}
-	
-	public void stopTicking() {
+	//	SoundPlayer.play(this, R.raw.mp3_clockticking);		
+	//}
+
+	/**
+	 * stopTicking
+	 */		
+	//public void stopTicking() {
 		
-		SoundPlayer.stop();		
-	}	
+	//	SoundPlayer.stop();		
+	//}	
 	
 	/**
 	 * Changes the sign image when nextButton is clicked
@@ -278,7 +302,7 @@ public class Game extends Activity {
 		nextButton.setOnClickListener( new OnClickListener() {		
 			public void onClick( View arg0 ) {				
 				//play the button sound
-				playButton();
+				SoundPlayer.playButton(Game.this);
 				
 				//If all game rounds have completed, bring up the end screen
 				if( gameLogic.countDownRounds() ) {
@@ -292,7 +316,7 @@ public class Game extends Activity {
 				}
 				else {
 					//start clock ticking
-					playTicking();
+					SoundPlayer.playTicking(Game.this);
 					
 					//Reset round points to 0
 					roundPoint.setText( Integer.toString( 0 ) );					
@@ -377,36 +401,4 @@ public class Game extends Activity {
 	     return super.onOptionsItemSelected( item );
 	 }		 
 	 
-
-	//Based on PlaySound code from
-	//http://blog.endpoint.com/2011/03/api-gaps-android-mediaplayer-example.html
-	 
-	 /*
-	final private static class PlaySound {
-	    private static HashSet<MediaPlayer> mpSet = new HashSet<MediaPlayer>();
-	
-	    public static void play(Context context, int resId) {
-	        MediaPlayer mp = MediaPlayer.create(context, resId);
-	        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-	            public void onCompletion(MediaPlayer mp) {
-	                mpSet.remove(mp);
-	                mp.stop();
-	                mp.release();
-	            }
-	        });
-	        mpSet.add(mp);
-	        mp.start();
-	    }
-	
-	    public static void stop() {
-	        for (MediaPlayer mp : mpSet) {
-	            if (mp != null) {
-	                mp.stop();
-	                mp.release();
-	            }
-	        }
-	        mpSet.clear();
-	    }
-	}*/
-	
 }

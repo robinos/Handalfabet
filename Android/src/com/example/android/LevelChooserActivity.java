@@ -73,6 +73,7 @@ public class LevelChooserActivity extends Activity {
         
         firstLevelButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
+				SoundPlayer.playButton(LevelChooserActivity.this);				
 				difficulty = 1;
 				chooseDifficulty(v);				
 			}
@@ -80,6 +81,7 @@ public class LevelChooserActivity extends Activity {
         
         secondLevelButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
+				SoundPlayer.playButton(LevelChooserActivity.this);					
 				difficulty = 2;
 				chooseDifficulty( v );				
 			}
@@ -87,6 +89,7 @@ public class LevelChooserActivity extends Activity {
         
         thirdLevelButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
+				SoundPlayer.playButton(LevelChooserActivity.this);					
 				difficulty = 3;
 				chooseDifficulty( v );				
 			}
@@ -111,7 +114,7 @@ public class LevelChooserActivity extends Activity {
     }
     
 	/** Called when the user clicks a difficulty button*/
-	public void chooseDifficulty( View v ) {
+	public void chooseDifficulty( View v ) {			
 		startActivity( new Intent( "android.intent.action.GAME" )
 		        .putExtra( DIFFLEVEL, difficulty ) 
 		        .putExtra( "Name", userName.getText().toString() ) );		

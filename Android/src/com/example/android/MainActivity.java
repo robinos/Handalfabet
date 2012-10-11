@@ -54,8 +54,6 @@ public class MainActivity extends Activity {
 	private Button startGameButton;
 	private Button newPlayerButton;
 	private Bitmap img;
-	private String returnValue;
-
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,23 +77,8 @@ public class MainActivity extends Activity {
         nameField = (TextView) findViewById( R.id.textView2 );  
         startGameButton = (Button)findViewById(R.id.startaSpel);
         newPlayerButton = (Button)findViewById(R.id.bytspelare);
-        returnValue = "0";
         
-        //If the user is returning to this main menu, remember their picture,
-        //name, and status
-        returnValue = (String) getIntent().getStringExtra( "backValue" );
-        if( returnValue != null && returnValue.equals( "1" )) {
-            img = (Bitmap)( getIntent().getExtras().getParcelable("userImg"));
-            if( img != null ) userImg.setImageBitmap(img);        
-        
-		    String status = (String) getIntent().getStringExtra( "User" );
-		    if (! ( status == null || status == "" ) ) userStatus.setText(status);
-		
-		    //Displays the username
-		    String username = (String) getIntent().getStringExtra( "Name" );
-		    nameField.setText(username);
-        }
-		else startGameButton.setEnabled(false);  
+		startGameButton.setEnabled(false);  
     } 
 	
 	@Override

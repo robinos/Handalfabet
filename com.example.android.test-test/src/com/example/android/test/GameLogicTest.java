@@ -1,11 +1,3 @@
-package com.example.android.test;
-
-import com.example.android.*;
-
-
-import android.test.AndroidTestCase;
-import android.util.Log;
-
 /**
  *     This file is part of Handalfabetet.
  *
@@ -22,6 +14,13 @@ import android.util.Log;
  *   You should have received a copy of the GNU General Public License
  *   along with Handalfabetet.  If not, see <http://www.gnu.org/licenses/>.
  */
+package com.example.android.test;
+
+import com.example.android.*;
+
+
+import android.test.AndroidTestCase;
+import android.util.Log;
 
 /**
  * The GameLogicTest class is a testclass to test the GameLogic for Game.

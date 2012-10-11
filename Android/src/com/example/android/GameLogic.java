@@ -559,6 +559,9 @@ public class GameLogic
 	             //on finish bonus points are -1, because timeCount is
 	        	 //always 1 point lower than it 'should be' due to display
 	        	 //issues
+	        	 SoundPlayer.stop();
+	        	 SoundPlayer.playTimeout(game);
+	        	 SoundPlayer.buzz( game, "timeout" );
 	        	 timeCount = -1;
 	         }
 	     }.start();		 

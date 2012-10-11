@@ -24,7 +24,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="37dp"
-        android:text="@string/sound_settings_button" />
+        android:text="@string/sound_settings" />
 
     <Button
         android:id="@+id/profile_settings_button"
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/sound_settings_button"
         android:layout_centerVertical="true"
-        android:text="@string/profile_settings_button" />
+        android:text="@string/profile_settings" />
 
 </RelativeLayout>
 

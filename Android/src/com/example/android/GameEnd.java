@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,8 +50,8 @@ public class GameEnd extends Activity {
     public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";
     
     private Bitmap img;
-	private ImageView userImg;
-    
+	private ImageView userImg;   
+	
     @Override
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
@@ -70,9 +71,8 @@ public class GameEnd extends Activity {
         final ImageButton mainMenuButton = ( ImageButton ) findViewById( R.id.main_menu_button );
         
         final TextView highView = (TextView)findViewById(R.id.high_view);
-        
         final TextView userStatus = (TextView)findViewById(R.id.textView1);
-        final TextView userName = (TextView)findViewById(R.id.textView2);
+        final TextView userName = (TextView)findViewById(R.id.textView2);         
         
         int numCorrect = getIntent().getIntExtra( Game.NUMCORRECT, 0 );         
         int totalScore = getIntent().getIntExtra( Game.TOTALSCORE, 0 ); 
@@ -85,7 +85,7 @@ public class GameEnd extends Activity {
 		userImg.setImageBitmap(img);
         
         //Displays the userName
-        userStatus.setText(R.string.inloggad);
+        userStatus.setText(R.string.logged_in);
 		userName.setText(getIntent().getStringExtra("name"));
 		
 		User user = db.getUser(userName.getText().toString());
@@ -96,6 +96,8 @@ public class GameEnd extends Activity {
 			db.updateUserHighScore(user);
 			//Display congratulations to user
 			highView.setText(R.string.high_view);
+			SoundPlayer.playApplause(this);
+			SoundPlayer.buzz( this, "applause" );
 		}
 		else {
 			//Display no new high score to user
@@ -104,23 +106,28 @@ public class GameEnd extends Activity {
 
         newGameButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
+				SoundPlayer.playButton(GameEnd.this);					
 				startActivity( new Intent( "android.intent.action.GAME" )
 		        .putExtra( DIFFLEVEL, difficulty ) 
+		        .putExtra( "userImg", img )		        
 		        .putExtra( "Name", userName.getText().toString() ) );				
 			}
 		} ); 
         
         highScoreButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
+				SoundPlayer.playButton(GameEnd.this);				
 				startActivity( new Intent( "android.intent.action.DISPLAYHIGHSCOREACTIVITY" ) ); 				
 			}
 		}); 
         
-        //mainMenuButton.setOnClickListener( new View.OnClickListener() {
-		//	public void onClick( View v ) {
-		//		startActivity( new Intent( "android.intent.action.MAIN" ) );  			
-		//	}
-		//});         
+        mainMenuButton.setOnClickListener( new View.OnClickListener() {
+			public void onClick( View v ) {
+		        SoundPlayer.playButton(GameEnd.this);		        
+		    	 //kills current activity
+		    	 finish();	
+			}
+		});          
         
         TextView totalPoints = ( TextView ) findViewById( R.id.show_total_point );        
 		totalPoints.setText( "  " + Integer.toString( totalScore ) );        
@@ -147,6 +154,5 @@ public class GameEnd extends Activity {
                 return true;
         }
         return super.onOptionsItemSelected( item );
-    }
-
+    }    
 }

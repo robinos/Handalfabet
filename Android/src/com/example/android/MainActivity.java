@@ -54,6 +54,7 @@ public class MainActivity extends Activity {
 	private Button startGameButton;
 	private Button newPlayerButton;
 	private Bitmap img;
+	private String returnValue;
 
 	
 	@Override
@@ -63,23 +64,38 @@ public class MainActivity extends Activity {
         
         //Make sure we're running on Honeycomb or higher to use ActionBar APIs
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+            //getActionBar().setDisplayHomeAsUpEnabled(true);
         }	
           
      // Check whether we're recreating a previously destroyed instance
         if (savedInstanceState != null) {
         	name = savedInstanceState.getString(playerName);
         	nameField.setText(name);
-        	userStatus.setText(R.string.inloggad);
+        	userStatus.setText(R.string.logged_in);
         }
         
         userImg = (ImageView)findViewById(R.id.userpic);
         userStatus = (TextView)findViewById(R.id.textView1);
         nameField = (TextView) findViewById( R.id.textView2 );  
         startGameButton = (Button)findViewById(R.id.startaSpel);
-        
         newPlayerButton = (Button)findViewById(R.id.bytspelare);
-        startGameButton.setEnabled(false); 
+        returnValue = "0";
+        
+        //If the user is returning to this main menu, remember their picture,
+        //name, and status
+        returnValue = (String) getIntent().getStringExtra( "backValue" );
+        if( returnValue != null && returnValue.equals( "1" )) {
+            img = (Bitmap)( getIntent().getExtras().getParcelable("userImg"));
+            if( img != null ) userImg.setImageBitmap(img);        
+        
+		    String status = (String) getIntent().getStringExtra( "User" );
+		    if (! ( status == null || status == "" ) ) userStatus.setText(status);
+		
+		    //Displays the username
+		    String username = (String) getIntent().getStringExtra( "Name" );
+		    nameField.setText(username);
+        }
+		else startGameButton.setEnabled(false);  
     } 
 	
 	@Override
@@ -135,6 +151,7 @@ public class MainActivity extends Activity {
 	/** Called when the user clicks the New Game button */
 	public void newGame (View v){
 		//Starts the level chooser activity
+		SoundPlayer.playButton(MainActivity.this);			
 		Intent intent = new Intent("android.intent.action.LEVELCHOOSERACTIVITY");
 		intent.putExtra("Name", name);
 		intent.putExtra("userImg", img );
@@ -149,6 +166,7 @@ public class MainActivity extends Activity {
 	
 	/** Called when the user clicks the New Player button */
 	public void newPlayer(View v){
+		SoundPlayer.playButton(MainActivity.this);		
 		Intent intent = new Intent(this, UserActivity.class);
 	    startActivityForResult(intent, 1);		
 	}
@@ -165,33 +183,36 @@ public class MainActivity extends Activity {
 			 
 		 } 
 		 
-		 userStatus.setText(R.string.inloggad);
+		 userStatus.setText(R.string.logged_in);
 		 startGameButton.setEnabled(true); 
 	    
 
-	     playerName = name;	 
-		 
-		 
+	     playerName = name;	 		 
 	 }
 	
-	 /** Called when the user clicks the Level button */
+	 /** Called when the user clicks the settings button (formerly level)*/
 	public void level(View v){
+		SoundPlayer.playButton(MainActivity.this);		
 		Intent intent = new Intent("android.intent.action.GAMESETTINGSACTIVITY");
 		intent.putExtra("Name", name);
 		intent.putExtra("userImg", img );
+		intent.putExtra("User", userStatus.getText());
 		startActivity(intent);	
 	}													
 	
 	/** Called when the user clicks the HighScore button */	
 	public void highScore(View v){
+		SoundPlayer.playButton(MainActivity.this);		
 		startActivity(new Intent("android.intent.action.DISPLAYHIGHSCOREACTIVITY")); 
 	}
 
 	 /** Called when the user clicks the Instruktioner button */
 	public void help(View v){
+		SoundPlayer.playButton(MainActivity.this);		
 		Intent intent = new Intent("android.intent.action.HELP");
 		intent.putExtra("Name", name);
 		intent.putExtra("userImg", img );
+		intent.putExtra("User", userStatus.getText());		
 		startActivity(intent);
 	}
 	

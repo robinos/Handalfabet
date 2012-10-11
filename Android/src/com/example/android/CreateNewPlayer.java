@@ -49,6 +49,7 @@ public class CreateNewPlayer extends Activity{
 	
 	/** Called when the user clicks the Create New Player button */
 	public void createPlayer(View v){
+		SoundPlayer.playButton(CreateNewPlayer.this);		
 		BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
 		Bitmap bitmap = drawable.getBitmap();
 		db.addUser(new User(userName.getText().toString(), 0,  bitmap));
@@ -58,6 +59,7 @@ public class CreateNewPlayer extends Activity{
 	
 	/** Called when the user clicks the Choose Image button */
 	public void pickImage(View View) {
+		SoundPlayer.playButton(CreateNewPlayer.this);		
 	    Intent intent = new Intent();
 	    intent.setType("image/*");
 	    intent.setAction(Intent.ACTION_GET_CONTENT);

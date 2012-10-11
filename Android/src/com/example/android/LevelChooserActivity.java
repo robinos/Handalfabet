@@ -69,17 +69,16 @@ public class LevelChooserActivity extends Activity {
         userImg = (ImageView)findViewById(R.id.userpic);
         img = (Bitmap)( getIntent().getExtras().getParcelable("userImg"));
 		userImg.setImageBitmap(img);
-        
-        
+               
         
 		userStatus = ( TextView )findViewById( R.id.textView1 );
-		userStatus.setText( R.string.inloggad );
+		//Since a user must be logged in at this point, this status does not need
+		//retrieved
+		userStatus.setText( R.string.logged_in );
 		//Displays the username
 		userName = ( TextView ) findViewById( R.id.textView2 );
 		userName.setText( getIntent().getStringExtra( "Name" ) );   
 		
-		 
-        
 		
         firstLevelButton = ( Button )findViewById( R.id.firstLevelButton );  
         secondLevelButton = ( Button )findViewById( R.id.secondLevelButton ); 
@@ -87,6 +86,7 @@ public class LevelChooserActivity extends Activity {
         
         firstLevelButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
+				SoundPlayer.playButton(LevelChooserActivity.this);				
 				difficulty = 1;
 				chooseDifficulty(v);				
 			}
@@ -94,6 +94,7 @@ public class LevelChooserActivity extends Activity {
         
         secondLevelButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
+				SoundPlayer.playButton(LevelChooserActivity.this);				
 				difficulty = 2;
 				chooseDifficulty( v );				
 			}
@@ -101,6 +102,7 @@ public class LevelChooserActivity extends Activity {
         
         thirdLevelButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
+				SoundPlayer.playButton(LevelChooserActivity.this);				
 				difficulty = 3;
 				chooseDifficulty( v );				
 			}
@@ -130,6 +132,9 @@ public class LevelChooserActivity extends Activity {
 		intent.putExtra( DIFFLEVEL, difficulty );
 		intent.putExtra("Name", userName.getText().toString());
 		intent.putExtra("userImg", img );
-		startActivity(intent);		
+		startActivity(intent);
+		
+   	 //kills current activity
+   	 finish();			
 	}     
 }

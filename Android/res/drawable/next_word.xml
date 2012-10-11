@@ -2,5 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/next_word_button_pushed"
           android:state_pressed="true" />
-    <item android:drawable="@drawable/next_word_button" />
+        <item android:drawable="@drawable/next_word_button"
+          android:state_enabled="true" />
+    <item android:drawable="@drawable/next_word_button_disabled" />
 </selector>

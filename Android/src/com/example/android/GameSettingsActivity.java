@@ -4,10 +4,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
@@ -39,6 +41,8 @@ import android.support.v4.app.NavUtils;
  */
 public class GameSettingsActivity extends Activity {
 
+	private Bitmap img;
+	private ImageView userImg;	
     private TextView userName;
 	private TextView userStatus;	
 	
@@ -52,8 +56,13 @@ public class GameSettingsActivity extends Activity {
             //getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         
+        // User Image      
+        userImg = (ImageView)findViewById(R.id.userpic);
+        img = (Bitmap)( getIntent().getExtras().getParcelable("userImg"));
+		userImg.setImageBitmap(img);        
+        
 		userStatus = ( TextView )findViewById( R.id.textView1 );
-		userStatus.setText( R.string.inloggad );
+		userStatus.setText( getIntent().getStringExtra( "User" ) );
 		//Displays the username
 		userName = ( TextView ) findViewById( R.id.textView2 );
 		userName.setText(getIntent().getStringExtra( "Name" ) );         
@@ -63,13 +72,21 @@ public class GameSettingsActivity extends Activity {
 
         soundSettingsButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
-				startActivity( new Intent( "android.intent.action.SOUNDSETTINGSACTIVITY" ).putExtra( "Name", userName.getText().toString() ) );				
+				SoundPlayer.playButton(GameSettingsActivity.this);								
+				startActivity( new Intent( "android.intent.action.SOUNDSETTINGSACTIVITY" )
+				    .putExtra( "Name", userName.getText().toString() )
+				    .putExtra( "userImg", img )
+				    .putExtra( "User", userStatus.getText() ) );				
 			}
 		});        
         
         profileSettingsButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
-				startActivity( new Intent( "android.intent.action.PROFILESETTINGSACTIVITY" ).putExtra( "Name", userName.getText().toString() ) );				
+				SoundPlayer.playButton(GameSettingsActivity.this);				
+				startActivity( new Intent( "android.intent.action.PROFILESETTINGSACTIVITY" )
+				    .putExtra( "Name", userName.getText().toString() )
+				    .putExtra( "userImg", img )
+				    .putExtra( "User", userStatus.getText() ) );				
 			}
 		});         
     }

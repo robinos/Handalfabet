@@ -22,7 +22,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/question_view"
         android:background="@drawable/next_letter"
-        android:contentDescription="@string/next_letter_button" />
+        android:contentDescription="@string/next_button" />
 
     <TextView
         android:id="@+id/show_round_points"
@@ -79,7 +79,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/question_view"
         android:background="@drawable/a"
-        android:contentDescription="@string/third_opt_button" />
+        android:contentDescription="@string/picture_view" />
 
     <ProgressBar
         android:id="@+id/timer_bar"
@@ -98,7 +98,7 @@
         android:layout_below="@id/question_view"
         android:layout_toRightOf="@id/image_view1"
         android:background="@drawable/b"        
-        android:contentDescription="@string/third_opt_button" />
+        android:contentDescription="@string/picture_view" />
 
     <ImageView
         android:id="@+id/image_view3"
@@ -107,7 +107,7 @@
         android:layout_below="@id/question_view"
         android:layout_toRightOf="@id/image_view2"
         android:background="@drawable/c"        
-        android:contentDescription="@string/third_opt_button" />
+        android:contentDescription="@string/picture_view" />
 
     <TextView
         android:id="@+id/total_point_view"

@@ -1,20 +1,17 @@
-<resources>
-	
+<resources>	
 	<string name="back">Tillbacka</string>
+    <string name="username">Användarnamn</string> 	
     <string name="highScore">Högsta Rekord</string>
-    <string name="username">Användarnamn</string>
     <string name="login">Inloggning</string>
     <string name="app_name">Android</string>
     <string name="hello_world">Hallå världen!</string>
     <string name="menu_settings">Inställningar</string>
     <string name="title_activity_main">Svensk Handalfabet</string>
-    <string name="level_chooser">Svårighetsgrad</string>
     <string name="title_activity_level_chooser">Svårighetsgradsväljare</string>
-    <string name="theHighscore">Rekord</string>
-    <string name="title_activity_display_highscore">Högsta Rekord</string>
     <string name="first_opt_button">Först Knapp</string>
     <string name="second_opt_button">Andra Knapp</string>
     <string name="third_opt_button">Tredje Knapp</string>
+    <string name="picture_view">Bild Vy</string>     
     <string name="letter_view">Vilket bokstav är tecknet?</string>    
     <string name="word_view">Vilket ord är tecknen?</string>      
     <string name="answer_view">  av 10 rätt!</string>
@@ -23,20 +20,22 @@
     <string name="low_view">Ingen ny rekord.</string>                     
     <string name="point_view">Poäng:</string>   
     <string name="total_point_view">Total poäng:</string> 
-    <string name="next_letter_button">Nästa bokstav</string>
-    <string name="next_word_button">Nästa ord</string>   
-    <string name="main_menu_button">Huvudmeny</string>     
-    <string name="sound_settings_button">Ljud Inställningar</string>
-    <string name="profile_settings_button">Profil Inställningar</string>       
+    <string name="next_button">Nästa knappen</string>  
+    <string name="main_menu">Huvudmeny</string>     
+    <string name="sound_settings">Ljud Inställningar</string>
+    <string name="profile_settings">Profil Inställningar</string>       
     <string name="newGame">Ny Spelomgång</string>
     <string name="newPlayer">Ny Spelare</string>
     <string name="level">Nivå</string>
     <string name="help">Hjälp</string>
     <string name="submit">Skicka</string>
-	<string name="inloggad">Inloggad som</string>
-	<string name="utloggad">Ej inloggad</string> 
+	<string name="logged_in">Inloggad som</string>
+	<string name="logged_out">Ej inloggad</string> 
 	<string name="take_photo">Ta Bild</string>	
 	<string name="chooseImage">Välj bild</string>
 	<string name="createNewPlayer">Skapa Ny Spelare</string>	
-	<string name="createPlayer">Skapa Spelare</string>			                  
+	<string name="createPlayer">Skapa Spelare</string>	
+    <string name="one_sign">Ett tecken</string>
+    <string name="two_signs">Två tecken</string>
+    <string name="three_signs">Tre tecken</string>			                  
 </resources>

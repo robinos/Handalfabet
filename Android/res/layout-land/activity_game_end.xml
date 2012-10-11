@@ -32,7 +32,7 @@
         android:background="@drawable/main_menu"
         android:layout_alignParentRight="true" 
         android:layout_below="@id/high_scores_button"               
-        android:contentDescription="@string/main_menu_button" />
+        android:contentDescription="@string/main_menu" />
 
     <ImageButton
         android:id="@+id/high_scores_button"

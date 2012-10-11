@@ -3,8 +3,10 @@ package com.example.android;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
@@ -36,6 +38,8 @@ import android.support.v4.app.NavUtils;
  */
 public class ProfileSettingsActivity extends Activity {
 
+	private Bitmap img;
+	private ImageView userImg;	
     private TextView userName;
 	private TextView userStatus;	
 	
@@ -49,8 +53,13 @@ public class ProfileSettingsActivity extends Activity {
             //getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         
+        // User Image      
+        userImg = (ImageView)findViewById(R.id.userpic);
+        img = (Bitmap)( getIntent().getExtras().getParcelable("userImg"));
+		userImg.setImageBitmap(img);         
+        
 		userStatus = (TextView)findViewById( R.id.textView1 );
-		userStatus.setText( R.string.inloggad );
+		userStatus.setText( getIntent().getStringExtra( "User" ) );
 		//Displays the username
 		userName = ( TextView ) findViewById( R.id.textView2 );
 		userName.setText( getIntent().getStringExtra( "Name" ) );        

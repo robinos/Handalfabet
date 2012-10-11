@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5pt"
-                android:text="@string/utloggad"
+                android:text="@string/logged_out"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView

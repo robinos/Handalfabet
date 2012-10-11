@@ -124,7 +124,7 @@
            android:layout_below="@+id/high_scores_button"
            android:layout_marginTop="30dp"  
            android:background="@drawable/main_menu"
-           android:contentDescription="@string/main_menu_button" />
+           android:contentDescription="@string/main_menu" />
 
    </RelativeLayout>
 

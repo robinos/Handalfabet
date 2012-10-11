@@ -2,7 +2,8 @@
     package="com.example.android"
     android:versionCode="1"
     android:versionName="1.0" >
-
+    <uses-permission android:name="android.permission.VIBRATE"/>  
+    
     <uses-sdk
         android:minSdkVersion="4" 
         android:targetSdkVersion="16"/>
@@ -61,7 +62,7 @@
         </activity>
         <activity
             android:name=".UserActivity" 
-            android:label="@string/title_activity_level_chooser" >
+            android:label="@string/login" >
             <intent-filter>
                 <action android:name="android.intent.action.USER" />
 
@@ -74,7 +75,7 @@
         </activity>
         <activity
             android:name=".Help"
-            android:label="@string/title_activity_level_chooser" >
+            android:label="@string/help" >
             <intent-filter>
                 <action android:name="android.intent.action.HELP" />
 
@@ -87,7 +88,7 @@
         </activity>
         <activity
             android:name=".DisplayHighscoreActivity"
-            android:label="@string/title_activity_display_highscore" >
+            android:label="@string/highScore" >
             <intent-filter>
                 <action android:name="android.intent.action.DISPLAYHIGHSCOREACTIVITY" />
 
@@ -100,7 +101,7 @@
         </activity>
         <activity
             android:name=".GameSettingsActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/menu_settings" >
             <intent-filter>
                 <action android:name="android.intent.action.GAMESETTINGSACTIVITY" />
 
@@ -126,7 +127,7 @@
         </activity>
         <activity
             android:name=".ProfileSettingsActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/profile_settings" >
             <intent-filter>
                 <action android:name="android.intent.action.PROFILESETTINGSACTIVITY" />
 
@@ -138,7 +139,7 @@
         </activity>
         <activity
             android:name=".SoundSettingsActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/sound_settings" >
             <intent-filter>
                 <action android:name="android.intent.action.SOUNDSETTINGSACTIVITY" />
 
@@ -162,7 +163,7 @@
         </activity>
         <activity
             android:name=".TakePhotoActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/take_photo" >
             <intent-filter>                                
                 <action android:name="android.intent.action.TAKEPHOTOACTIVITY" />
 
@@ -174,7 +175,7 @@
         </activity>
         <activity
             android:name=".CreateNewPlayer"
-            android:label="@string/title_activity_main" >
+            android:label="@string/createNewPlayer" >
             <intent-filter>                                
                 <action android:name="android.intent.action.CREATENEWPLAYER" />
 

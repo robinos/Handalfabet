@@ -63,7 +63,7 @@ public class Help extends Activity {
 		userImg.setImageBitmap(img);
         
 		userStatus = ( TextView )findViewById( R.id.textView1 );
-		userStatus.setText( R.string.inloggad );
+		userStatus.setText( getIntent().getStringExtra( "User" ) );
 		//Displays the username
 		userName = ( TextView ) findViewById( R.id.textView2 );
 		userName.setText( getIntent().getStringExtra( "Name" ) );         

@@ -97,7 +97,8 @@ public class UserActivity extends Activity {
 	}
 	
 	/** Called when the user clicks the Create New Player button */
-	public void createNewPlayer(View v){
+	public void createNewPlayer(View v) {
+		SoundPlayer.playButton(UserActivity.this);		
 		startActivity(new Intent("android.intent.action.CREATENEWPLAYER"));
 	}
 	
@@ -133,8 +134,9 @@ public class UserActivity extends Activity {
 	}
 	
 	
-	/** Called when the user clicks the New Game button */
+	/** Called when the user clicks the Login button */
 	public void Login (View v){
+		SoundPlayer.playButton(UserActivity.this);		
 		Bitmap img = scaleDownBitmap(bitImg, 55 ,this);
 		
 		Intent intent = getIntent();              

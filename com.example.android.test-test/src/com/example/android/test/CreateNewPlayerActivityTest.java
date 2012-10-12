@@ -57,6 +57,6 @@ public class CreateNewPlayerActivityTest extends
 	 * Tests if Activity is created
 	 */
 	public void testViewCreated() {
-		assertNotNull(getActivity());
+		assertNotNull(createnewplayer);
 	}
 }

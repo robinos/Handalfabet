@@ -15,52 +15,71 @@
  *   along with Handalfabetet.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.example.android.test;
-
-import com.example.android.Game;
-
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.test.ActivityInstrumentationTestCase2;
-
 /**
- * The GameActivityTest class is a testclass
+ * The UserTest class is a testclass to test the User clas .
  * 
  * @author  : Grupp02
- * @version : 2012-10-02, v0.2
+ * @version : 2012-10-02, v0.5
  * @License : GPLv3
  * @Copyright :Copyright© 2012, Grupp02
- * 
- * not finished yet
  *
  */
-public class GameActivityTest extends 
-				ActivityInstrumentationTestCase2<Game> {
 
-	Game game;
+
+package com.example.android.test;
+
+import com.example.android.User;
+
+import android.test.AndroidTestCase;
+
+
+public class UserTest extends AndroidTestCase {
+
+	User user;
 	
-	public GameActivityTest() {		//String name
-		super("com.example.com",Game.class);
-		//setName(name);
+	public UserTest() {
+		super();
 	}
 
-	
 	protected void setUp() throws Exception {
+		
+		user = new User();
+		
 		super.setUp();
-		//game = getActivity();
 	}
 
-	
+
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		//getActivity().finish();
 	}
 	
 	/**
-	 * Not really a test
+	 * Test the the getter and the setter methods
 	 */
-	public void testViewCreated() {
-		assertTrue(true);
+	public void testGetName() {
+		user.setName("Baby99");
+		String testUser = "Baby99";
+		assertEquals(testUser, user.getName());
 	}
+	
+	/**
+	 * Test the swedish letters in a setname
+	 */
+	public void testSwedishLetters() {
+		user.setName("Åsa Ämö");
+		assertEquals("Åsa Ämö", user.getName());
+	}
+	
+	/**
+	 * Test if the name can accept nonletters
+	 */
+	public void testNonLettersSetName() {
+		user.setName("LOL?*%&");
+		assertEquals("LOL?*%&", user.getName());
+		
+	}
+	
+	
+	
 
 }

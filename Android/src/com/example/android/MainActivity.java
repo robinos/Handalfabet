@@ -2,17 +2,12 @@ package com.example.android;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,22 +32,26 @@ import android.widget.TextView;
  * The MainActivity class.
  * 
  * @author  : Grupp02 
- * @version : 2012-10-08, v0.5
+ * @version : 2012-10-14, v0.5
  * @License : GPLv3
  * @Copyright : Copyright© 2012, Grupp02
  *
  */
 public class MainActivity extends Activity {
 	 
+	//Audio Focus helper
+	private AudioFocusHelper focusHelper;	
+	
 	TextView nameField;
 	private String feriz = "peci";
 	private TextView userStatus;
 	private ImageView userImg;
 	
-	public String name;
+	public String name = "";
 	private String playerName;
 	private Button startGameButton;
 	private Button newPlayerButton;
+	private Button settingsButton;
 	private Bitmap img;
 	
 	@Override
@@ -60,10 +59,14 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); 
         
-        //Make sure we're running on Honeycomb or higher to use ActionBar APIs
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            //getActionBar().setDisplayHomeAsUpEnabled(true);
-        }	
+        // Make sure we're running on Honeycomb or higher to use ActionBar APIs
+        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
+        	 //getActionBar().setDisplayHomeAsUpEnabled( true );
+        }     
+          
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO)
+        	focusHelper = new AudioFocusHelper(this);
+        else focusHelper = null;	
           
      // Check whether we're recreating a previously destroyed instance
         if (savedInstanceState != null) {
@@ -77,9 +80,37 @@ public class MainActivity extends Activity {
         nameField = (TextView) findViewById( R.id.textView2 );  
         startGameButton = (Button)findViewById(R.id.startaSpel);
         newPlayerButton = (Button)findViewById(R.id.bytspelare);
+        settingsButton = (Button)findViewById(R.id.svarighet);
         
 		startGameButton.setEnabled(false);  
+		settingsButton.setEnabled(false); 
     } 
+	
+	 @Override
+	 /**
+	  * onResume is overriden in order to utterly abandon sound focus if
+	  * sound has been turned off, or resume sound if on.
+	  * 
+	  */
+	 public void onResume() {
+	 	 super.onResume();
+	 	 
+	     if(SoundPlayer.getSoundEnabled() == false) {
+	    	 if(focusHelper != null) {
+	             focusHelper.abandonFocus();
+	    	 }
+	    	 SoundPlayer.stop();
+	     }
+	     else SoundPlayer.resume();
+	}	
+	
+	 @Override
+	 public void onPause() {
+	     super.onPause();  // Always call the superclass method first
+
+	     // Pause sound when paused
+        if(SoundPlayer.getSoundEnabled()) SoundPlayer.pause();
+	 }	
 	
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -97,6 +128,7 @@ public class MainActivity extends Activity {
 	    // Restore state members from saved instance
 	    name = savedInstanceState.getString(playerName);
 	}
+	
 //	@Override
 //	public void onResume() {
 //		super.onResume();
@@ -134,7 +166,7 @@ public class MainActivity extends Activity {
 	/** Called when the user clicks the New Game button */
 	public void newGame (View v){
 		//Starts the level chooser activity
-		SoundPlayer.playButton(MainActivity.this);			
+		playButton();			
 		Intent intent = new Intent("android.intent.action.LEVELCHOOSERACTIVITY");
 		intent.putExtra("Name", name);
 		intent.putExtra("userImg", img );
@@ -149,7 +181,7 @@ public class MainActivity extends Activity {
 	
 	/** Called when the user clicks the New Player button */
 	public void newPlayer(View v){
-		SoundPlayer.playButton(MainActivity.this);		
+		playButton();		
 		Intent intent = new Intent(this, UserActivity.class);
 	    startActivityForResult(intent, 1);		
 	}
@@ -168,6 +200,7 @@ public class MainActivity extends Activity {
 		 
 		 userStatus.setText(R.string.logged_in);
 		 startGameButton.setEnabled(true); 
+		 settingsButton.setEnabled(true); 
 	    
 
 	     playerName = name;	 		 
@@ -175,7 +208,7 @@ public class MainActivity extends Activity {
 	
 	 /** Called when the user clicks the settings button (formerly level)*/
 	public void level(View v){
-		SoundPlayer.playButton(MainActivity.this);		
+		playButton();		
 		Intent intent = new Intent("android.intent.action.GAMESETTINGSACTIVITY");
 		intent.putExtra("Name", name);
 		intent.putExtra("userImg", img );
@@ -185,13 +218,13 @@ public class MainActivity extends Activity {
 	
 	/** Called when the user clicks the HighScore button */	
 	public void highScore(View v){
-		SoundPlayer.playButton(MainActivity.this);		
+		playButton();		
 		startActivity(new Intent("android.intent.action.DISPLAYHIGHSCOREACTIVITY")); 
 	}
 
 	 /** Called when the user clicks the Instruktioner button */
 	public void help(View v){
-		SoundPlayer.playButton(MainActivity.this);		
+		playButton();		
 		Intent intent = new Intent("android.intent.action.HELP");
 		intent.putExtra("Name", name);
 		intent.putExtra("userImg", img );
@@ -199,6 +232,41 @@ public class MainActivity extends Activity {
 		startActivity(intent);
 	}
 	
+	/**
+	 * The getAudioFocus method attempts to gain focus for playing audio.
+	 * If full access can't be gained, transitive access at a quiet volume
+	 * is attempted.  If that can't be granted, false is returned.
+	 * 
+	 * @return : true if focus in some form is granted, otherwise false
+	 */
+	private boolean getAudioFocus() {
+		
+		if(focusHelper != null) {
+			if(!focusHelper.requestFocus()) {
+				if(!focusHelper.requestQuietFocus()) return false;
+				else return true;
+			}
+			else return true;
+		}
+		
+		return false;
+	}	
+	
+    /**
+     * playButton plays the button sound
+     * 
+     * If there is an AudioFocusHelper (api >= 8) use it,
+     * otherwise default to SoundPlayer
+     */	
+     public void playButton() {
+	   	 if(SoundPlayer.getSoundEnabled()) {
+		   	 if(focusHelper != null) {
+		   	    if(getAudioFocus()) focusHelper.playButton();
+		   	 }
+		   	 else SoundPlayer.playButton(this);
+	  	 }
+    }      
+     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main, menu);

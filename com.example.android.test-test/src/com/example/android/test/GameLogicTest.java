@@ -41,9 +41,9 @@ public class GameLogicTest extends AndroidTestCase {
 
 	protected void setUp() throws Exception {
 		game = new Game();
-		gameLogic1 = new GameLogic(1,game);
-		gameLogic2 = new GameLogic(2,game);
-		gameLogic3 = new GameLogic(3,game);
+		gameLogic1 = new GameLogic(1,1,game);
+		gameLogic2 = new GameLogic(1,2,game);
+		gameLogic3 = new GameLogic(1,3,game);
 		super.setUp();
 	}
 

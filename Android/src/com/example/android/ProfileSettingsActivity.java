@@ -31,7 +31,7 @@ import android.support.v4.app.NavUtils;
  * The ProfileSettingsActivity class.
  * 
  * @author  : Grupp02
- * @version : 2012-10-08, v0.5
+ * @version : 2012-10-14, v0.5
  * @License : GPLv3
  * @Copyright : Copyright© 2012, Grupp02
  *

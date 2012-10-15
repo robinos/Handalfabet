@@ -12,6 +12,31 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+/**
+ *   This file is part of Handalfabetet.
+ *
+ *   Handalfabetet is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   Handalfabetet is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with Handalfabetet.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * The ImagePickActvity class is used to pick an existing picture for the user.
+ * 
+  * @author  : Grupp02
+  * @version : 2012-10-14, v0.5
+  * @License : GPLv3
+  * @Copyright :Copyright© 2012, Grupp02  
+  */
 public class ImagePickActivity extends Activity{
 	private static final int REQUEST_CODE = 1;
 	private Bitmap bitmap;

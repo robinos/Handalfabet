@@ -1,4 +1,7 @@
 
+package com.example.android;
+
+import android.graphics.Bitmap;
 
 /**
  *   This file is part of Handalfabetet.
@@ -18,27 +21,22 @@
  */
 
 /**
- * The User class.
+ * The User class handles the User object.
  * 
  * @author  : Grupp02
- * @version : 2012-10-08, v0.4
+ * @version : 2012-10-14, v0.5
  * @License : GPLv3
  * @Copyright : Copyright© 2012, Grupp02
  *
  */
-
-
-package com.example.android;
-
-import android.graphics.Bitmap;
-import android.widget.ImageView;
-
 public class User {
 	
 	private String userName;
 	private String password;
 	private int highScore;
 	private Bitmap userImg;
+	private int maxDifficulty;
+	private int maxLetters;	
 	
 	public User(){}
 	
@@ -62,6 +60,14 @@ public class User {
 		this.highScore = highScore;
 	}
 	
+	public User(String userName, int highScore, Bitmap userImg, int maxDifficulty, int maxLetters){
+		this.userImg = userImg;	
+		this.userName = userName;
+		this.highScore = highScore;
+		this.maxDifficulty = maxDifficulty;
+		this.maxLetters = maxLetters;		
+	}	
+	
 	public String getName(){
 		return userName;
 	}
@@ -76,6 +82,14 @@ public class User {
 	
 	public Bitmap getUserImg(){
 		return userImg;
+	}
+	
+	public int getMaxDifficulty(){
+		return maxDifficulty;
+	}
+
+	public int getMaxLetters(){
+		return maxLetters;
 	}
 	
 	public void setName(String userName){
@@ -93,5 +107,12 @@ public class User {
 	public void setUserImg(Bitmap userImg){
 		this.userImg = userImg;
 	}
+	
+	public void setMaxDifficulty(int maxDifficulty){
+		this.maxDifficulty = maxDifficulty;
+	}	
+	
+	public void setMaxLetters(int maxLetters){
+		this.maxLetters = maxLetters;
+	}	
 }
-

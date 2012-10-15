@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 
@@ -34,20 +36,26 @@ import android.support.v4.app.NavUtils;
  * The LevelChooserActivity class.
  * 
  * @author  : Grupp02
- * @version : 2012-10-08, v0.5
+ * @version : 2012-10-14, v0.5
  * @License : GPLv3
  * @Copyright : Copyright© 2012, Grupp02
  *
  */
 public class LevelChooserActivity extends Activity {
 
+	//Audio Focus helper
+	private AudioFocusHelper focusHelper;	
+	
 	//DifficultyLevel
-	private int difficulty;
+	private int difficulty = 1;
+	private int numLetters;	
 	public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";
+	public final static String LETTERS = "com.example.Android.LETTERS";
 	
 	private Button firstLevelButton;
 	private Button secondLevelButton;
-	private Button thirdLevelButton;	
+	private Button thirdLevelButton;		
+	private RadioGroup radialDifficulty;	
 	
     private TextView userName;
 	private TextView userStatus;
@@ -62,8 +70,12 @@ public class LevelChooserActivity extends Activity {
         
         // Make sure we're running on Honeycomb or higher to use ActionBar APIs
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
-            //getActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        	 //getActionBar().setDisplayHomeAsUpEnabled( true );
+        }     
+          
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO)
+        	focusHelper = new AudioFocusHelper(this);
+        else focusHelper = null;
         
         // User Image      
         userImg = (ImageView)findViewById(R.id.userpic);
@@ -82,33 +94,103 @@ public class LevelChooserActivity extends Activity {
 		
         firstLevelButton = ( Button )findViewById( R.id.firstLevelButton );  
         secondLevelButton = ( Button )findViewById( R.id.secondLevelButton ); 
-        thirdLevelButton = ( Button )findViewById( R.id.thirdLevelButton );
+        thirdLevelButton = ( Button )findViewById( R.id.thirdLevelButton );       
+        radialDifficulty = (RadioGroup) findViewById(R.id.radialDifficulty);
         
         firstLevelButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
-				SoundPlayer.playButton(LevelChooserActivity.this);				
-				difficulty = 1;
+				playButton();				
+				numLetters = 1;
 				chooseDifficulty(v);				
 			}
 		} );
         
         secondLevelButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
-				SoundPlayer.playButton(LevelChooserActivity.this);				
-				difficulty = 2;
+				playButton();				
+				numLetters = 2;
 				chooseDifficulty( v );				
 			}
 		} ); 
         
         thirdLevelButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
-				SoundPlayer.playButton(LevelChooserActivity.this);				
-				difficulty = 3;
+				playButton();				
+				numLetters = 3;
 				chooseDifficulty( v );				
 			}
 		} );         
     }    
     
+	 @Override
+	 /**
+	  * onResume is overriden in order to utterly abandon sound focus if
+	  * sound has been turned off, or resume sound if on.
+	  * 
+	  */
+	 public void onResume() {
+	 	 super.onResume();
+	 	 
+	     if(SoundPlayer.getSoundEnabled() == false) {
+	    	 if(focusHelper != null) {
+	             focusHelper.abandonFocus();
+	    	 }
+	    	 SoundPlayer.stop();
+	     }
+	     else SoundPlayer.resume();
+	}	
+	
+	 @Override
+	 public void onPause() {
+	     super.onPause();  // Always call the superclass method first
+
+	     // Pause sound when paused
+        if(SoundPlayer.getSoundEnabled()) SoundPlayer.pause();
+	 }    
+    
+	 public void onRadioButtonClicked(View v) {
+		 int selectedId = radialDifficulty.getCheckedRadioButtonId();
+		 
+		 if(selectedId == R.id.difficulty1Radial) difficulty = 1;
+		 if(selectedId == R.id.difficulty2Radial) difficulty = 2;
+		 if(selectedId == R.id.difficulty3Radial) difficulty = 3;		 
+	 }
+	 
+	/**
+	 * The getAudioFocus method attempts to gain focus for playing audio.
+	 * If full access can't be gained, transitive access at a quiet volume
+	 * is attempted.  If that can't be granted, false is returned.
+	 * 
+	 * @return : true if focus in some form is granted, otherwise false
+	 */
+	private boolean getAudioFocus() {
+		
+		if(focusHelper != null) {
+			if(!focusHelper.requestFocus()) {
+				if(!focusHelper.requestQuietFocus()) return false;
+				else return true;
+			}
+			else return true;
+		}
+		
+		return false;
+	}    
+    
+    /**
+     * playButton plays the button sound
+     * 
+     * If there is an AudioFocusHelper (api >= 8) use it,
+     * otherwise default to SoundPlayer
+     */	
+    public void playButton() {
+	  	if(SoundPlayer.getSoundEnabled()) {
+		   	if(focusHelper != null) {
+		   	    if(getAudioFocus()) focusHelper.playButton();
+		   	}
+		   	else SoundPlayer.playButton(this);
+	  	}
+   }	
+	
     @Override
     public boolean onCreateOptionsMenu( Menu menu ) {
         getMenuInflater().inflate( R.menu.activity_level_chooser, menu );
@@ -130,6 +212,7 @@ public class LevelChooserActivity extends Activity {
 	public void chooseDifficulty( View v ) {
 		Intent intent = new Intent("android.intent.action.GAME");
 		intent.putExtra( DIFFLEVEL, difficulty );
+		intent.putExtra( LETTERS, numLetters );		
 		intent.putExtra("Name", userName.getText().toString());
 		intent.putExtra("userImg", img );
 		startActivity(intent);

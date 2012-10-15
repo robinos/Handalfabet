@@ -34,20 +34,29 @@ import android.support.v4.app.NavUtils;
  */
 
 /**
- * The GameEnd class.
+ * The GameEnd class is the display screen once the game has ended.
  * 
  * @author  : Grupp02
- * @version : 2012-10-08, v0.5
+ * @version : 2012-10-14, v0.5
  * @License : GPLv3
  * @Copyright :Copyright© 2012, Grupp02
  *
  */
 public class GameEnd extends Activity {
 	
+	//Audio Focus helper
+	private AudioFocusHelper focusHelper;	
+	
 	private DatabaseHelper db;
 	private int difficulty;
+	private int numLetters;
+	private int from = 1;
 	
     public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";
+    public final static String LETTERS = "com.example.Android.DIFFICULTY";
+    //From is used to let Game know that the value it receives is from GamEnd
+    //and not LevelChooser Activity
+    public final static String FROM = "com.example.Android.FROM";	
     
     private Bitmap img;
 	private ImageView userImg;   
@@ -62,7 +71,12 @@ public class GameEnd extends Activity {
             //getActionBar().setDisplayHomeAsUpEnabled( true );
         }         
          
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO)
+        	focusHelper = new AudioFocusHelper(this);
+        else focusHelper = null;        
+        
         difficulty = getIntent().getIntExtra( Game.DIFFLEVEL, 1 );         
+        numLetters = getIntent().getIntExtra( Game.LETTERS, 1 );
         
         db = new DatabaseHelper(this);
         
@@ -78,8 +92,7 @@ public class GameEnd extends Activity {
         int totalScore = getIntent().getIntExtra( Game.TOTALSCORE, 0 ); 
         int averageTime = getIntent().getIntExtra( Game.AVERAGETIME, 0 );    
         
-        
-     // User Image      
+        // User Image      
         userImg = (ImageView)findViewById(R.id.userpic);
         img = (Bitmap)( getIntent().getExtras().getParcelable("userImg"));
 		userImg.setImageBitmap(img);
@@ -93,11 +106,16 @@ public class GameEnd extends Activity {
 		// Update HighScore 
 		if(user.getHighScore() < totalScore){
 			user.setHighScore(totalScore);
+			user.setMaxDifficulty(difficulty);
+			user.setMaxLetters(numLetters);
 			db.updateUserHighScore(user);
 			//Display congratulations to user
 			highView.setText(R.string.high_view);
-			SoundPlayer.playApplause(this);
-			SoundPlayer.buzz( this, "applause" );
+			
+			  if(focusHelper != null) {
+	    		  if(getAudioFocus()) focusHelper.playApplause();
+			  }
+			  else SoundPlayer.playApplause(this);
 		}
 		else {
 			//Display no new high score to user
@@ -106,26 +124,31 @@ public class GameEnd extends Activity {
 
         newGameButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
-				SoundPlayer.playButton(GameEnd.this);					
+				playButton();					
 				startActivity( new Intent( "android.intent.action.GAME" )
 		        .putExtra( DIFFLEVEL, difficulty ) 
+		        .putExtra( LETTERS, numLetters ) 	
+		        .putExtra( FROM, from ) 		        
 		        .putExtra( "userImg", img )		        
-		        .putExtra( "Name", userName.getText().toString() ) );				
+		        .putExtra( "Name", userName.getText().toString() ) );
+				
+		    	 //kills current activity
+		    	 finish();				
 			}
 		} ); 
         
         highScoreButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
-				SoundPlayer.playButton(GameEnd.this);				
+				playButton();				
 				startActivity( new Intent( "android.intent.action.DISPLAYHIGHSCOREACTIVITY" ) ); 				
 			}
 		}); 
         
         mainMenuButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
-		        SoundPlayer.playButton(GameEnd.this);		        
-		    	 //kills current activity
-		    	 finish();	
+		        playButton();		        
+		    	//kills current activity
+		    	finish();	
 			}
 		});          
         
@@ -139,6 +162,67 @@ public class GameEnd extends Activity {
         averageView.setText( "  " + Integer.toString( averageTime ) );		        
     }
 
+	 @Override
+	 /**
+	  * onResume is overriden in order to utterly abandon sound focus if
+	  * sound has been turned off, or resume sound if on.
+	  * 
+	  */
+	 public void onResume() {
+	 	 super.onResume();
+	 	 
+	     if(SoundPlayer.getSoundEnabled() == false) {
+	    	 if(focusHelper != null) {
+	             focusHelper.abandonFocus();
+	    	 }
+	    	 SoundPlayer.stop();
+	     }
+	     else SoundPlayer.resume();
+	}	
+	
+	 @Override
+	 public void onPause() {
+	     super.onPause();  // Always call the superclass method first
+
+	     // Pause sound when paused
+        if(SoundPlayer.getSoundEnabled()) SoundPlayer.pause();
+	 }   
+    
+	/**
+	 * The getAudioFocus method attempts to gain focus for playing audio.
+	 * If full access can't be gained, transitive access at a quiet volume
+	 * is attempted.  If that can't be granted, false is returned.
+	 * 
+	 * @return : true if focus in some form is granted, otherwise false
+	 */
+	private boolean getAudioFocus() {
+		
+		if(focusHelper != null) {
+			if(!focusHelper.requestFocus()) {
+				if(!focusHelper.requestQuietFocus()) return false;
+				else return true;
+			}
+			else return true;
+		}
+		
+		return false;
+	}   
+    
+    /**
+     * playButton plays the button sound
+     * 
+     * If there is an AudioFocusHelper (api >= 8) use it,
+     * otherwise default to SoundPlayer
+     */	
+    public void playButton() {
+	  	if(SoundPlayer.getSoundEnabled()) {
+		   	if(focusHelper != null) {
+		   	    if(getAudioFocus()) focusHelper.playButton();
+		   	}
+		   	else SoundPlayer.playButton(this);
+	  	}
+   }	
+	
     @Override
     public boolean onCreateOptionsMenu( Menu menu ) {
         getMenuInflater().inflate( R.menu.activity_game_end, menu );
@@ -154,5 +238,29 @@ public class GameEnd extends Activity {
                 return true;
         }
         return super.onOptionsItemSelected( item );
-    }    
+    } 
+    
+	 @Override
+	 /**
+	  * onKeyDown overrides onKeyDown and allows code to be executed when
+	  * the back button is pushed in the simulator / on the mobile phone 
+	  * 
+	  * @param keyCode : code of the key pressed
+	  * @param event   : the event for the key pressed
+	  */
+	 public boolean onKeyDown(int keyCode, KeyEvent event)  {
+	     if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			 
+	         //cancel the applause noise
+	    	 SoundPlayer.stop();
+			 if(focusHelper != null) focusHelper.abandonFocus();	        
+	    	 
+	    	 //continue backwards (kills current activity)
+	    	 finish();
+	    	 
+	    	 return true;
+	     }
+
+	     return super.onKeyDown(keyCode, event);
+	 }    
 }

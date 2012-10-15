@@ -1,8 +1,11 @@
 package com.example.android;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -35,20 +38,26 @@ import android.widget.ProgressBar;
  */
 
  /** 
+ * The Game Activity houses all GUI for the main game.
+ * 
  * @author  : Grupp02
- * @version : 2012-10-10, v0.5
+ * @version : 2012-10-14, v0.5
  * @License : GPLv3
  * @Copyright :Copyright© 2012, Grupp02  
  */
 public class Game extends Activity {	
 	
+	 //Audio Focus helper
+	 private AudioFocusHelper focusHelper;
+	 
 	 //Number right, total score, and average time for passing on to
 	 //game end
 	 public final static String NUMCORRECT = "com.example.Android.NUMCORRECT";	
 	 public final static String TOTALSCORE = "com.example.Android.TOTALSCORE";	
 	 public final static String AVERAGETIME = "com.example.Android.AVERAGETIME";
      public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";
-	 
+     public final static String LETTERS = "com.example.Android.DIFFICULTY";	 
+     
 	 //GameLogic object
 	 GameLogic gameLogic;
 	
@@ -64,6 +73,7 @@ public class Game extends Activity {
 	 private TextView roundPoint;
 	 private ProgressBar timerBar;
 	 private int difficulty;	 
+	 private int numLetters;
 	 
 	 private TextView userName;
 	 private TextView userStatus;
@@ -81,15 +91,26 @@ public class Game extends Activity {
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
         	 //getActionBar().setDisplayHomeAsUpEnabled( true );
         }     
-             
+          
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO)
+        	focusHelper = new AudioFocusHelper(this);
+        else focusHelper = null;
+        
         //The text prompt view
         TextView questionView = ( TextView ) findViewById( R.id.question_view );        
         
         //game difficulty, default level 1
         difficulty = getIntent().getIntExtra( LevelChooserActivity.DIFFLEVEL, 1 ); 
+        numLetters = getIntent().getIntExtra( LevelChooserActivity.LETTERS, 1 );         
+        int from = getIntent().getIntExtra( GameEnd.FROM, 0 );
+        
+        if(from != 0) {
+            difficulty = getIntent().getIntExtra( GameEnd.DIFFLEVEL, 1 ); 
+            numLetters = getIntent().getIntExtra( GameEnd.LETTERS, 1 );         	
+        }
         
         //The game logic object
-        gameLogic = new GameLogic( difficulty, this );        
+        gameLogic = new GameLogic( difficulty, numLetters, this );        
          
         //GUI variables
         timerBar = ( ProgressBar ) findViewById (R.id.timer_bar );
@@ -102,7 +123,7 @@ public class Game extends Activity {
 		
 		//Depending on one letter, or several letter words, alter the
 		//question view text and the button appearance
-		if( difficulty > 1 ) {
+		if( numLetters > 1 ) {
 			questionView.setText( R.string.word_view );
 			nextButton.setBackgroundResource(R.drawable.next_word);
 		}
@@ -112,8 +133,8 @@ public class Game extends Activity {
 		}		
 		
 		//Have certain pictures blank depending on difficulty level
-		if( difficulty == 2 ) image3.setImageResource( picSetter( pic_blank ) ); 
-		else if( difficulty == 1 ) {
+		if( numLetters == 2 ) image3.setImageResource( picSetter( pic_blank ) ); 
+		else if( numLetters == 1 ) {
 		    image2.setImageResource( picSetter( pic_blank ) );
 		    image3.setImageResource( picSetter( pic_blank ) );
 		}
@@ -139,8 +160,34 @@ public class Game extends Activity {
         deployTextButtons(); 
         
         //Start the ticking noise
-        SoundPlayer.playTicking(this);        
+        playTicking();        
     }
+	
+	 @Override
+	 /**
+	  * onResume is overriden in order to utterly abandon sound focus if
+	  * sound has been turned off, or resume sound if on.
+	  * 
+	  */
+	 public void onResume() {
+	 	 super.onResume();
+	 	 
+	     if(SoundPlayer.getSoundEnabled() == false) {
+	    	 if(focusHelper != null) {
+	             focusHelper.abandonFocus();
+	    	 }
+	    	 SoundPlayer.stop();
+	     }
+	     else SoundPlayer.resume();
+	}	
+	
+	 @Override
+	 public void onPause() {
+	     super.onPause();  // Always call the superclass method first
+
+	     // Pause sound when paused
+         if(SoundPlayer.getSoundEnabled()) SoundPlayer.pause();
+	 }	 
 	 
 	 /**
 	  * getTimerBar
@@ -150,6 +197,8 @@ public class Game extends Activity {
 	 public ProgressBar getTimerBar() {
 		 return timerBar;
 	 }
+	 
+	 
 	 
 	 /**
 	  * Initiate buttons and textViews
@@ -183,7 +232,7 @@ public class Game extends Activity {
 		 
 		 //stop the clock ticking sound, and play the button sound
 		 SoundPlayer.stop();		 
-		 SoundPlayer.playButton(this);		 
+		 playButton();		 
 		 
 		 //cancels the count down timer
 		 gameLogic.getCountDownTimer().cancel();		 
@@ -240,19 +289,39 @@ public class Game extends Activity {
 		 nextButton.setEnabled( true );
 	 }
 	
-		public void playRightChoice() {
-			//Use the right answer pattern (short vibration, pause, short vibration)
-			SoundPlayer.buzz( this, "right" );		
-            //Play the right answer sound			
-			SoundPlayer.play(this, R.raw.mp3_right);
-		}
+	 /**
+	  * playRightChoice
+	  * 
+	  * Unlike playButton, this also plays a vibration, so it is
+	  * called as long as sound or vibrations are enabled.
+	  */
+     public void playRightChoice() {
+    	 if(SoundPlayer.getSoundEnabled() || SoundPlayer.getVibrationEnabled()) {
+		     if(focusHelper != null) {
+		         if(getAudioFocus()) focusHelper.playRightChoice();
+			 }
+			 else {		
+				 SoundPlayer.playRightChoice(this);
+			 }
+         }
+    }
 
-		public void playWrongChoice() {
-			//Use the medium length buzz for a wrong answer
-			SoundPlayer.buzz( this, "wrong" );
-            //Play the wrong answer sound			
-			SoundPlayer.play(this, R.raw.mp3_wrong);		
-		}	 
+	 /**
+	  * playWrongChoice
+	  * 
+	  * Unlike playButton, this also plays a vibration, so it is
+	  * called as long as sound or vibrations are enabled.
+	  */
+	public void playWrongChoice() {
+	    if(SoundPlayer.getSoundEnabled() || SoundPlayer.getVibrationEnabled()) {			
+		    if(focusHelper != null) {
+	            if(getAudioFocus()) focusHelper.playWrongChoice();
+		    }
+		    else {					
+			    SoundPlayer.playWrongChoice(this);
+		    }
+		}
+	}
 	 
 	/**
 	 * Changes the sign image when nextButton is clicked
@@ -265,7 +334,7 @@ public class Game extends Activity {
 		nextButton.setOnClickListener( new OnClickListener() {		
 			public void onClick( View arg0 ) {
 				//play the button sound
-				SoundPlayer.playButton(Game.this);				
+				playButton();				
 				
 				//If all game rounds have completed, bring up the end screen
 				if( gameLogic.countDownRounds() ) {
@@ -276,14 +345,15 @@ public class Game extends Activity {
 				    endIntent.putExtra( NUMCORRECT, gameLogic.getNumCorrect() );
 				    endIntent.putExtra( TOTALSCORE, gameLogic.getTotalScore() );
 				    endIntent.putExtra( AVERAGETIME, gameLogic.getAverageTime() );
-				    endIntent.putExtra( DIFFLEVEL, difficulty ); 				    
+				    endIntent.putExtra( DIFFLEVEL, difficulty ); 	
+				    endIntent.putExtra( LETTERS, numLetters ); 				    
 				    endIntent.putExtra("name", getIntent().getStringExtra("Name"));
 				    endIntent.putExtra("userImg", img );
 				    startActivity( endIntent );		
 				}
 				else {
 					//start clock ticking
-					SoundPlayer.playTicking(Game.this);
+					playTicking();
 					
 					//Reset round points to 0
 					roundPoint.setText( Integer.toString( 0 ) );					
@@ -303,7 +373,7 @@ public class Game extends Activity {
 					nextButton.setEnabled( false );
 					
 					//Reset the timer
-					timerBar.setProgress( 0 );
+					timerBar.setProgress( 100 );
 					gameLogic.resetTimeCount();
 					//(re)starts the count down timer				
 					gameLogic.getCountDownTimer().start();	
@@ -323,8 +393,8 @@ public class Game extends Activity {
 		//Set the picture
 		image1.setImageResource( picSetter( gameLogic.getFirstPicture() ) );		
 		
-		if( difficulty >= 2 ) image2.setImageResource( picSetter( gameLogic.getSecondPicture() ) );
-		if( difficulty == 3 ) image3.setImageResource( picSetter( gameLogic.getThirdPicture() ) );
+		if( numLetters >= 2 ) image2.setImageResource( picSetter( gameLogic.getSecondPicture() ) );
+		if( numLetters == 3 ) image3.setImageResource( picSetter( gameLogic.getThirdPicture() ) );
 		
 		//Set the button text
 		firstOptionButton.setText( gameLogic.getFirstButtonString() );
@@ -352,6 +422,26 @@ public class Game extends Activity {
 		return resource;		
 	}
 	
+	/**
+	 * The getAudioFocus method attempts to gain focus for playing audio.
+	 * If full access can't be gained, transitive access at a quiet volume
+	 * is attempted.  If that can't be granted, false is returned.
+	 * 
+	 * @return : true if focus in some form is granted, otherwise false
+	 */
+	private boolean getAudioFocus() {
+		
+		if(focusHelper != null) {
+			if(!focusHelper.requestFocus()) {
+				if(!focusHelper.requestQuietFocus()) return false;
+				else return true;
+			}
+			else return true;
+		}
+		
+		return false;
+	}
+	
 	 @Override
 	 public boolean onCreateOptionsMenu( Menu menu ) {
 	     getMenuInflater().inflate( R.menu.activity_game, menu );
@@ -367,6 +457,36 @@ public class Game extends Activity {
 	     }
 	     return super.onOptionsItemSelected( item );
 	 }		 
+	 
+     /**
+      * playButton plays the button sound
+      * 
+      * If there is an AudioFocusHelper (api >= 8) use it,
+      * otherwise default to SoundPlayer
+      */	
+      public void playButton() {
+	   	  if(SoundPlayer.getSoundEnabled()) {
+		   	      if(focusHelper != null) {
+		   		      if(getAudioFocus()) focusHelper.playButton();
+		   	      }
+		   	      else SoundPlayer.playButton(this);
+	   	  }
+     }
+
+	 /**
+	  * playTicking plays the ticking sound 
+	  * 
+      * If there is an AudioFocusHelper (api >= 8) use it,
+      * otherwise default to SoundPlayer
+      */	
+	  public void playTicking() {
+		  if(SoundPlayer.getSoundEnabled()) { 
+			  if(focusHelper != null) {
+	    		  if(getAudioFocus()) focusHelper.playTicking();
+			  }
+			  else SoundPlayer.playTicking(this);
+		  }
+	  }	 
 	 
 	 @Override
 	 /**
@@ -384,7 +504,8 @@ public class Game extends Activity {
 			 
 	         //cancel the ticking noise
 	    	 SoundPlayer.stop();
-	         
+			 if(focusHelper != null) focusHelper.abandonFocus();	        
+	    	 
 	    	 //continue backwards (kills current activity)
 	    	 finish();
 	    	 
@@ -392,6 +513,5 @@ public class Game extends Activity {
 	     }
 
 	     return super.onKeyDown(keyCode, event);
-	 }	 
-	 
+	 }		 
 }

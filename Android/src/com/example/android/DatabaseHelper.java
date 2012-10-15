@@ -8,12 +8,36 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+/**
+ *   This file is part of Handalfabetet.
+ *
+ *   Handalfabetet is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   Handalfabetet is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with Handalfabetet.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * The DatabaseHelper class is used to interact with the User database.
+ * 
+  * @author  : Grupp02
+  * @version : 2012-10-14, v0.5
+  * @License : GPLv3
+  * @Copyright :Copyright© 2012, Grupp02  
+  */
 public class DatabaseHelper extends SQLiteOpenHelper{
 	 
 	// Database Version
@@ -28,14 +52,18 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 	private static final String colName = "Username";
 	private static final String colPassword = "Password";
 	private static final String colHighScore = "HighScore";
+	private static final String colMaxDifficulty = "Difficult";
+	private static final String colMaxLetters = "Letters";
 	
-	static final String USER_VIEW = "UserVeiw";
+	static final String USER_VIEW = "UserView";
 	
 	private static final String DATABASE_CREATE = "CREATE TABLE "+ USER_TABLE +   
 								"(" + colName + " VARCHAR(36) PRIMARY KEY,"+ 
 									  colPassword + " TEXT,"+ 
 								      colHighScore + " INTEGER, " + 
-									  colImage + " blob)";
+									  colImage + " blob," +
+								      colMaxDifficulty + " INTEGER, " +
+								      colMaxLetters + " INTEGER)";
 	
 
 	private static final String DATABASE_CREATEe = "CREATE TABLE "+ USER_TABLE +   
@@ -46,7 +74,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-	//Skappar en tabel med tre kolumer UserName, UserPassword och HighScore
+	//Skappar en tabel med sex kolumer UserName, UserPassword, HighScore,
+	//Image, MaxDifficulty, och MaxLetters
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
@@ -83,6 +112,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         values.put(colPassword, user.getPassword()); // User Password
         values.put(colHighScore, user.getHighScore()); // User Highscore
         values.put(colImage, out.toByteArray()); // User Image
+        values.put(colMaxDifficulty, user.getMaxDifficulty()); // User Image
+        values.put(colMaxLetters, user.getMaxLetters()); // User Image        
         // Inserting Row
         db.insert(USER_TABLE, null, values);
         db.close(); // Closing database connection
@@ -93,14 +124,15 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getReadableDatabase();
      
         Cursor cursor = db.query(USER_TABLE, new String[] { colName,
-                colPassword, colHighScore, colImage }, colName + "=?",
+                colPassword, colHighScore, colImage, colMaxDifficulty, colMaxLetters }, colName + "=?",
                 new String[] { String.valueOf(userName) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
      // retriving user image from SQlite 
         byte[] blob = cursor.getBlob(cursor.getColumnIndex(colImage));
         Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0, blob.length);
-        User user = new User(cursor.getString(0),cursor.getInt(2), bmp);
+        User user = new User(cursor.getString(0),cursor.getInt(2), bmp,
+        		cursor.getInt(cursor.getColumnIndex(colMaxDifficulty)), cursor.getInt(cursor.getColumnIndex(colMaxLetters)));
         
         db.close();
         // return user
@@ -118,8 +150,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
       
         // Sort list
         Cursor cursor = db.query(USER_TABLE, new String[] {
-        						colName, colPassword, colHighScore, colImage}, 
-        							null, null, null, null,	colHighScore + " DESC");
+        						colName, colPassword, colHighScore, colImage, colMaxDifficulty,
+        						colMaxLetters}, null, null, null, null,	colHighScore + " DESC");
      
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
@@ -132,6 +164,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 byte[] blob = cursor.getBlob(cursor.getColumnIndex(colImage));
                 Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0, blob.length);
                 user.setUserImg(bmp);
+                user.setMaxDifficulty(cursor.getInt(cursor.getColumnIndex(colMaxDifficulty))); 
+                user.setMaxLetters(cursor.getInt(cursor.getColumnIndex(colMaxLetters)));                
                 // Adding user to list
                 userList.add(user);
             } while (cursor.moveToNext());
@@ -154,8 +188,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
       
         // Sort list
         Cursor cursor = db.query(USER_TABLE, new String[] {
-        						colName, colPassword, colHighScore, colImage}, 
-        							null, null, null, null, null);
+        						colName, colPassword, colHighScore, colImage,
+        						colMaxDifficulty, colMaxLetters}, 
+        							null, null, null, null, null, null);
      
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
@@ -168,6 +203,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 byte[] blob = cursor.getBlob(cursor.getColumnIndex(colImage));
                 Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0, blob.length);
                 user.setUserImg(bmp);
+                user.setMaxDifficulty(cursor.getInt(cursor.getColumnIndex(colMaxDifficulty))); 
+                user.setMaxLetters(cursor.getInt(cursor.getColumnIndex(colMaxLetters)));                 
                 // Adding user to list
                 userList.add(user);
             } while (cursor.moveToNext());
@@ -210,6 +247,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
  
         ContentValues values = new ContentValues();
         values.put(colHighScore, user.getHighScore());
+        values.put(colMaxDifficulty, user.getMaxDifficulty());
+        values.put(colMaxLetters, user.getMaxLetters());        
         values.put(colName, user.getName());
 //        values.put(colPassword, user.getPassword());
  

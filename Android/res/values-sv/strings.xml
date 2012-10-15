@@ -37,5 +37,10 @@
 	<string name="createPlayer">Skapa Spelare</string>	
     <string name="one_sign">Ett tecken</string>
     <string name="two_signs">Två tecken</string>
-    <string name="three_signs">Tre tecken</string>			                  
+    <string name="three_signs">Tre tecken</string>	
+    <string name="sound_toggle_view">Ljud På/Av:</string>
+    <string name="vibration_toggle_view">Vibrationer På/Av:</string>
+    <string name="volume_view">Ljud volym:</string>  
+    <string name="toggle_on">PÅ</string> 
+    <string name="toggle_off">AV</string>           		                  
 </resources>

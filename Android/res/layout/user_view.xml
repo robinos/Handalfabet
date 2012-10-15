@@ -30,6 +30,7 @@
                 android:layout_width="162dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text=""
                 android:textSize="8pt"
                 android:textStyle="bold"
                 android:typeface="sans" />

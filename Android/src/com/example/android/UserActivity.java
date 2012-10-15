@@ -1,7 +1,5 @@
 package com.example.android;
 
-
-
 import java.util.List;
 import android.app.Activity;
 import android.content.Context;
@@ -12,23 +10,50 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class UserActivity extends Activity {
-	
+/**
+ *   This file is part of Handalfabetet.
+ *
+ *   Handalfabetet is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   Handalfabetet is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with Handalfabetet.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
+/**
+ * The UserActivity class handles the user login screen.
+ * 
+ * @author  : Grupp02
+ * @version : 2012-10-14, v0.5
+ * @License : GPLv3
+ * @Copyright : Copyright© 2012, Grupp02
+ *
+ */
+public class UserActivity extends Activity {
+
+	//Audio Focus helper
+	private AudioFocusHelper focusHelper;
+
+	private SoundSettings soundData;
+	private final static int MAX_VOLUME = 100;	
+	
 	private Button loginButton; 
 	private ListView listView;
 	private List<User> list;
@@ -46,11 +71,16 @@ public class UserActivity extends Activity {
         setContentView(R.layout.activity_user);
         
         db = new DatabaseHelper(this); 
-         
-         //Make sure we're running on Honeycomb or higher to use ActionBar APIs
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-//          getActionBar().setDisplayHomeAsUpEnabled(true);
-        }	
+        soundData = new SoundSettings(this); 
+        
+        // Make sure we're running on Honeycomb or higher to use ActionBar APIs
+        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
+        	 //getActionBar().setDisplayHomeAsUpEnabled( true );
+        }     
+          
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO)
+        	focusHelper = new AudioFocusHelper(this);
+        else focusHelper = null;	
         
         
         listView =(ListView)findViewById(R.id.list);
@@ -94,11 +124,28 @@ public class UserActivity extends Activity {
 //        		  bitImg = user.getUserImg();
 //        	  }
 //        });
-	}
+        
+         //On resume for sound
+	     if(SoundPlayer.getSoundEnabled() == false) {
+	    	 if(focusHelper != null) {
+	             focusHelper.abandonFocus();
+	    	 }
+	    	 SoundPlayer.stop();
+	     }
+	     else SoundPlayer.resume();
+	}	
+	
+	 @Override
+	 public void onPause() {
+	     super.onPause();  // Always call the superclass method first
+
+	     // Pause sound when paused
+        if(SoundPlayer.getSoundEnabled()) SoundPlayer.pause();
+	 }	
 	
 	/** Called when the user clicks the Create New Player button */
 	public void createNewPlayer(View v) {
-		SoundPlayer.playButton(UserActivity.this);		
+		playButton();		
 		startActivity(new Intent("android.intent.action.CREATENEWPLAYER"));
 	}
 	
@@ -120,6 +167,15 @@ public class UserActivity extends Activity {
 	    }); 
 	}
 	
+    private void getSoundSettings() {	   
+     	String name = userName.getText().toString();
+     	
+ 	    // Restores data to SoundPlayer     	
+     	if(name != null) {
+     		if(name != "") soundData.getEntry(name); ;
+     	} 		     	    
+    }	
+	
 	/** Scales down User picture */
 	private static Bitmap scaleDownBitmap(Bitmap photo, int newHeight, Context context) {
 
@@ -136,8 +192,9 @@ public class UserActivity extends Activity {
 	
 	/** Called when the user clicks the Login button */
 	public void Login (View v){
-		SoundPlayer.playButton(UserActivity.this);		
+		playButton();		
 		Bitmap img = scaleDownBitmap(bitImg, 55 ,this);
+		getSoundSettings();
 		
 		Intent intent = getIntent();              
         intent.putExtra("PlayerName", userName.getText().toString()); 
@@ -145,6 +202,41 @@ public class UserActivity extends Activity {
         setResult(RESULT_OK,intent);
         finish();   
 	}		 
+	
+	/**
+	 * The getAudioFocus method attempts to gain focus for playing audio.
+	 * If full access can't be gained, transitive access at a quiet volume
+	 * is attempted.  If that can't be granted, false is returned.
+	 * 
+	 * @return : true if focus in some form is granted, otherwise false
+	 */
+	private boolean getAudioFocus() {
+		
+		if(focusHelper != null) {
+			if(!focusHelper.requestFocus()) {
+				if(!focusHelper.requestQuietFocus()) return false;
+				else return true;
+			}
+			else return true;
+		}
+		
+		return false;
+	}   
+    
+    /**
+     * playButton plays the button sound
+     * 
+     * If there is an AudioFocusHelper (api >= 8) use it,
+     * otherwise default to SoundPlayer
+     */	
+     public void playButton() {
+    	  if(SoundPlayer.getSoundEnabled()) {
+	   	      if(focusHelper != null) {
+	   		      if(getAudioFocus()) focusHelper.playButton();
+	   	      }
+	   	      else SoundPlayer.playButton(this);
+    	  }
+     }
 	
 	/** Skappar knappen högst upp i menyn */   
 	@Override

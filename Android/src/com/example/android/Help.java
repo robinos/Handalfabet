@@ -1,9 +1,5 @@
 package com.example.android;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -35,7 +31,7 @@ import android.widget.TextView;
  * The Help class.
  * 
  * @author  : Grupp02
- * @version : 2012-10-08, v0.5
+ * @version : 2012-10-14, v0.5
  * @License : GPLv3
  * @Copyright : Copyright© 2012, Grupp02
  *

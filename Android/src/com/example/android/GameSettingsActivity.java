@@ -34,13 +34,16 @@ import android.support.v4.app.NavUtils;
  * The GameSettingsAcitivty class.
  * 
  * @author  : Grupp02
- * @version : 2012-10-08, v0.5
+ * @version : 2012-10-14, v0.5
  * @License : GPLv3
  * @Copyright : Copyright© 2012, Grupp02
  *
  */
 public class GameSettingsActivity extends Activity {
 
+	//Audio Focus helper
+	private AudioFocusHelper focusHelper;	
+	
 	private Bitmap img;
 	private ImageView userImg;	
     private TextView userName;
@@ -53,8 +56,12 @@ public class GameSettingsActivity extends Activity {
         
         // Make sure we're running on Honeycomb or higher to use ActionBar APIs
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
-            //getActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        	 //getActionBar().setDisplayHomeAsUpEnabled( true );
+        }     
+          
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO)
+        	focusHelper = new AudioFocusHelper(this);
+        else focusHelper = null;
         
         // User Image      
         userImg = (ImageView)findViewById(R.id.userpic);
@@ -91,6 +98,67 @@ public class GameSettingsActivity extends Activity {
 		});         
     }
 
+	 @Override
+	 /**
+	  * onResume is overriden in order to utterly abandon sound focus if
+	  * sound has been turned off, or resume sound if on.
+	  * 
+	  */
+	 public void onResume() {
+	 	 super.onResume();
+	 	 
+	     if(SoundPlayer.getSoundEnabled() == false) {
+	    	 if(focusHelper != null) {
+	             focusHelper.abandonFocus();
+	    	 }
+	    	 SoundPlayer.stop();
+	     }
+	     else SoundPlayer.resume();
+	}	
+	
+	 @Override
+	 public void onPause() {
+	     super.onPause();  // Always call the superclass method first
+
+	     // Pause sound when paused
+        if(SoundPlayer.getSoundEnabled()) SoundPlayer.pause();
+	 }    
+    
+	/**
+	 * The getAudioFocus method attempts to gain focus for playing audio.
+	 * If full access can't be gained, transitive access at a quiet volume
+	 * is attempted.  If that can't be granted, false is returned.
+	 * 
+	 * @return : true if focus in some form is granted, otherwise false
+	 */
+	private boolean getAudioFocus() {
+		
+		if(focusHelper != null) {
+			if(!focusHelper.requestFocus()) {
+				if(!focusHelper.requestQuietFocus()) return false;
+				else return true;
+			}
+			else return true;
+		}
+		
+		return false;
+	}    
+    
+    /**
+     * playButton plays the button sound
+     * 
+     * If there is an AudioFocusHelper (api >= 8) use it,
+     * otherwise default to SoundPlayer
+     */	
+    public void playButton() {
+	  	if(SoundPlayer.getSoundEnabled()) {
+		   	if(focusHelper != null) {
+		   	    if(getAudioFocus()) focusHelper.playButton();
+		   	}
+		   	else SoundPlayer.playButton(this);
+	  	}
+   }
+	
     @Override
     public boolean onCreateOptionsMenu( Menu menu ) {
         getMenuInflater().inflate( R.menu.activity_game_settings, menu );

@@ -1,4 +1,17 @@
 
+package com.example.android;
+
+import java.util.List;
+
+import android.os.Build;
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ListView;
+import android.support.v4.app.NavUtils;
+
 /**
  *   This file is part of Handalfabetet.
  *
@@ -17,32 +30,13 @@
  */
 
 /**
- * The DisaplyHighscoreActivity class.
+ * The DisplayHighscoreActvity class is used to display the Highscore screen.
  * 
- * @author  : Grupp02
- * @version : 2012-10-08, v0.4
- * @License : GPLv3
- * @Copyright :Copyright© 2012, Grupp02
- *
- */
-
-
-package com.example.android;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import android.os.Build;
-import android.os.Bundle;
-import android.app.Activity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.support.v4.app.NavUtils;
-
+  * @author  : Grupp02
+  * @version : 2012-10-14, v0.5
+  * @License : GPLv3
+  * @Copyright :Copyright© 2012, Grupp02  
+  */
 public class DisplayHighscoreActivity extends Activity {
 
 	private ListView listView;

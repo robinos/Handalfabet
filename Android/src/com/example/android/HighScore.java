@@ -24,10 +24,10 @@ import android.widget.Button;
  */
 
 /**
- * The HighScore class.
+ * The HighScore class is no longer used.
  * 
  * @author  : Grupp02
- * @version : 2012-10-08, v0.4
+ * @version : 2012-10-14, v0.4
  * @License : GPLv3
  * @Copyright : Copyright© 2012, Grupp02
  *

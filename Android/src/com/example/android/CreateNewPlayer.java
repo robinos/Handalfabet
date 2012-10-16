@@ -3,8 +3,11 @@ package com.example.android;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -48,7 +51,7 @@ public class CreateNewPlayer extends Activity{
 	
 	//Audio Focus helper
 	private AudioFocusHelper focusHelper;	
-	
+	 
 	private static final int REQUEST_CODE = 1;
 	private Bitmap bitmap;
 	private ImageView imageView;
@@ -114,25 +117,42 @@ public class CreateNewPlayer extends Activity{
          if(SoundPlayer.getSoundEnabled()) SoundPlayer.pause();
 	 }	 
 	 
-	/** Called when the user clicks the Create New Player button */
+	/**
+	 * Called when the user clicks the Create New Player button
+	 * If the user name already exits a popup dialog appears and
+	 * ask the user to write another name.
+	 * If the name is valid and does not exits the activity finish
+	 * and store the name and/if picture in db
+	 * 
+	 * @param v
+	 */
 	public void createPlayer(View v){
 		
 		
 		if(checkIfUserNameAlreadyExits(userName.getText().toString())) {
-			//Show dialog name already exits
-			playButton();
-		
 			if (checkIfUsernameIsValid(userName.getText().toString())) {
 				playButton();		
-				BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+				BitmapDrawable drawable = 
+									(BitmapDrawable) imageView.getDrawable();
 				Bitmap bitmap = drawable.getBitmap();		
-				User user = new User(userName.getText().toString(), 0,  bitmap, 0, 0);		
+				User user = new User(userName.getText().toString()
+													, 0,  bitmap, 0, 0);		
 				db.addUser(user);
 				soundData.addEntry(user);
 				finish();
 			}
 		}else {
-			//Show dialog that the username is invalid
+			//Show a dialog that the username is invalid
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("Användarnamnet är inte tillåtet")
+			      .setCancelable(false)
+			      .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			          public void onClick(DialogInterface dialog, int id) {
+			        	  createPlayerButton.setEnabled(false);
+			          }
+			      });
+			AlertDialog alert = builder.create();
+			alert.show();
 			playButton();
 		}
 	}
@@ -145,11 +165,15 @@ public class CreateNewPlayer extends Activity{
 	 */
 	private boolean checkIfUserNameAlreadyExits(String name) {
 		
-		if(db.getUser(name).equals(name)) {
-			return false;
-		}else{
-			return true;
+		List<User> userList = db.getAllUsersName();
+		
+		for(User user : userList) {
+			if(user.getName().equals(name)) {
+				return false;
+			}
 		}
+		return true;
+
 	}
 	
 	/**

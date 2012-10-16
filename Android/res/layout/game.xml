@@ -31,7 +31,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/next_letter"
-        android:contentDescription="@string/next_button" />
+        android:contentDescription="@string/next_button"
+        android:focusable="true" />
 
     <TextView
         android:id="@+id/total_point_view"
@@ -60,7 +61,7 @@
         android:layout_alignBaseline="@id/point_view"
         android:layout_alignBottom="@id/point_view"
         android:layout_toRightOf="@id/point_view"        
-        android:text="0"
+        android:text="@string/zero"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="30dp" />
 
@@ -71,7 +72,7 @@
         android:layout_alignBaseline="@id/total_point_view"
         android:layout_alignBottom="@id/total_point_view"
         android:layout_toRightOf="@id/total_point_view"
-        android:text="0"
+        android:text="@string/zero"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="30dp" />
 
@@ -123,7 +124,8 @@
         android:layout_alignLeft="@id/image_view1"             
         android:contentDescription="@string/first_opt_button"
         android:onClick="markButtonsAfterClicked"
-        android:text="abc" />
+        android:text=""        
+        android:focusable="true" />
 
     <Button
         android:id="@+id/second_opt_button"
@@ -136,7 +138,8 @@
         android:layout_centerVertical="true"      
         android:contentDescription="@string/second_opt_button"
         android:onClick="markButtonsAfterClicked"
-        android:text="abc" />
+        android:text=""
+        android:focusable="true" />
 
     <Button
         android:id="@+id/third_opt_button"
@@ -149,7 +152,8 @@
         android:layout_alignLeft="@id/image_view3"                   
         android:contentDescription="@string/third_opt_button"
         android:onClick="markButtonsAfterClicked"
-        android:text="abc" />
+        android:text=""
+        android:focusable="true" />
 
 </RelativeLayout>
 

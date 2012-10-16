@@ -50,17 +50,17 @@ public class GameEnd extends Activity {
 	private DatabaseHelper db;
 	private int difficulty;
 	private int numLetters;
-	private int from = 1;
-	
-    public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";
-    public final static String LETTERS = "com.example.Android.DIFFICULTY";
-    //From is used to let Game know that the value it receives is from GamEnd
-    //and not LevelChooser Activity
-    public final static String FROM = "com.example.Android.FROM";	
     
     private Bitmap img;
 	private ImageView userImg;   
+    private TextView userStatus;
+    private TextView userName;	
 	
+    private int numCorrect;
+    private int totalScore;
+    private int averageTime;
+    private TextView highView;
+    
     @Override
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
@@ -75,8 +75,8 @@ public class GameEnd extends Activity {
         	focusHelper = new AudioFocusHelper(this);
         else focusHelper = null;        
         
-        difficulty = getIntent().getIntExtra( Game.DIFFLEVEL, 1 );         
-        numLetters = getIntent().getIntExtra( Game.LETTERS, 1 );
+        difficulty = getIntent().getIntExtra( "Difficulty", 1 );         
+        numLetters = getIntent().getIntExtra( "Letters", 1 );
         
         db = new DatabaseHelper(this);
         
@@ -84,13 +84,13 @@ public class GameEnd extends Activity {
         final ImageButton highScoreButton = ( ImageButton ) findViewById( R.id.high_scores_button ); 
         final ImageButton mainMenuButton = ( ImageButton ) findViewById( R.id.main_menu_button );
         
-        final TextView highView = (TextView)findViewById(R.id.high_view);
-        final TextView userStatus = (TextView)findViewById(R.id.textView1);
-        final TextView userName = (TextView)findViewById(R.id.textView2);         
+        highView = (TextView)findViewById(R.id.high_view);        
+        userStatus = (TextView)findViewById(R.id.textView1);
+        userName = (TextView)findViewById(R.id.textView2);
         
-        int numCorrect = getIntent().getIntExtra( Game.NUMCORRECT, 0 );         
-        int totalScore = getIntent().getIntExtra( Game.TOTALSCORE, 0 ); 
-        int averageTime = getIntent().getIntExtra( Game.AVERAGETIME, 0 );    
+        numCorrect = getIntent().getIntExtra( "NumCorrect", 0 );         
+        totalScore = getIntent().getIntExtra( "TotalScore", 0 ); 
+        averageTime = getIntent().getIntExtra( "AverageTime", 0 );    
         
         // User Image      
         userImg = (ImageView)findViewById(R.id.userpic);
@@ -126,9 +126,8 @@ public class GameEnd extends Activity {
 			public void onClick( View v ) {
 				playButton();					
 				startActivity( new Intent( "android.intent.action.GAME" )
-		        .putExtra( DIFFLEVEL, difficulty ) 
-		        .putExtra( LETTERS, numLetters ) 	
-		        .putExtra( FROM, from ) 		        
+				.putExtra( "Difficulty", difficulty )
+				.putExtra( "Letters", numLetters )		        
 		        .putExtra( "userImg", img )		        
 		        .putExtra( "Name", userName.getText().toString() ) );
 				
@@ -188,6 +187,41 @@ public class GameEnd extends Activity {
         if(SoundPlayer.getSoundEnabled()) SoundPlayer.pause();
 	 }   
     
+		@Override
+		public void onSaveInstanceState(Bundle savedInstanceState) {
+		    // Save name, user status, and user picture
+		    savedInstanceState.putString("Name", userName.getText().toString());
+		    savedInstanceState.putString("status", userStatus.getText().toString());	     
+		    savedInstanceState.putParcelable("picture", img);
+		    savedInstanceState.putInt("difficulty", difficulty);
+		    savedInstanceState.putInt("letters", numLetters);
+		    savedInstanceState.putInt("NumScore", numCorrect);
+		    savedInstanceState.putInt("TotalScore", totalScore);
+		    savedInstanceState.putInt("AverageTime", averageTime);
+		    savedInstanceState.putString("High", highView.getText().toString());		    
+		    
+		    // Always call the superclass so it can save the view hierarchy state
+		    super.onSaveInstanceState(savedInstanceState);
+		} 
+		
+		@Override
+		public void onRestoreInstanceState(Bundle savedInstanceState) {
+		    // Always call the superclass so it can restore the view hierarchy
+		    super.onRestoreInstanceState(savedInstanceState);
+		   
+		    // Restore name, user status, and user picture
+		    userName.setText(savedInstanceState.getString( "Name" ));
+		    userStatus.setText(savedInstanceState.getString( "status" ));
+		    img = savedInstanceState.getParcelable("picture");
+		    userImg.setImageBitmap(img);
+		    difficulty = savedInstanceState.getInt("difficulty");
+		    numLetters = savedInstanceState.getInt("letters");
+		    numCorrect = savedInstanceState.getInt("NumScore");
+		    totalScore = savedInstanceState.getInt("TotalScore");
+		    averageTime = savedInstanceState.getInt("AverageTime");
+		    highView.setText(savedInstanceState.getString("High"));
+		}	 
+	 
 	/**
 	 * The getAudioFocus method attempts to gain focus for playing audio.
 	 * If full access can't be gained, transitive access at a quiet volume

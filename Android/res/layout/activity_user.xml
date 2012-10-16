@@ -17,18 +17,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="Login"
-        android:text="@string/login" />
+        android:text="@string/login"
+        android:focusable="true" />
   	
   	<Button
     	android:id="@+id/createNewPlayer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="createNewPlayer"
-        android:text="@string/createNewPlayer" />
+        android:text="@string/createNewPlayer"
+        android:focusable="true" />
             
      <ListView
         android:id="@+id/list"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:focusable="true" />
 
 </LinearLayout> 

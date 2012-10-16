@@ -31,7 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"              
             android:layout_centerVertical="true"
-            android:text="@string/three_signs" />
+            android:text="@string/three_signs"
+            android:focusable="true" />
 
         <Button
             android:id="@+id/secondLevelButton"
@@ -39,7 +40,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"            
             android:layout_above="@+id/thirdLevelButton"
-            android:text="@string/two_signs" />
+            android:text="@string/two_signs" 
+            android:focusable="true" />
 
         <Button
             android:id="@+id/firstLevelButton"
@@ -47,7 +49,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/secondLevelButton"
             android:layout_centerHorizontal="true"
-            android:text="@string/one_sign" />
+            android:text="@string/one_sign"
+            android:focusable="true" />
 
     <RadioGroup
         android:id="@+id/radialDifficulty"
@@ -61,23 +64,26 @@
             android:id="@+id/difficulty1Radial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1"
+            android:text="@string/one"
             android:onClick="onRadioButtonClicked"
-            android:checked="true" />
+            android:checked="true"
+            android:focusable="true" />
 
         <RadioButton
             android:id="@+id/difficulty2Radial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2"
-            android:onClick="onRadioButtonClicked" />
+            android:text="@string/two"
+            android:onClick="onRadioButtonClicked" 
+            android:focusable="true" />
 
         <RadioButton
             android:id="@+id/difficulty3Radial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3"
-            android:onClick="onRadioButtonClicked" />
+            android:text="@string/three"
+            android:onClick="onRadioButtonClicked"
+            android:focusable="true" />
     </RadioGroup>
    
     </RelativeLayout>

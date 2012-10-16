@@ -22,7 +22,8 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/question_view"
         android:background="@drawable/next_letter"
-        android:contentDescription="@string/next_button" />
+        android:contentDescription="@string/next_button"
+        android:focusable="true" />
 
     <TextView
         android:id="@+id/show_round_points"
@@ -33,7 +34,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginLeft="20dp" 
         android:layout_marginRight="20dp"                
-        android:text="0"
+        android:text="@string/zero"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="25dp" />
 
@@ -46,7 +47,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginLeft="20dp" 
         android:layout_marginRight="20dp"                 
-        android:text="0"
+        android:text="@string/zero"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="25dp" />
 
@@ -127,8 +128,9 @@
         android:layout_toRightOf="@+id/image_view1"
         android:layout_alignLeft="@id/image_view2"           
         android:contentDescription="@string/second_opt_button"
-        android:text="abc"        
-        android:onClick="markButtonsAfterClicked" />
+        android:text=""        
+        android:onClick="markButtonsAfterClicked"
+        android:focusable="true" />
 
     <Button
         android:id="@+id/first_opt_button"
@@ -139,8 +141,9 @@
         android:layout_alignParentLeft="true"   
         android:layout_alignLeft="@id/image_view1"         
         android:contentDescription="@string/first_opt_button"
-        android:text="abc"         
-        android:onClick="markButtonsAfterClicked" />
+        android:text=""         
+        android:onClick="markButtonsAfterClicked"
+        android:focusable="true" />
 
     <Button
         android:id="@+id/third_opt_button"
@@ -152,7 +155,8 @@
         android:layout_alignLeft="@id/image_view3"           
         android:contentDescription="@string/third_opt_button"
         android:onClick="markButtonsAfterClicked"
-        android:text="abc" />
+        android:text=""
+        android:focusable="true" />
 
 </RelativeLayout>
 

@@ -49,8 +49,8 @@ public class LevelChooserActivity extends Activity {
 	//DifficultyLevel
 	private int difficulty = 1;
 	private int numLetters;	
-	public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";
-	public final static String LETTERS = "com.example.Android.LETTERS";
+	//public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";
+	//public final static String LETTERS = "com.example.Android.LETTERS";
 	
 	private Button firstLevelButton;
 	private Button secondLevelButton;
@@ -175,8 +175,8 @@ public class LevelChooserActivity extends Activity {
 		
 		return false;
 	}    
-    
-    /**
+
+	/**
      * playButton plays the button sound
      * 
      * If there is an AudioFocusHelper (api >= 8) use it,
@@ -208,11 +208,38 @@ public class LevelChooserActivity extends Activity {
         return super.onOptionsItemSelected( item );
     }
     
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+	    // Save name, user status, and user picture
+	    savedInstanceState.putString("Name", userName.getText().toString());
+	    savedInstanceState.putString("status", userStatus.getText().toString());	     
+	    savedInstanceState.putParcelable("picture", img);
+	    savedInstanceState.putInt("difficulty", difficulty);
+	    savedInstanceState.putInt("letters", numLetters);	    
+	    
+	    // Always call the superclass so it can save the view hierarchy state
+	    super.onSaveInstanceState(savedInstanceState);
+	} 
+	
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+	    // Always call the superclass so it can restore the view hierarchy
+	    super.onRestoreInstanceState(savedInstanceState);
+	   
+	    // Restore name, user status, and user picture
+	    userName.setText(savedInstanceState.getString( "Name" ));
+	    userStatus.setText(savedInstanceState.getString( "status" ));
+	    img = savedInstanceState.getParcelable("picture");
+	    userImg.setImageBitmap(img);
+	    difficulty = savedInstanceState.getInt("difficulty");
+	    numLetters = savedInstanceState.getInt("letters");	    
+	}    
+    
 	/** Called when the user clicks a difficulty button*/
 	public void chooseDifficulty( View v ) {
 		Intent intent = new Intent("android.intent.action.GAME");
-		intent.putExtra( DIFFLEVEL, difficulty );
-		intent.putExtra( LETTERS, numLetters );		
+		intent.putExtra( "Difficulty", difficulty );
+		intent.putExtra( "Letters", numLetters );		
 		intent.putExtra("Name", userName.getText().toString());
 		intent.putExtra("userImg", img );
 		startActivity(intent);

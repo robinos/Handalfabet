@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android1="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <include
+        android:layout_height="wrap_content"
+        layout="@layout/user_view" />
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".LevelChooserActivity" >
+
+        <TextView
+            android:id="@+id/difficulty_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/title_activity_level_chooser"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <RadioGroup
+            android:id="@+id/radialDifficulty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/difficulty_view"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/difficulty1Radial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:focusable="true"
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/one" />
+
+            <RadioButton
+                android:id="@+id/difficulty2Radial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/two" />
+
+            <RadioButton
+                android:id="@+id/difficulty3Radial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:onClick="onRadioButtonClicked"
+                android:text="@string/three" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/thirdLevelButton"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:focusable="true"
+            android:text="@string/three_signs" />
+
+        <Button
+            android:id="@+id/secondLevelButton"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/thirdLevelButton"
+            android:layout_alignLeft="@+id/thirdLevelButton"
+            android:focusable="true"
+            android:text="@string/two_signs" />
+
+        <Button
+            android:id="@+id/firstLevelButton"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/secondLevelButton"
+            android:layout_above="@+id/secondLevelButton"
+            android:focusable="true"
+            android:text="@string/one_sign" />
+
+    </RelativeLayout>
+
+</LinearLayout>

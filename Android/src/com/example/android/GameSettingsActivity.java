@@ -124,6 +124,29 @@ public class GameSettingsActivity extends Activity {
         if(SoundPlayer.getSoundEnabled()) SoundPlayer.pause();
 	 }    
     
+		@Override
+		public void onSaveInstanceState(Bundle savedInstanceState) {
+		    // Save name, user status, and user picture
+		    savedInstanceState.putString("Name", userName.getText().toString());
+		    savedInstanceState.putString("status", userStatus.getText().toString());	     
+		    savedInstanceState.putParcelable("picture", img);
+		    
+		    // Always call the superclass so it can save the view hierarchy state
+		    super.onSaveInstanceState(savedInstanceState);
+		} 
+		
+		@Override
+		public void onRestoreInstanceState(Bundle savedInstanceState) {
+		    // Always call the superclass so it can restore the view hierarchy
+		    super.onRestoreInstanceState(savedInstanceState);
+		   
+		    // Restore name, user status, and user picture
+		    userName.setText(savedInstanceState.getString( "Name" ));
+		    userStatus.setText(savedInstanceState.getString( "status" ));
+		    img = savedInstanceState.getParcelable("picture");
+		    userImg.setImageBitmap(img);
+		}	 
+	 
 	/**
 	 * The getAudioFocus method attempts to gain focus for playing audio.
 	 * If full access can't be gained, transitive access at a quiet volume

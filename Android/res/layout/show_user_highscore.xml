@@ -6,7 +6,8 @@
 		<ImageView 
 			android:id="@+id/user_img" 
 			android:layout_width="40dp"
-			android:layout_height="50dp">
+			android:layout_height="50dp"
+			android:contentDescription="@string/picture_view" >
 		</ImageView>
 		
 		<LinearLayout

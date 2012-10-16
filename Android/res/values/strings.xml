@@ -42,5 +42,9 @@
     <string name="vibration_toggle_view">Vibrations On/Off:</string>
     <string name="volume_view">Sound Volume:</string> 
     <string name="toggle_on">ON</string> 
-    <string name="toggle_off">OFF</string>                	  	  
+    <string name="toggle_off">OFF</string>
+    <string name="zero">0</string>     
+    <string name="one">1</string> 
+    <string name="two">2</string>
+    <string name="three">3</string>                             	  	  
 </resources>

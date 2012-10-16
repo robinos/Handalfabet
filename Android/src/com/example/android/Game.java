@@ -49,14 +49,6 @@ public class Game extends Activity {
 	
 	 //Audio Focus helper
 	 private AudioFocusHelper focusHelper;
-	 
-	 //Number right, total score, and average time for passing on to
-	 //game end
-	 public final static String NUMCORRECT = "com.example.Android.NUMCORRECT";	
-	 public final static String TOTALSCORE = "com.example.Android.TOTALSCORE";	
-	 public final static String AVERAGETIME = "com.example.Android.AVERAGETIME";
-     public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";
-     public final static String LETTERS = "com.example.Android.DIFFICULTY";	 
      
 	 //GameLogic object
 	 GameLogic gameLogic;
@@ -100,14 +92,8 @@ public class Game extends Activity {
         TextView questionView = ( TextView ) findViewById( R.id.question_view );        
         
         //game difficulty, default level 1
-        difficulty = getIntent().getIntExtra( LevelChooserActivity.DIFFLEVEL, 1 ); 
-        numLetters = getIntent().getIntExtra( LevelChooserActivity.LETTERS, 1 );         
-        int from = getIntent().getIntExtra( GameEnd.FROM, 0 );
-        
-        if(from != 0) {
-            difficulty = getIntent().getIntExtra( GameEnd.DIFFLEVEL, 1 ); 
-            numLetters = getIntent().getIntExtra( GameEnd.LETTERS, 1 );         	
-        }
+        difficulty = getIntent().getIntExtra( "Difficulty", 1 ); 
+        numLetters = getIntent().getIntExtra( "Letters", 1 );         
         
         //The game logic object
         gameLogic = new GameLogic( difficulty, numLetters, this );        
@@ -179,6 +165,9 @@ public class Game extends Activity {
 	    	 SoundPlayer.stop();
 	     }
 	     else SoundPlayer.resume();
+	     
+		 //restarts the count down timer
+		 gameLogic.getCountDownTimer().start();	     
 	}	
 	
 	 @Override
@@ -187,7 +176,36 @@ public class Game extends Activity {
 
 	     // Pause sound when paused
          if(SoundPlayer.getSoundEnabled()) SoundPlayer.pause();
+		 //cancels the count down timer
+		 gameLogic.getCountDownTimer().cancel();
 	 }	 
+	 
+		@Override
+		public void onSaveInstanceState(Bundle savedInstanceState) {
+		    // Save name, user status, and user picture
+		    savedInstanceState.putString("Name", userName.getText().toString());
+		    savedInstanceState.putString("status", userStatus.getText().toString());	     
+		    savedInstanceState.putParcelable("picture", img);
+		    savedInstanceState.putInt("difficulty", difficulty);
+		    savedInstanceState.putInt("letters", numLetters);
+		    
+		    // Always call the superclass so it can save the view hierarchy state
+		    super.onSaveInstanceState(savedInstanceState);
+		} 
+		
+		@Override
+		public void onRestoreInstanceState(Bundle savedInstanceState) {
+		    // Always call the superclass so it can restore the view hierarchy
+		    super.onRestoreInstanceState(savedInstanceState);
+		   
+		    // Restore name, user status, and user picture
+		    userName.setText(savedInstanceState.getString( "Name" ));
+		    userStatus.setText(savedInstanceState.getString( "status" ));
+		    img = savedInstanceState.getParcelable("picture");
+		    userImg.setImageBitmap(img);
+		    difficulty = savedInstanceState.getInt("difficulty");
+		    numLetters = savedInstanceState.getInt("letters");		    
+		}	 
 	 
 	 /**
 	  * getTimerBar
@@ -342,11 +360,11 @@ public class Game extends Activity {
 			    	 finish();					
 					
 				    Intent endIntent = new Intent( "android.intent.action.GAMEEND" );
-				    endIntent.putExtra( NUMCORRECT, gameLogic.getNumCorrect() );
-				    endIntent.putExtra( TOTALSCORE, gameLogic.getTotalScore() );
-				    endIntent.putExtra( AVERAGETIME, gameLogic.getAverageTime() );
-				    endIntent.putExtra( DIFFLEVEL, difficulty ); 	
-				    endIntent.putExtra( LETTERS, numLetters ); 				    
+				    endIntent.putExtra( "NumCorrect", gameLogic.getNumCorrect() );
+				    endIntent.putExtra( "TotalScore", gameLogic.getTotalScore() );
+				    endIntent.putExtra( "AverageTime", gameLogic.getAverageTime() );
+				    endIntent.putExtra( "Difficulty", difficulty ); 	
+				    endIntent.putExtra( "Letters", numLetters ); 				    
 				    endIntent.putExtra("name", getIntent().getStringExtra("Name"));
 				    endIntent.putExtra("userImg", img );
 				    startActivity( endIntent );		

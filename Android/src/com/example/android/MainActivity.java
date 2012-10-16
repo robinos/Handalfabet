@@ -50,7 +50,6 @@ public class MainActivity extends Activity {
 	public String name = "";
 	private String playerName;
 	private Button startGameButton;
-	private Button newPlayerButton;
 	private Button settingsButton;
 	private Bitmap img;
 	
@@ -68,19 +67,12 @@ public class MainActivity extends Activity {
         	focusHelper = new AudioFocusHelper(this);
         else focusHelper = null;	
           
-     // Check whether we're recreating a previously destroyed instance
-        if (savedInstanceState != null) {
-        	name = savedInstanceState.getString(playerName);
-        	nameField.setText(name);
-        	userStatus.setText(R.string.logged_in);
-        }
-        
         userImg = (ImageView)findViewById(R.id.userpic);
         userStatus = (TextView)findViewById(R.id.textView1);
         nameField = (TextView) findViewById( R.id.textView2 );  
+        
         startGameButton = (Button)findViewById(R.id.startaSpel);
-        newPlayerButton = (Button)findViewById(R.id.bytspelare);
-        settingsButton = (Button)findViewById(R.id.svarighet);
+        settingsButton = (Button)findViewById(R.id.settings);             
         
 		startGameButton.setEnabled(false);  
 		settingsButton.setEnabled(false); 
@@ -114,20 +106,33 @@ public class MainActivity extends Activity {
 	
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
-	    // Save the user's current game state
-	    savedInstanceState.putString(playerName, feriz);
+	    // Save name, user status, and user picture
+	    savedInstanceState.putString("Name", playerName);
+	    savedInstanceState.putString("status", userStatus.getText().toString());	     
+	    savedInstanceState.putParcelable("picture", img);
+	    savedInstanceState.putBoolean("game", startGameButton.isEnabled());	
+	    savedInstanceState.putBoolean("settings", settingsButton.isEnabled());	
 	    
 	    // Always call the superclass so it can save the view hierarchy state
 	    super.onSaveInstanceState(savedInstanceState);
 	} 
 	
+	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 	    // Always call the superclass so it can restore the view hierarchy
 	    super.onRestoreInstanceState(savedInstanceState);
 	   
-	    // Restore state members from saved instance
-	    name = savedInstanceState.getString(playerName);
-	}
+	    // Restore name, user status, and user picture
+	    playerName = savedInstanceState.getString( "Name" );
+	    name = playerName;
+	    nameField.setText(playerName);
+	    userStatus.setText(savedInstanceState.getString( "status" ));
+	    img = savedInstanceState.getParcelable("picture");
+	    userImg.setImageBitmap(img);
+	    startGameButton.setEnabled(savedInstanceState.getBoolean("game"));
+	    settingsButton.setEnabled(savedInstanceState.getBoolean("settings"));	    
+	}		
+		
 	
 //	@Override
 //	public void onResume() {
@@ -207,7 +212,7 @@ public class MainActivity extends Activity {
 	 }
 	
 	 /** Called when the user clicks the settings button (formerly level)*/
-	public void level(View v){
+	public void settings(View v){
 		playButton();		
 		Intent intent = new Intent("android.intent.action.GAMESETTINGSACTIVITY");
 		intent.putExtra("Name", name);

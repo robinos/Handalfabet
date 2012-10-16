@@ -169,8 +169,16 @@ public class SoundSettingsActivity extends Activity implements SeekBar.OnSeekBar
     
 		@Override
 		public void onSaveInstanceState(Bundle savedInstanceState) {
+		    // Save name, user status, and user picture
+		    savedInstanceState.putString("Name", userName.getText().toString());
+		    savedInstanceState.putString("status", userStatus.getText().toString());	     
+		    savedInstanceState.putParcelable("picture", img);			
+			
 		    // Save the user's current game state
-		    savedInstanceState.putInt("volume", soundVolume);		    
+		    savedInstanceState.putInt("volume", soundVolume);
+		    savedInstanceState.putBoolean("sound", soundButton.isChecked());	
+		    savedInstanceState.putBoolean("vibration", vibrationButton.isChecked());
+		    
 		    updateSettings();
 		    
 		    // Always call the superclass so it can save the view hierarchy state
@@ -180,10 +188,20 @@ public class SoundSettingsActivity extends Activity implements SeekBar.OnSeekBar
 		public void onRestoreInstanceState(Bundle savedInstanceState) {
 		    // Always call the superclass so it can restore the view hierarchy
 		    super.onRestoreInstanceState(savedInstanceState);
-		   
-		    getSettings();
-		}	 
-	 
+		    
+		    // Restore name, user status, and user picture
+		    userName.setText(savedInstanceState.getString( "Name" ));
+		    userStatus.setText(savedInstanceState.getString( "status" ));
+		    img = savedInstanceState.getParcelable("picture");
+		    userImg.setImageBitmap(img);		    
+		    
+		    soundVolume = savedInstanceState.getInt( "volume" );
+		    soundButton.setChecked(savedInstanceState.getBoolean( "sound" ));
+		    vibrationButton.setChecked(savedInstanceState.getBoolean( "vibration" ));		    	    
+		    
+		    volumeBar.setProgress(soundVolume);	
+		}	  		
+		
 		@Override
 		protected void onStop() {
 		    super.onStop();  // Always call the superclass method first

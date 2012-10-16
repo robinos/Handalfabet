@@ -81,5 +81,28 @@ public class ProfileSettingsActivity extends Activity {
         }
         return super.onOptionsItemSelected( item );
     }
+    
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+	    // Save name, user status, and user picture
+	    savedInstanceState.putString("Name", userName.getText().toString());
+	    savedInstanceState.putString("status", userStatus.getText().toString());	     
+	    savedInstanceState.putParcelable("picture", img);
+	    
+	    // Always call the superclass so it can save the view hierarchy state
+	    super.onSaveInstanceState(savedInstanceState);
+	} 
+	
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+	    // Always call the superclass so it can restore the view hierarchy
+	    super.onRestoreInstanceState(savedInstanceState);
+	   
+	    // Restore name, user status, and user picture
+	    userName.setText(savedInstanceState.getString( "Name" ));
+	    userStatus.setText(savedInstanceState.getString( "status" ));
+	    img = savedInstanceState.getParcelable("picture");
+	    userImg.setImageBitmap(img);
+	}    
 
 }

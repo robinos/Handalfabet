@@ -6,8 +6,6 @@
 
     <include
         android:layout_height="wrap_content"
-        android:layout_column="0"
-        android:layout_row="0"
         layout="@layout/user_view" />
 
     <RelativeLayout
@@ -23,7 +21,8 @@
         android:background="@drawable/new_game"
         android:layout_alignParentRight="true" 
         android:layout_below="@id/main_menu_button"               
-        android:contentDescription="@string/newGame" />        
+        android:contentDescription="@string/newGame"
+        android:focusable="true" />        
         
     <ImageButton
         android:id="@+id/main_menu_button"
@@ -32,7 +31,8 @@
         android:background="@drawable/main_menu"
         android:layout_alignParentRight="true" 
         android:layout_below="@id/high_scores_button"               
-        android:contentDescription="@string/main_menu" />
+        android:contentDescription="@string/main_menu"
+        android:focusable="true" />
 
     <ImageButton
         android:id="@+id/high_scores_button"
@@ -41,7 +41,8 @@
         android:layout_alignParentTop="true"         
         android:layout_alignParentRight="true"        
         android:background="@drawable/high_scores"
-        android:contentDescription="@string/highScore" />        
+        android:contentDescription="@string/highScore"
+        android:focusable="true" />        
         
         <TextView
             android:id="@+id/answer_view"
@@ -61,7 +62,7 @@
            android:layout_alignParentTop="true"
            android:background="#AA000000"
            android:textColor="#ffffffff"                      
-           android:text="0"
+           android:text="@string/zero"
            android:textAppearance="?android:attr/textAppearanceMedium"
            android:textSize="25dp" />         
         
@@ -84,7 +85,7 @@
             android:layout_alignRight="@+id/answer_view"
             android:layout_toRightOf="@+id/average_view"
             android:background="#AA000000"
-            android:text="0"
+            android:text="@string/zero"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#ffffffff"
             android:textSize="25dp" />
@@ -119,7 +120,7 @@
         android:layout_alignBottom="@+id/total_point_view"
         android:layout_toRightOf="@+id/total_point_view"
         android:textSize="25dp"        
-        android:text="0"
+        android:text="@string/zero"
         android:textAppearance="?android:attr/textAppearanceMedium" />        
         
     </RelativeLayout>

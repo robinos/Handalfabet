@@ -9,7 +9,8 @@
         android:layout_width="40dp"
 		android:layout_height="50dp"
         android:layout_marginRight="5pt"
-        android:src="@drawable/ic_launcher"/>
+        android:src="@drawable/ic_launcher"
+        android:contentDescription="@string/picture_view" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"

@@ -13,11 +13,10 @@
             android:id="@+id/userImage"
             android:layout_width="92dp"
             android:layout_height="81dp"
-            android:layout_above="@+id/captureFront"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true" 
-            android:src="@drawable/ic_launcher"/>"
-
+            android:src="@drawable/ic_launcher"
+            android:text="@string/zero"
+            android:contentDescription="@string/picture_view" />
+
         <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
@@ -40,21 +39,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="pickImage"
-        android:text="@string/chooseImage" />
+        android:text="@string/chooseImage"
+        android:focusable="true" />
 
 	<Button
         android:id="@+id/takePic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="takeNewPhoto"
-        android:text="@string/take_photo" />
+        android:text="@string/take_photo"
+        android:focusable="true" />
 	
 	<Button
         android:id="@+id/createPlayer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="createPlayer"
-        android:text="@string/createPlayer" />
+        android:text="@string/createPlayer"
+        android:focusable="true" />
     
     
     

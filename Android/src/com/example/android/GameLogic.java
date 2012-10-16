@@ -124,9 +124,10 @@ public class GameLogic
 	    wordList = new ArrayList< String >();	    
 	    
 		//number of letters between 1 and 3 (Default 1)
-		if( numLetters > 0 && numLetters < 4 )
+		if( numLetters > 0 && numLetters < 4 ) {
 		    this.numLetters = numLetters;
-		else {
+		}
+		 else {
 			numLetters = 1;
 			
 			if( debug ) {
@@ -135,8 +136,9 @@ public class GameLogic
 		}	   		
 		
 		//number of letters between 1 and 3 (Default 1)
-		if( diffLevel > 0 && diffLevel < 4 )
+		if( diffLevel > 0 && diffLevel < 4 ) {
 		    this.diffLevel = diffLevel;
+		}
 		else {
 			diffLevel = 1;
 			
@@ -172,29 +174,48 @@ public class GameLogic
 	 */
 	private void setWordList() {
 		
-    	String alphabet = "a b c d e f g h i j k l m n o p q r e s t u v w z å ä ö";
+    	String alphabet = 
+    			"a b c d e f g h i j k l m n o p q r e s t u v w z å ä ö";
     	
     	//test/default case 60 words
-		String[] secondList = new String[] {"av","ax","be","bo","by","de","du","då","dö","ed",
-                                            "ej","ek","el","en","er","få","ge","gå","ha","hy",
-                                            "hö","in","is","ja","ju","ko","kö","le","lä","må",
-                                            "ni","nu","ny","nå","oj","om","på","ro","rå","sa",
-                                            "se","sy","så","ta","te","tå","ur","ut","uv","vi",
-                                            "vy","yr","ål","år","år","åt","än","är","öl","öm"};
+		String[] secondList = new String[] {"av","ax","be","bo","by",
+											"de","du","då","dö","ed",
+                                            "ej","ek","el","en","er",
+                                            "få","ge","gå","ha","hy",
+                                            "hö","in","is","ja","ju",
+                                            "ko","kö","le","lä","må",
+                                            "ni","nu","ny","nå","oj",
+                                            "om","på","ro","rå","sa",
+                                            "se","sy","så","ta","te",
+                                            "tå","ur","ut","uv","vi",
+                                            "vy","yr","ål","år","år",
+                                            "åt","än","är","öl","öm"};
 		
 		//test/default case 120 words
-		String[] thirdList = new String[] {"all","apa","att","bad","bar","bil","bio","blå","bok","bra",
-                                           "båt","bör","dag","dal","den","det","dig","din","dom","dra",
-                                           "dyr","döv","eld","ett","far","fel","fly","fot","fru","får",
-                                           "för","gav","get","god","gud","gul","gås","haj","han","hat",
-                                           "hav","hem","het","hit","hos","hot","hop","hud","hur","hus",
-                                           "hår","här","hög","jag","jul","kam","kex","klä","knä","kul",
-                                           "kyl","kär","köa","kök","köp","kör","led","lek","liv","lov",
-                                           "lår","lån","lök","lön","man","med","men","mer","mod","mor",
-                                           "mus","myt","mål","ned","nej","när","näs","och","ont","oro",
-                                           "oss","ost","par","ren","rum","råd","rök","ser","sig","sin",
-                                           "sko","små","son","syn","tal","toa","tog","tom","tre","tur",
-                                           "två","ugn","ung","vem","vid","åka","ägg","öga","öka","öst"};		
+		String[] thirdList = new String[] {"all","apa","att","bad","bar",
+										   "bil","bio","blå","bok","bra",
+                                           "båt","bör","dag","dal","den",
+                                           "det","dig","din","dom","dra",
+                                           "dyr","döv","eld","ett","far",
+                                           "fel","fly","fot","fru","får",
+                                           "för","gav","get","god","gud",
+                                           "gul","gås","haj","han","hat",
+                                           "hav","hem","het","hit","hos",
+                                           "hot","hop","hud","hur","hus",
+                                           "hår","här","hög","jag","jul",
+                                           "kam","kex","klä","knä","kul",
+                                           "kyl","kär","köa","kök","köp",
+                                           "kör","led","lek","liv","lov",
+                                           "lår","lån","lök","lön","man",
+                                           "med","men","mer","mod","mor",
+                                           "mus","myt","mål","ned","nej",
+                                           "när","näs","och","ont","oro",
+                                           "oss","ost","par","ren","rum",
+                                           "råd","rök","ser","sig","sin",
+                                           "sko","små","son","syn","tal",
+                                           "toa","tog","tom","tre","tur",
+                                           "två","ugn","ung","vem","vid",
+                                           "åka","ägg","öga","öka","öst"};		
 		
 		//Initialize word list based on difficulty level
 	    if( numLetters == 3 ) {
@@ -203,11 +224,14 @@ public class GameLogic
 	    	     readFile( level3 );
 	    	 }
 	    	 catch (IOException ie) {
-	    	     if ( debug ) System.err.println("IOException : Opening level3 file");
-	    	     Collections.addAll( wordList, thirdList ); //default	    	     			
+	    	     if ( debug ) System.err.println(
+	    	    		 				"IOException : Opening level3 file"); {
+	    	     Collections.addAll( wordList, thirdList ); //default
+	    	     }
 	    	 }
 	    	 
-	    	 //if something else went wrong, like an empty file, also use the default list
+	    	 //if something else went wrong, 
+	    	 //like an empty file, also use the default list
 	    	 if( wordList.size() <= 0) {
 	    	     if ( debug ) System.err.println("Error : Empty level3 file");
 	    	     Collections.addAll( wordList, thirdList ); //default		    		 
@@ -219,11 +243,14 @@ public class GameLogic
 	    	     readFile( level2 );
 	    	 }
 	    	 catch (IOException ie) {
-	    	     if ( debug ) System.err.println("IOException : Opening level2 file");
-	    	     Collections.addAll( wordList, secondList ); //default	    	     			
+	    	     if ( debug ) System.err.println(
+	    	    		 				"IOException : Opening level2 file"); {
+	    	     Collections.addAll( wordList, secondList ); //default	    	
+	    	     }
 	    	 }   	
 	    	 
-	    	 //if something else went wrong, like an empty file, also use the default list
+	    	 //if something else went wrong, like an empty file,
+	    	 //also use the default list
 	    	 if( wordList.size() <= 0) {
 	    	     if ( debug ) System.err.println("Error : Empty level2 file");
 	    	     Collections.addAll( wordList, secondList ); //default		    		 
@@ -276,8 +303,8 @@ public class GameLogic
 			 roundScore = (1 + timeCount)*2*diffLevel;			 
 		 }
 		 else {
-			 totalTime += 1+maxCountLevel1-timeCount; //10 seconds to answer - time taken
-			 roundScore = (1 + timeCount);			 
+			 totalTime += 1+maxCountLevel1-timeCount; //10 seconds to answer
+			 roundScore = (1 + timeCount);			  //- time taken			 			 
 		 }
 		 totalScore += roundScore;		 
 		 numCorrect++;		 
@@ -326,10 +353,12 @@ public class GameLogic
 	  */
 	 public boolean countDownRounds () {
 		 playRoundCounter--;
-		 if( playRoundCounter == 0 )
+		 if( playRoundCounter == 0 ) {
 			 return true;
-		 else
+		 }
+		 else {
 			 return false;
+		 }
 	 }	
 	
 	 /**
@@ -338,9 +367,15 @@ public class GameLogic
 	  * @param max : an integer representing max time left
 	  */
 	 public void resetTimeCount() {
-		 if (diffLevel == 3) timeCount = maxCountLevel3;
-		 else if (diffLevel == 2) timeCount = maxCountLevel2;
-		 else timeCount = maxCountLevel1;
+		 if (diffLevel == 3) {
+			 timeCount = maxCountLevel3;
+		 }
+		 else if (diffLevel == 2) {
+			 timeCount = maxCountLevel2;
+		 }
+		 else {
+			 timeCount = maxCountLevel1;
+		 }
 	 }	 
 	 
 	 /**
@@ -350,9 +385,15 @@ public class GameLogic
 	  * @return : an integer representing the round score
 	  */
 	 public int getAverageTime() {
-		 if(diffLevel == 3) return ( totalTime / (maxCountLevel3*numCorrect) );
-		 else if(diffLevel == 2) return ( totalTime / (maxCountLevel2*numCorrect) );
-		 else return ( totalTime / (maxCountLevel1*numCorrect) );
+		 if(diffLevel == 3) {
+			 return ( totalTime / (maxCountLevel3*numCorrect) );
+		 }
+		 else if(diffLevel == 2) {
+			 return ( totalTime / (maxCountLevel2*numCorrect) );
+		 }
+		 else {
+			 return ( totalTime / (maxCountLevel1*numCorrect) ); 
+		 }
 	 }	 
 	 
 	 /**
@@ -373,12 +414,15 @@ public class GameLogic
 	 *    correct button
 	 */
 	public int getCorrectButton() {
-		if( correctSign.equals( firstButtonString ) )
+		if( correctSign.equals( firstButtonString ) ) {
 			return 1;
-		else if( correctSign.equals(secondButtonString ) )
+		}
+		else if( correctSign.equals(secondButtonString ) ) {
 			return 2;		
-		else if( correctSign.equals(thirdButtonString ) )
-			return 3;		
+		}
+		else if( correctSign.equals(thirdButtonString ) ) {
+			return 3;
+		}
 		else {
 			if( debug ) {
 			    System.err.println( "Invalid correct sign." );
@@ -502,8 +546,9 @@ public class GameLogic
 	 */
 	private boolean putUsedSignsInArray( String signToCheck ) {
 		
-		if( usedSignList.contains( signToCheck ) )
+		if( usedSignList.contains( signToCheck ) ) {
 			return false;
+		}
 		else{
 			usedSignList.add( signToCheck );
 			return true;
@@ -528,13 +573,19 @@ public class GameLogic
 		    String name;
 		    
 		    //Choose a letter from the alphabet based on the given position
-		    if( debug ) randomLetter = "abcdefghijklmnopqrestuvwz";
-		    else randomLetter = wordList.get( position );
+		    if( debug ) {
+		    	randomLetter = "abcdefghijklmnopqrestuvwz";
+		    }
+		    else { 
+		    	randomLetter = wordList.get( position );
+		    }
 		    		
 		    if( debug ) {
 		        name = Character.toString( randomLetter.charAt( position ) );
 		    }
-		    else name = randomLetter;
+		    else {
+		    	name = randomLetter;
+		    }
 		        
 		    //Debug help
 		    if( name == null ) {
@@ -585,8 +636,12 @@ public class GameLogic
 	    	//a long is required by onTick, timeLeft is not used
 	         public void onTick( long timeLeft ) 
 	         {   
-	        	 if(diffLevel == 2) factor = 20;
-	        	 if(diffLevel == 3) factor = 50;
+	        	 if(diffLevel == 2) {
+	        		 factor = 20;
+	        	 }
+	        	 if(diffLevel == 3) {
+	        		 factor = 50;
+	        	 }
 	        	 
 	        	 //The progress bar goes from 100 to 0 while timeCount
 	        	 //is 10 to 0, so *factor for display

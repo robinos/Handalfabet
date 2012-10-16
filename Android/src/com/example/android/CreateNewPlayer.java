@@ -116,13 +116,60 @@ public class CreateNewPlayer extends Activity{
 	 
 	/** Called when the user clicks the Create New Player button */
 	public void createPlayer(View v){
-		playButton();		
-		BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-		Bitmap bitmap = drawable.getBitmap();
-		User user = new User(userName.getText().toString(), 0,  bitmap, 0, 0);		
-		db.addUser(user);
-		soundData.addEntry(user);
-		finish();
+		
+		
+		if(checkIfUserNameAlreadyExits(userName.getText().toString())) {
+			//Show dialog name already exits
+			playButton();
+		
+			if (checkIfUsernameIsValid(userName.getText().toString())) {
+				playButton();		
+				BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+				Bitmap bitmap = drawable.getBitmap();		
+				User user = new User(userName.getText().toString(), 0,  bitmap, 0, 0);		
+				db.addUser(user);
+				soundData.addEntry(user);
+				finish();
+			}
+		}else {
+			//Show dialog that the username is invalid
+			playButton();
+		}
+	}
+	
+	/**
+	 * Checks if the username already exits
+	 * 
+	 * @param name The user name the player has typed in textfield
+	 * @return False if the user already exits
+	 */
+	private boolean checkIfUserNameAlreadyExits(String name) {
+		
+		if(db.getUser(name).equals(name)) {
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	/**
+	 * Test is the username is valid one.
+	 * 
+	 * @param name The string that will be tested
+	 * @return true if the username is ok
+	 */
+	private boolean checkIfUsernameIsValid(String name) {
+		
+		if(name.length() <= 2 ) {
+			return false;
+		}
+		else if(name.equals("")) { 
+			return false;
+		}
+		else {
+			return true;
+		}
+			
 	}
 	
 	
@@ -165,6 +212,8 @@ public class CreateNewPlayer extends Activity{
 		        	
 		        }
 		        public void onTextChanged(CharSequence s, int start, int before, int count){
+		        	
+		        	
 		        	if(userName.getText().length() > 2){
 		        		createPlayerButton.setEnabled(true);
 					}else{

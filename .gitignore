@@ -12,3 +12,5 @@ Android/bin/classes/com/example/android/*.class
 
 *.ap_
 
+
+Android/gen/com/example/android/R.java

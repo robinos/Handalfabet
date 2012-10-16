@@ -1,0 +1,266 @@
+package com.example.android;
+
+import android.os.Build;
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.support.v4.app.NavUtils;
+
+/**
+ *   This file is part of Handalfabetet.
+ *
+ *   Handalfabetet is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   Handalfabetet is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with Handalfabetet.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * The GameEnd class is the display screen once the game has ended.
+ * 
+ * @author  : Grupp02
+ * @version : 2012-10-14, v0.5
+ * @License : GPLv3
+ * @Copyright :Copyright© 2012, Grupp02
+ *
+ */
+public class GameEnd extends Activity {
+	
+	//Audio Focus helper
+	private AudioFocusHelper focusHelper;	
+	
+	private DatabaseHelper db;
+	private int difficulty;
+	private int numLetters;
+	private int from = 1;
+	
+    public final static String DIFFLEVEL = "com.example.Android.DIFFICULTY";
+    public final static String LETTERS = "com.example.Android.DIFFICULTY";
+    //From is used to let Game know that the value it receives is from GamEnd
+    //and not LevelChooser Activity
+    public final static String FROM = "com.example.Android.FROM";	
+    
+    private Bitmap img;
+	private ImageView userImg;   
+	
+    @Override
+    public void onCreate( Bundle savedInstanceState ) {
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_game_end );
+        
+        // Make sure we're running on Honeycomb or higher to use ActionBar APIs
+        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
+            //getActionBar().setDisplayHomeAsUpEnabled( true );
+        }         
+         
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO)
+        	focusHelper = new AudioFocusHelper(this);
+        else focusHelper = null;        
+        
+        difficulty = getIntent().getIntExtra( Game.DIFFLEVEL, 1 );         
+        numLetters = getIntent().getIntExtra( Game.LETTERS, 1 );
+        
+        db = new DatabaseHelper(this);
+        
+        final ImageButton newGameButton = ( ImageButton ) findViewById( R.id.new_game_button );                
+        final ImageButton highScoreButton = ( ImageButton ) findViewById( R.id.high_scores_button ); 
+        final ImageButton mainMenuButton = ( ImageButton ) findViewById( R.id.main_menu_button );
+        
+        final TextView highView = (TextView)findViewById(R.id.high_view);
+        final TextView userStatus = (TextView)findViewById(R.id.textView1);
+        final TextView userName = (TextView)findViewById(R.id.textView2);         
+        
+        int numCorrect = getIntent().getIntExtra( Game.NUMCORRECT, 0 );         
+        int totalScore = getIntent().getIntExtra( Game.TOTALSCORE, 0 ); 
+        int averageTime = getIntent().getIntExtra( Game.AVERAGETIME, 0 );    
+        
+        // User Image      
+        userImg = (ImageView)findViewById(R.id.userpic);
+        img = (Bitmap)( getIntent().getExtras().getParcelable("userImg"));
+		userImg.setImageBitmap(img);
+        
+        //Displays the userName
+        userStatus.setText(R.string.logged_in);
+		userName.setText(getIntent().getStringExtra("name"));
+		
+		User user = db.getUser(userName.getText().toString());
+		  
+		// Update HighScore 
+		if(user.getHighScore() < totalScore){
+			user.setHighScore(totalScore);
+			user.setMaxDifficulty(difficulty);
+			user.setMaxLetters(numLetters);
+			db.updateUserHighScore(user);
+			//Display congratulations to user
+			highView.setText(R.string.high_view);
+			
+			  if(focusHelper != null) {
+	    		  if(getAudioFocus()) focusHelper.playApplause();
+			  }
+			  else SoundPlayer.playApplause(this);
+		}
+		else {
+			//Display no new high score to user
+			highView.setText(R.string.low_view);			
+		}
+
+        newGameButton.setOnClickListener( new View.OnClickListener() {
+			public void onClick( View v ) {
+				playButton();					
+				startActivity( new Intent( "android.intent.action.GAME" )
+		        .putExtra( DIFFLEVEL, difficulty ) 
+		        .putExtra( LETTERS, numLetters ) 	
+		        .putExtra( FROM, from ) 		        
+		        .putExtra( "userImg", img )		        
+		        .putExtra( "Name", userName.getText().toString() ) );
+				
+		    	 //kills current activity
+		    	 finish();				
+			}
+		} ); 
+        
+        highScoreButton.setOnClickListener( new View.OnClickListener() {
+			public void onClick( View v ) {
+				playButton();				
+				startActivity( new Intent( "android.intent.action.DISPLAYHIGHSCOREACTIVITY" ) ); 				
+			}
+		}); 
+        
+        mainMenuButton.setOnClickListener( new View.OnClickListener() {
+			public void onClick( View v ) {
+		        playButton();		        
+		    	//kills current activity
+		    	finish();	
+			}
+		});          
+        
+        TextView totalPoints = ( TextView ) findViewById( R.id.show_total_point );        
+		totalPoints.setText( "  " + Integer.toString( totalScore ) );        
+
+        TextView correctView = ( TextView ) findViewById( R.id.show_answers );        
+        correctView.setText( Integer.toString( numCorrect ) + "  " );
+	
+        TextView averageView = ( TextView ) findViewById( R.id.show_average );        
+        averageView.setText( "  " + Integer.toString( averageTime ) );		        
+    }
+
+	 @Override
+	 /**
+	  * onResume is overriden in order to utterly abandon sound focus if
+	  * sound has been turned off, or resume sound if on.
+	  * 
+	  */
+	 public void onResume() {
+	 	 super.onResume();
+	 	 
+	     if(SoundPlayer.getSoundEnabled() == false) {
+	    	 if(focusHelper != null) {
+	             focusHelper.abandonFocus();
+	    	 }
+	    	 SoundPlayer.stop();
+	     }
+	     else SoundPlayer.resume();
+	}	
+	
+	 @Override
+	 public void onPause() {
+	     super.onPause();  // Always call the superclass method first
+
+	     // Pause sound when paused
+        if(SoundPlayer.getSoundEnabled()) SoundPlayer.pause();
+	 }   
+    
+	/**
+	 * The getAudioFocus method attempts to gain focus for playing audio.
+	 * If full access can't be gained, transitive access at a quiet volume
+	 * is attempted.  If that can't be granted, false is returned.
+	 * 
+	 * @return : true if focus in some form is granted, otherwise false
+	 */
+	private boolean getAudioFocus() {
+		
+		if(focusHelper != null) {
+			if(!focusHelper.requestFocus()) {
+				if(!focusHelper.requestQuietFocus()) return false;
+				else return true;
+			}
+			else return true;
+		}
+		
+		return false;
+	}   
+    
+    /**
+     * playButton plays the button sound
+     * 
+     * If there is an AudioFocusHelper (api >= 8) use it,
+     * otherwise default to SoundPlayer
+     */	
+    public void playButton() {
+	  	if(SoundPlayer.getSoundEnabled()) {
+		   	if(focusHelper != null) {
+		   	    if(getAudioFocus()) focusHelper.playButton();
+		   	}
+		   	else SoundPlayer.playButton(this);
+	  	}
+   }	
+	
+    @Override
+    public boolean onCreateOptionsMenu( Menu menu ) {
+        getMenuInflater().inflate( R.menu.activity_game_end, menu );
+        return true;
+    }
+
+    
+    @Override
+    public boolean onOptionsItemSelected( MenuItem item ) {
+        switch ( item.getItemId() ) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask( this );
+                return true;
+        }
+        return super.onOptionsItemSelected( item );
+    } 
+    
+	 @Override
+	 /**
+	  * onKeyDown overrides onKeyDown and allows code to be executed when
+	  * the back button is pushed in the simulator / on the mobile phone 
+	  * 
+	  * @param keyCode : code of the key pressed
+	  * @param event   : the event for the key pressed
+	  */
+	 public boolean onKeyDown(int keyCode, KeyEvent event)  {
+	     if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			 
+	         //cancel the applause noise
+	    	 SoundPlayer.stop();
+			 if(focusHelper != null) focusHelper.abandonFocus();	        
+	    	 
+	    	 //continue backwards (kills current activity)
+	    	 finish();
+	    	 
+	    	 return true;
+	     }
+
+	     return super.onKeyDown(keyCode, event);
+	 }    
+}

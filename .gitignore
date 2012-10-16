@@ -1,0 +1,14 @@
+
+*.class
+
+
+Android/bin/classes/com/example/android/Game$1.class
+Android/bin/classes/com/example/android/*.class
+
+
+.DS_Store
+
+*.dex
+
+*.ap_
+

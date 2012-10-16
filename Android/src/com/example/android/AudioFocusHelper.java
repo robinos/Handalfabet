@@ -27,6 +27,11 @@ import android.media.MediaPlayer;
  * The AudioFocusHelper class puts all audio focus related functionality in
  * a separate class that is not loaded if the running system cannot handle
  * Api 8 or higher (Froyo, 2.2).
+ * It is used as a middle-man between the context and the SoundPlayer.
+ * It is based upon code from the Android training page
+ * http://developer.android.com/training/managing-audio/audio-focus.html
+ * 
+ * For course and licensing information on the sounds used, see SoundPlayer.
  * 
   * @author  : Grupp02
   * @version : 2012-10-14, v0.5
@@ -36,62 +41,106 @@ import android.media.MediaPlayer;
 public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
 {
 	
+	//The audio manager
     AudioManager mAudioManager; 
     //The hash set for sounds specifically related to the given context
     private static HashSet<MediaPlayer> mpSet = new HashSet<MediaPlayer>();  
     //The context associated with this Audio Focus Helper
     Context context;  
-    
-    // other fields here, you'll probably hold a reference to an interface
-    // that you can use to communicate the focus changes to your Service
 
+    /**
+     * The constructor for AudioFocusHelper 
+     * 
+     * @param context: the context (activity) the audio focus helper
+     *                 is associated with
+     */
     public AudioFocusHelper(Context context) {
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         this.context = context;
     }
 
+    /**
+     * The requestFocus method is used when a sound is about to be played,
+     * to ensure that the context has sound focus.
+     * 
+     * @return : true if focus was granted, otherwise false
+     */
     public boolean requestFocus() {
         return AudioManager.AUDIOFOCUS_REQUEST_GRANTED ==
             mAudioManager.requestAudioFocus(null, AudioManager.STREAM_RING,
                 AudioManager.AUDIOFOCUS_GAIN);
     }
 
+    /**
+     * The requestQuietFocus method is used most often when requestFocus,
+     * has failed.  It tries again to ensure that the context has sound focus
+     * by lowering standards.  It attempts to gain transient focus that allows
+     * quiet use.
+     * The onAudioFocusChange will notice this change, and also lower the
+     * play volume considerably.
+     * 
+     * @return : true if focus was granted, otherwise false
+     */    
     public boolean requestQuietFocus() {
         return AudioManager.AUDIOFOCUS_REQUEST_GRANTED ==
         	mAudioManager.requestAudioFocus(null, AudioManager.STREAM_RING,
                 AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK); 
     }    
     
+    /**
+     * This is called when a context needs to abandon all audio focus, to
+     * allow other media to take over.
+     * 
+     * @return : true if focus was abandonned, otherwise false
+     */
     public boolean abandonFocus() {
         return AudioManager.AUDIOFOCUS_REQUEST_GRANTED ==
             mAudioManager.abandonAudioFocus(this);
     }
 
+    /**
+     * The onAudioFocusChange method detects audio focus change (such as
+     * a phone call starting or music being played) and changes audio
+     * behaviour as a result.
+     * 
+     * @param focusChange : an integer representing the type of
+     *                      detected focus change
+     */
     //@Override
     public void onAudioFocusChange(int focusChange) {
     	
+    	//If sound is enabled
 		if(SoundPlayer.getSoundEnabled()) {	
+			//For each media player active for this context
 	        for(MediaPlayer mp : mpSet) {
+	        	//Check the form of focus change
 		        switch (focusChange) {
+		            //Full focus was regained, continue playing
 			        case AudioManager.AUDIOFOCUS_GAIN:
 			            if (mp == null) {
 			            	//It has already been played and destroyed by SoundPlayer
 			            	mpSet.remove(mp);
 			            }
+			            //If the media player is not playing, restart it at currently set
+			            //volume
 			            else if (!mp.isPlaying())
 			            {
 			                mp.start();
-			                mp.setVolume(SoundPlayer.getVolumeLeft(), SoundPlayer.getVolumeRight());
+			                mp.setVolume(SoundPlayer.getVolumeLeft(),
+			                		     SoundPlayer.getVolumeRight());
 			            }
 			            break;
 			
+			        //Audio focus was lost, stop all audio and release memory
 			        case AudioManager.AUDIOFOCUS_LOSS:
-			            // Lost focus for an unbounded amount of time: stop playback and release media player
+			            // Lost focus for an unbounded amount of time:
+			        	//stop playback and release media player
 			            if (mp.isPlaying()) mp.stop();
 			            mp.release();
 			            mp = null;
 			            break;
 			
+			        //Transient focus, pause all audio
 			        case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
 			            // Lost focus for a short time, but we have to stop
 			            // playback. We don't release the media player because playback
@@ -99,6 +148,7 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
 			            if (mp.isPlaying()) mp.pause();
 			            break;
 			
+				    //Transient focus that allows quiet play volume			            
 			        case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
 			            // Lost focus for a short time, but it's ok to keep playing
 			            // at an attenuated level
@@ -111,9 +161,10 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
 
 
 	/**
-	 * playTimeout plays the timeout sound in the given context
+	 * playTimeout plays the timeout sound in the given context.
 	 */
 	public void playTimeout() {	
+		//If sound is enabled play the timeout sound		
 		if(SoundPlayer.getSoundEnabled()) {
 			MediaPlayer mp = SoundPlayer.play(context, R.raw.mp3_timeout);
 			mpSet.add(mp);
@@ -121,9 +172,10 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
 	}	
 
 	/**
-	 * playButton plays the button sound in the given context
+	 * playButton plays the button sound in the given context-
 	 */	
 	public void playButton() {		
+		//If sound is enabled play the button sound		
 		if(SoundPlayer.getSoundEnabled()) {		
 			MediaPlayer mp = SoundPlayer.play(context, R.raw.mp3_button);	
 			mpSet.add(mp);	
@@ -131,9 +183,10 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
 	}
 
 	/**
-	 * playTicking plays the ticking sound in the given context
+	 * playTicking plays the ticking sound in the given context.
 	 */	
 	public void playTicking() {	
+		//If sound is enabled play the ticking sound		
 		if(SoundPlayer.getSoundEnabled()) {			
 			MediaPlayer mp = SoundPlayer.play(context, R.raw.mp3_clockticking);		
 			mpSet.add(mp);		
@@ -141,10 +194,15 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
 	}	
 	
 	/**
-	 * playApplause plays the applause sound in the given context
+	 * playApplause plays the applause sound and vibration
+	 * applause sequence in the given context.
 	 */	
 	public void playApplause() {
-		if (SoundPlayer.getVibrationEnabled()) SoundPlayer.buzz( context, "applause" );		
+		//If vibration is enabled play the applause buzzing sequence		
+		if (SoundPlayer.getVibrationEnabled()) {
+			SoundPlayer.buzz( context, "applause" );		
+		}
+		//If sound is enabled play the applause sound		
 		if (SoundPlayer.getSoundEnabled()) {	
 			MediaPlayer mp = SoundPlayer.play(context, R.raw.mp3_applause);	
 			mpSet.add(mp);		
@@ -152,11 +210,15 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
 	}
 	
 	/**
-	 * playRightChoice
+	 * playRightChoice plays the right choice sound and vibration
+	 * right answer sequence in the given context.
 	 */
-	public void playRightChoice() {
-		//Use the right answer pattern (short vibration, pause, short vibration)
-		if (SoundPlayer.getVibrationEnabled()) SoundPlayer.buzz( context, "right" );		
+	public void playRightChoice() {		
+		//If vibration is enabled play the right answer buzzing sequence		
+		if (SoundPlayer.getVibrationEnabled()) {
+			//Use the right answer pattern (short vibration, pause, short vibration)			
+			SoundPlayer.buzz( context, "right" );		
+		}
         //Play the right answer sound		
 		if(SoundPlayer.getSoundEnabled()) {	
 			MediaPlayer mp = SoundPlayer.play(context, R.raw.mp3_right);
@@ -165,11 +227,15 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
 	}
 
 	/**
-	 * playWrongChoice
+	 * playWrongChoice plays the right choice sound and vibration
+	 * right answer sequence in the given context.
 	 */
 	public void playWrongChoice() {
-		//Use the medium length buzz for a wrong answer
-		if (SoundPlayer.getVibrationEnabled()) SoundPlayer.buzz( context, "wrong" );
+		//If vibration is enabled play the wrong answer buzzing sequence		
+		if (SoundPlayer.getVibrationEnabled()) {
+			//Use the medium length buzz for a wrong answer			
+			SoundPlayer.buzz( context, "wrong" );
+		}
         //Play the wrong answer sound	
 		if(SoundPlayer.getSoundEnabled()) {			
 		    MediaPlayer mp = SoundPlayer.play(context, R.raw.mp3_wrong);

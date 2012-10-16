@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+   <include
+       android:layout_height="wrap_content"
+       layout="@layout/user_view" />
+
+   <RelativeLayout
+       xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent" >
+
+       <TextView
+           android:id="@+id/sound_toggle_view"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentLeft="true"
+           android:layout_alignParentTop="true"
+           android:layout_marginTop="25dp"
+           android:text="@string/sound_toggle_view"
+           android:textAppearance="?android:attr/textAppearanceLarge" />
+
+       <ToggleButton
+           android:id="@+id/sound_toggle_button"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentRight="true"
+           android:layout_alignBaseline="@+id/sound_toggle_view"           
+           android:layout_marginTop="20dp"
+           android:textOn="@string/toggle_on"
+           android:textOff="@string/toggle_off"
+           android:checked="true" />
+
+       <TextView
+           android:id="@+id/volume_view"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignRight="@+id/sound_toggle_view"
+           android:layout_below="@+id/sound_toggle_button"
+           android:layout_marginTop="10dp"           
+           android:text="@string/volume_view"
+           android:textAppearance="?android:attr/textAppearanceLarge" />
+
+       <SeekBar
+           android:id="@+id/volume_bar"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignParentLeft="true"
+           android:layout_below="@+id/volume_view"
+           android:layout_marginTop="10dp" />
+
+       <TextView
+           android:id="@+id/vibration_toggle_view"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignLeft="@+id/volume_view"
+           android:layout_below="@+id/volume_bar"
+           android:layout_marginTop="25dp"           
+           android:text="@string/vibration_toggle_view"
+           android:textAppearance="?android:attr/textAppearanceLarge" />
+
+       <ToggleButton
+           android:id="@+id/vibration_toggle_button"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignBaseline="@+id/vibration_toggle_view"
+           android:layout_alignParentRight="true"
+           android:textOn="@string/toggle_on"
+           android:textOff="@string/toggle_off"
+           android:checked="true" />
+
+   </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+   <include
+       android:layout_height="wrap_content"
+       layout="@layout/user_view" />
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical" >
+
+       <ImageButton
+           android:id="@+id/new_game_button"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/main_menu_button"
+           android:layout_marginTop="30dp" 
+           android:layout_centerHorizontal="true"
+           android:background="@drawable/new_game"
+           android:contentDescription="@string/newGame" />
+
+       <TextView
+           android:id="@+id/answer_view"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignBaseline="@+id/show_answers"
+           android:layout_toRightOf="@+id/show_answers"
+           android:layout_alignParentRight="true"           
+           android:background="#AA000000"
+           android:text="@string/answer_view"
+           android:textColor="#ffffffff"
+           android:textSize="25dp" />
+
+       <TextView
+           android:id="@+id/show_answers"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentLeft="true"
+           android:layout_alignParentTop="true"
+           android:background="#AA000000"
+           android:textColor="#ffffffff"                      
+           android:text="0"
+           android:textAppearance="?android:attr/textAppearanceMedium"
+           android:textSize="25dp" />       
+       
+       <TextView
+           android:id="@+id/average_view"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/answer_view"
+           android:background="#AA000000"
+           android:text="@string/average_view"
+           android:textColor="#ffffffff"
+           android:textSize="25dp" />       
+       
+        <TextView
+           android:id="@+id/show_average"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignBaseline="@+id/average_view"
+           android:layout_alignBottom="@+id/average_view"
+           android:layout_toRightOf="@+id/average_view" 
+           android:layout_alignParentRight="true" 
+           android:background="#AA000000"
+           android:textColor="#ffffffff"                              
+           android:text="0"
+           android:textAppearance="?android:attr/textAppearanceMedium"
+           android:textSize="25dp" />      
+       
+       <TextView
+           android:id="@+id/high_view"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/average_view"
+           android:layout_alignParentLeft="true"            
+           android:layout_alignParentRight="true"            
+           android:background="#AA000000"
+           android:text="@string/high_view"
+           android:textColor="#ffffffff"
+           android:textSize="25dp" />         
+        
+       <TextView
+           android:id="@+id/show_total_point"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignBaseline="@+id/total_point_view"
+           android:layout_alignBottom="@+id/total_point_view"
+           android:layout_toRightOf="@+id/total_point_view"
+           android:text="0"
+           android:textAppearance="?android:attr/textAppearanceMedium"
+           android:textSize="30dp" />
+
+       <TextView
+           android:id="@+id/total_point_view"
+           android:layout_width="wrap_content"
+           android:layout_height="60dp"
+           android:layout_below="@+id/high_view"
+           android:layout_alignParentLeft="true"
+           android:layout_marginTop="30dp"
+           android:text="@string/total_point_view"
+           android:textSize="30dp" />
+
+       <ImageButton
+           android:id="@+id/high_scores_button"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_centerHorizontal="true"           
+           android:layout_below="@+id/total_point_view"
+           android:layout_marginTop="30dp"                      
+           android:background="@drawable/high_scores"
+           android:contentDescription="@string/highScore" />
+
+       <ImageButton
+           android:id="@+id/main_menu_button"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_centerHorizontal="true"           
+           android:layout_below="@+id/high_scores_button"
+           android:layout_marginTop="30dp"  
+           android:background="@drawable/main_menu"
+           android:contentDescription="@string/main_menu" />
+
+   </RelativeLayout>
+
+</LinearLayout>

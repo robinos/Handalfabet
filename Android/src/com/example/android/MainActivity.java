@@ -43,7 +43,6 @@ public class MainActivity extends Activity {
 	private AudioFocusHelper focusHelper;	
 	
 	TextView nameField;
-	private String feriz = "peci";
 	private TextView userStatus;
 	private ImageView userImg;
 	
@@ -132,42 +131,7 @@ public class MainActivity extends Activity {
 	    startGameButton.setEnabled(savedInstanceState.getBoolean("game"));
 	    settingsButton.setEnabled(savedInstanceState.getBoolean("settings"));	    
 	}		
-		
-	
-//	@Override
-//	public void onResume() {
-//		super.onResume();
-//		nameField.setText(playerName);
-//	}
-//		userStatus.setText(R.string.inloggad);
-//		nameField.setText(playerName);
-//		Log.e( ">>>>>>>onP", playerName);
-//		
-//		nameField.setText(playerName);
-//		nameField.setText(name);
-//		userStatus.setText(R.string.inloggad);
-//		Log.e( ">>>>>>>", "OnResum har används" );
-		
-//		userStatus.setText(R.string.inloggad);
-//		//TODO
-//		String str2 =  nameField.getText().toString();
-//		String str = userStatus.getText().toString();
-//		
-//		Log.e( ">>>>>>>", str2); 
-//		Log.e( ">>>>>>>", str);
-//	} 
 
-//	protected void onPause(){
-//		playerName = nameField.getText().toString();
-//		Log.e( ">>>>>>>onP", playerName);
-//        super.onPause();
-//        playerName = name;
-//        nameField.setText(playerName);
-//        Log.e( ">>>>>>>", name);
-        
-//	}
- 
-	
 	/** Called when the user clicks the New Game button */
 	public void newGame (View v){
 		//Starts the level chooser activity
@@ -177,12 +141,6 @@ public class MainActivity extends Activity {
 		intent.putExtra("userImg", img );
 		startActivity(intent);		
 	}
-	
-//	/** Called when the user clicks the New Player button */
-//	public void newPlayer(View v){
-//		Intent intent = new Intent(this, UserActivity.class);
-//	    startActivityForResult(intent, 1);		
-//	}
 	
 	/** Called when the user clicks the New Player button */
 	public void newPlayer(View v){
@@ -201,13 +159,10 @@ public class MainActivity extends Activity {
 			 img = (Bitmap) data.getExtras().getParcelable("userImg");
 			 userImg.setImageBitmap(img);
 			 
+			 userStatus.setText(R.string.logged_in);
+			 startGameButton.setEnabled(true); 
+			 settingsButton.setEnabled(true);  
 		 } 
-		 
-		 userStatus.setText(R.string.logged_in);
-		 startGameButton.setEnabled(true); 
-		 settingsButton.setEnabled(true); 
-	    
-
 	     playerName = name;	 		 
 	 }
 	

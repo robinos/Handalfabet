@@ -1,9 +1,8 @@
-
 package com.example.android.test;
 
-import com.example.android.UserActivity;
-
 import android.test.ActivityInstrumentationTestCase2;
+
+import com.example.android.UserActivity;
 
 /**
  * 	 Copyright© 2012, Grupp02
@@ -25,18 +24,15 @@ import android.test.ActivityInstrumentationTestCase2;
  */
 
 /**
- * The UserActivity class is a testclass
+ * The UserActivity class is a testclass.
  * 
  * @author  : Grupp02
  * @version : 2012-10-19, v1.0
- *
- *	not yet finished more to come
- *
  */
 public class UserActivityTest extends
 		ActivityInstrumentationTestCase2<UserActivity> {
 
-	UserActivity useract;
+	private UserActivity useract;
 
 	public UserActivityTest(String name) {
 		super("com.example.com",UserActivity.class);

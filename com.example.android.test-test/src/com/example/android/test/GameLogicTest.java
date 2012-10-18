@@ -1,9 +1,9 @@
 package com.example.android.test;
-import com.example.android.*;
-
-
 import android.test.AndroidTestCase;
 import android.util.Log;
+
+import com.example.android.Game;
+import com.example.android.GameLogic;
 
 /**
  * 	 Copyright© 2012, Grupp02
@@ -24,7 +24,6 @@ import android.util.Log;
  *   along with Handalfabetet.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 /**
  * The GameLogicTest class is a testclass to test the GameLogic for Game.
  * 
@@ -34,10 +33,10 @@ import android.util.Log;
  */
 public class GameLogicTest extends AndroidTestCase {
 	
-	GameLogic gameLogic1;
-	GameLogic gameLogic2;
-	GameLogic gameLogic3;
-	Game game;
+	private GameLogic gameLogic1;
+	private GameLogic gameLogic2;
+	private GameLogic gameLogic3;
+	private Game game;
 	
 
 	protected void setUp() throws Exception {
@@ -115,7 +114,8 @@ public class GameLogicTest extends AndroidTestCase {
 	}
 	
 	/**
-	 * Difficult 1.
+	 * Test if the answer buttons contains the correct answer
+	 * For difficulty 1.
 	 */
 	public void testIfAnswersButtonsContainsTheCorrextAnswer1() {
 		
@@ -124,11 +124,14 @@ public class GameLogicTest extends AndroidTestCase {
 		Log.e("","<<<"+	gameLogic1.getFirstPicture());
 		Log.e("","<<<"+	gameLogic1.getFirstButtonString());
 		
-		assertTrue(	gameLogic1.getFirstButtonString().equals(gameLogic1.getFirstPicture())
+		assertTrue(	gameLogic1.getFirstButtonString().equals(
+					gameLogic1.getFirstPicture())
 					||
-					gameLogic1.getSecondButtonString().equals(gameLogic1.getFirstPicture()) 
+					gameLogic1.getSecondButtonString().equals(
+					gameLogic1.getFirstPicture()) 
 					||
-					gameLogic1.getThirdButtonString().equals(gameLogic1.getFirstPicture()) 
+					gameLogic1.getThirdButtonString().equals(
+					gameLogic1.getFirstPicture()) 
 					);
 		
 		
@@ -198,7 +201,8 @@ public class GameLogicTest extends AndroidTestCase {
 		
 	}
 	/**
-	 * Difficult 2.
+	 * Test if the answer buttons contains the correct answer
+	 * For difficulty 2.
 	 */
 	public void testIfAnswersButtonsContainsTheCorrextAnswer2() {
 		
@@ -228,7 +232,8 @@ public class GameLogicTest extends AndroidTestCase {
 	}
 	
 	/**
-	 * Difficult 3.
+	 * Test if the answer buttons contains the correct answer
+	 * For difficulty 3.
 	 */
 	public void testIfAnswersButtonsContainsTheCorrextAnswer3() {
 		

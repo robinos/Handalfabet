@@ -1,10 +1,9 @@
 
 package com.example.android.test;
 
-import com.example.android.Game;
-
-
 import android.test.ActivityInstrumentationTestCase2;
+
+import com.example.android.Game;
 
 /**
  * 	 Copyright© 2012, Grupp02
@@ -27,18 +26,16 @@ import android.test.ActivityInstrumentationTestCase2;
 
 
 /**
- * The GameActivityTest class is a testclass
+ * The GameActivityTest class is a testclass.
+ * It's now only a template for future test to come.
  * 
  * @author  : Grupp02
  * @version : 2012-10-19, v1.0
- * 
- * not finished yet
- *
  */
 public class GameActivityTest extends 
 				ActivityInstrumentationTestCase2<Game> {
 
-	Game game;
+	private Game game;
 	
 	public GameActivityTest() {		//String name
 		super("com.example.com",Game.class);
@@ -58,7 +55,7 @@ public class GameActivityTest extends
 	}
 	
 	/**
-	 * Not really a test
+	 * Not really a test.
 	 */
 	public void testViewCreated() {
 		assertTrue(true);

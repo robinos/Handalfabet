@@ -28,14 +28,19 @@
 
 package com.example.android.test;
 
+import android.test.AndroidTestCase;
 import com.example.android.User;
 
-import android.test.AndroidTestCase;
-
-
+/**
+ * The UserTest class is a testclass to test the class User.
+ * 
+ * @author  : Grupp02
+ * @version : 2012-10-19, v1.0
+ *
+ */
 public class UserTest extends AndroidTestCase {
 
-	User user;
+	private User user;
 	
 	public UserTest() {
 		super();
@@ -54,7 +59,7 @@ public class UserTest extends AndroidTestCase {
 	}
 	
 	/**
-	 * Test the the getter and the setter methods
+	 * Test the the getter and the setter methods.
 	 */
 	public void testGetName() {
 		user.setName("Baby99");
@@ -63,7 +68,7 @@ public class UserTest extends AndroidTestCase {
 	}
 	
 	/**
-	 * Test the swedish letters in a setname
+	 * Test the swedish letters in a setname.
 	 */
 	public void testSwedishLetters() {
 		user.setName("Åsa Ämö");
@@ -71,15 +76,11 @@ public class UserTest extends AndroidTestCase {
 	}
 	
 	/**
-	 * Test if the name can accept nonletters
+	 * Test if the name can accept nonletters.
 	 */
 	public void testNonLettersSetName() {
 		user.setName("LOL?*%&");
 		assertEquals("LOL?*%&", user.getName());
 		
 	}
-	
-	
-	
-
 }

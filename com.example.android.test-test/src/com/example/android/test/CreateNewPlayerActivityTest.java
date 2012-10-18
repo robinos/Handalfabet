@@ -1,4 +1,11 @@
+package com.example.android.test;
+import android.test.ActivityInstrumentationTestCase2;
+
+import com.example.android.CreateNewPlayer;
+
 /**
+ * 	 Copyright© 2012, Grupp02
+ * 
  *     This file is part of Handalfabetet.
  *
  *   Handalfabetet is free software: you can redistribute it and/or modify
@@ -15,32 +22,22 @@
  *   along with Handalfabetet.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.example.android.test;
-
-import com.example.android.CreateNewPlayer;
-
-import android.test.ActivityInstrumentationTestCase2;
-
 /**
- * The CreateNewPlayerActivityTest class is a testclass
+ * The CreateNewPlayerActivityTest class is a testclass.
+ * It's now only a template for future test to come.
  * 
  * @author  : Grupp02
- * @version : 2012-10-02, v0.2
- * @License : GPLv3
- * @Copyright :Copyright© 2012, Grupp02
- *
- *	not yet finished
+ * @version : 2012-10-18, v1.0
  */
 public class CreateNewPlayerActivityTest extends 
-					ActivityInstrumentationTestCase2<CreateNewPlayer> 
-{
+					ActivityInstrumentationTestCase2<CreateNewPlayer> {
 
-	CreateNewPlayer createnewplayer;
+	private CreateNewPlayer createnewplayer;
 	
 	public CreateNewPlayerActivityTest(String name) {
 		super("com.example.com",CreateNewPlayer.class);
 		setName(name);
-		// TODO Auto-generated constructor stub
+		// TODO (more to come)
 	}
 	
 	public void setUp() throws Exception {

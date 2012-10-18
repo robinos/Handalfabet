@@ -1,10 +1,9 @@
-
 package com.example.android.test;
-
-import com.example.android.MainActivity;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
+
+import com.example.android.MainActivity;
 
 /**
  * 	 Copyright© 2012, Grupp02
@@ -26,25 +25,21 @@ import android.widget.Button;
  */
 
 /**
- * The MainActivityTest class is a testclass 
- * 
+ * The MainActivityTest is a testclass.
+ * It's now mostly a template for more future test to come.
+ *  
  * @author  : Grupp02
  * @version : 2012-10-19, v1.0
- * 
- * not finished yet
- *
  */
 public class MainActivityTest extends 
-						ActivityInstrumentationTestCase2<MainActivity>
-{
+						ActivityInstrumentationTestCase2<MainActivity> {
 
-	MainActivity mainAct;
-	Button startGameButton;
+	private MainActivity mainAct;
+	private Button startGameButton;
 	
 	public MainActivityTest(String name) {
 		super("com.example.com",MainActivity.class);
 		setName(name);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public void setUp() throws Exception {

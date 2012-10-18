@@ -1,4 +1,13 @@
+package com.example.android.test;
+import com.example.android.*;
+
+
+import android.test.AndroidTestCase;
+import android.util.Log;
+
 /**
+ * 	 Copyright© 2012, Grupp02
+ * 
  *     This file is part of Handalfabetet.
  *
  *   Handalfabetet is free software: you can redistribute it and/or modify
@@ -14,21 +23,13 @@
  *   You should have received a copy of the GNU General Public License
  *   along with Handalfabetet.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.example.android.test;
 
-import com.example.android.*;
-
-
-import android.test.AndroidTestCase;
-import android.util.Log;
 
 /**
  * The GameLogicTest class is a testclass to test the GameLogic for Game.
  * 
  * @author  : Grupp02
- * @version : 2012-10-02, v0.2
- * @License : GPLv3
- * @Copyright :Copyright© 2012, Grupp02
+ * @version : 2012-10-19, v1.0
  *
  */
 public class GameLogicTest extends AndroidTestCase {
@@ -52,7 +53,7 @@ public class GameLogicTest extends AndroidTestCase {
 	}
 	
 	/**
-	 *  A simple test for score value
+	 *  A simple test for score value.
 	 *  Difficult 1
 	 */
 	public void simpleTestScore1() {
@@ -60,7 +61,7 @@ public class GameLogicTest extends AndroidTestCase {
 		assertEquals(gameLogic1.getRoundScore(), gameLogic1.getTotalScore() );   
 	}
 	/**
-	 *  A simple test for score value
+	 *  A simple test for score value.
 	 *  Difficult 2
 	 */
 	public void simpleTestScore2() {
@@ -68,7 +69,7 @@ public class GameLogicTest extends AndroidTestCase {
 		assertEquals(gameLogic2.getRoundScore(), gameLogic2.getTotalScore() );   
 	}
 	/**
-	 *  A simple test for score value
+	 *  A simple test for score value.
 	 *  Difficult 3
 	 */
 	public void simpleTestScore3() {
@@ -77,7 +78,7 @@ public class GameLogicTest extends AndroidTestCase {
 	}
 	
 	/**
-	 * Simulates a test for score after 10 rounds
+	 * Simulates a test for score after 10 rounds.
 	 */
 	public void simpleTestScore10times() {
 		for(int i = 0; i < 10; i++) {
@@ -88,7 +89,7 @@ public class GameLogicTest extends AndroidTestCase {
 	
 	/**
 	 * Tests if the tree answersbuttons gets unique strings.
-	 * Difficult 1 
+	 * Difficult 1 .
 	 */
 	public void testUniqueRandomizedLetters() {
 		
@@ -114,7 +115,7 @@ public class GameLogicTest extends AndroidTestCase {
 	}
 	
 	/**
-	 * Difficult 1
+	 * Difficult 1.
 	 */
 	public void testIfAnswersButtonsContainsTheCorrextAnswer1() {
 		
@@ -134,8 +135,8 @@ public class GameLogicTest extends AndroidTestCase {
 	}
 	
 	/**
-	 * Runs the tests method 10 times
-	 * This tests has the O(n^3) so this limits the test to 10 rounds
+	 * Runs the tests method 10 times.
+	 * This tests has the O(n^3) so this limits the test to 10 rounds.
 	 */
 	public void testUniqueRandomizedLetters10times() {
 		for(int i = 0; i < 10; i++) {
@@ -145,7 +146,7 @@ public class GameLogicTest extends AndroidTestCase {
 	
 	/**
 	 * Tests if the tree answersbuttons gets unique strings. 
-	 * Difficult 2
+	 * Difficult 2.
 	 */
 	public void testUniqueRandomizedLetters2() {
 		
@@ -172,7 +173,7 @@ public class GameLogicTest extends AndroidTestCase {
 	
 	/**
 	 * Tests if the tree answersbuttons gets unique strings. 
-	 * Difficult 3 
+	 * Difficult 3 .
 	 */
 	public void testUniqueRandomizedLetters3() {
 		
@@ -197,7 +198,7 @@ public class GameLogicTest extends AndroidTestCase {
 		
 	}
 	/**
-	 * Difficult 2
+	 * Difficult 2.
 	 */
 	public void testIfAnswersButtonsContainsTheCorrextAnswer2() {
 		
@@ -227,7 +228,7 @@ public class GameLogicTest extends AndroidTestCase {
 	}
 	
 	/**
-	 * Difficult 3
+	 * Difficult 3.
 	 */
 	public void testIfAnswersButtonsContainsTheCorrextAnswer3() {
 		

@@ -1,4 +1,14 @@
+
+package com.example.android.test;
+
+import com.example.android.Game;
+
+
+import android.test.ActivityInstrumentationTestCase2;
+
 /**
+ * 	 Copyright© 2012, Grupp02
+ * 
  *     This file is part of Handalfabetet.
  *
  *   Handalfabetet is free software: you can redistribute it and/or modify
@@ -15,21 +25,12 @@
  *   along with Handalfabetet.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.example.android.test;
-
-import com.example.android.Game;
-
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.test.ActivityInstrumentationTestCase2;
 
 /**
  * The GameActivityTest class is a testclass
  * 
  * @author  : Grupp02
- * @version : 2012-10-02, v0.2
- * @License : GPLv3
- * @Copyright :Copyright© 2012, Grupp02
+ * @version : 2012-10-19, v1.0
  * 
  * not finished yet
  *

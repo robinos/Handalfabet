@@ -386,13 +386,13 @@ public class GameLogic
 	  */
 	 public int getAverageTime() {
 		 if(diffLevel == 3) {
-			 return ( totalTime / (maxCountLevel3*numCorrect) );
+			 return ( totalTime / numCorrect );
 		 }
 		 else if(diffLevel == 2) {
-			 return ( totalTime / (maxCountLevel2*numCorrect) );
+			 return ( totalTime / numCorrect );
 		 }
 		 else {
-			 return ( totalTime / (maxCountLevel1*numCorrect) ); 
+			 return ( totalTime / numCorrect ); 
 		 }
 	 }	 
 	 

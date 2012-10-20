@@ -3,17 +3,19 @@ package com.example.android;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
-import android.app.Activity;
+import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.support.v4.app.NavUtils;
 
 /**
- *   This file is part of Handalfabetet.
+ * 	 Copyright© 2012, Grupp02
+ * 
+ *     This file is part of Handalfabetet.
  *
  *   Handalfabetet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -32,11 +34,9 @@ import android.support.v4.app.NavUtils;
 /**
  * The DisplayHighscoreActvity class is used to display the Highscore screen.
  * 
-  * @author  : Grupp02
-  * @version : 2012-10-14, v0.5
-  * @License : GPLv3
-  * @Copyright :Copyright© 2012, Grupp02  
-  */
+ * @author  : Grupp02
+ * @version : 2012-10-19, v1.0 
+ */
 public class DisplayHighscoreActivity extends Activity {
 
 	private ListView listView;

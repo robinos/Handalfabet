@@ -14,7 +14,9 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 /**
- *   This file is part of Handalfabetet.
+ * 	 Copyright© 2012, Grupp02
+ * 
+ *     This file is part of Handalfabetet.
  *
  *   Handalfabetet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -33,11 +35,9 @@ import android.util.Log;
 /**
  * The DatabaseHelper class is used to interact with the User database.
  * 
-  * @author  : Grupp02
-  * @version : 2012-10-14, v0.5
-  * @License : GPLv3
-  * @Copyright :Copyright© 2012, Grupp02  
-  */
+ * @author  : Grupp02
+ * @version : 2012-10-19, v1.0 
+ */
 public class DatabaseHelper extends SQLiteOpenHelper{
 	 
 	// Database Version

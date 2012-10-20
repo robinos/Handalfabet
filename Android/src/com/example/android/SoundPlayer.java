@@ -1,18 +1,21 @@
 package com.example.android;
 
-import java.util.HashSet;
 import java.io.IOException;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.net.Uri;
+import java.util.HashSet;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.IBinder;
 import android.os.Vibrator;
 
 /**
- *   This file is part of Handalfabetet.
+ * 	 Copyright© 2012, Grupp02
+ * 
+ *     This file is part of Handalfabetet.
  *
  *   Handalfabetet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -95,10 +98,8 @@ import android.os.Vibrator;
   * The methods for different sounds are meant to house all such code in one
   * place.
   * 
-  * @author  : Grupp02
-  * @version : 2012-10-14, v1.0
-  * @License : GPLv3
-  * @Copyright :Copyright© 2012, Grupp02  
+ * @author  : Grupp02
+ * @version : 2012-10-19, v1.0  
   */
  public class SoundPlayer extends Service
  {

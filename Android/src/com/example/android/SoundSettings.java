@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- *   This file is part of Handalfabetet.
+ * 	 Copyright© 2012, Grupp02
+ * 
+ *     This file is part of Handalfabetet.
  *
  *   Handalfabetet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -28,10 +30,8 @@ import android.util.Log;
   * The SoundSettings class is used to help access to the sound database for
   * saving sound settings.
   * 
-  * @author  : Grupp02
-  * @version : 2012-10-14, v0.5
-  * @License : GPLv3
-  * @Copyright :Copyright© 2012, Grupp02  
+ * @author  : Grupp02
+ * @version : 2012-10-19, v1.0  
   */
 public class SoundSettings extends SQLiteOpenHelper {
 	 

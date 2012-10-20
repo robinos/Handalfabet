@@ -1,10 +1,10 @@
 package com.example.android;
 
-import android.os.Build;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- *   This file is part of Handalfabetet.
+ * 	 Copyright© 2012, Grupp02
+ * 
+ *     This file is part of Handalfabetet.
  *
  *   Handalfabetet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -31,10 +33,8 @@ import android.widget.TextView;
 /**
  * The MainActivity class.
  * 
- * @author  : Grupp02 
- * @version : 2012-10-14, v0.5
- * @License : GPLv3
- * @Copyright : Copyright© 2012, Grupp02
+ * @author  : Grupp02
+ * @version : 2012-10-19, v1.0
  *
  */
 public class MainActivity extends Activity {

@@ -1,17 +1,19 @@
 package com.example.android;
 
-import android.os.CountDownTimer;
-import android.util.Log;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Collections;
+import java.util.Random;
 import java.util.Scanner;
 
+import android.os.CountDownTimer;
+import android.util.Log;
+
 /**
- *   This file is part of Handalfabetet.
+ * 	 Copyright© 2012, Grupp02
+ * 
+ *     This file is part of Handalfabetet.
  *
  *   Handalfabetet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -31,9 +33,7 @@ import java.util.Scanner;
  * The GameLogic class is meant to hold all game logic for Game.
  * 
  * @author  : Grupp02
- * @version : 2012-10-14, v0.5
- * @License : GPLv3
- * @Copyright : Copyright© 2012, Grupp02
+ * @version : 2012-10-19, v1.0
  */
 public class GameLogic
 {

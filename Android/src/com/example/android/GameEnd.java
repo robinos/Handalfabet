@@ -1,23 +1,23 @@
 package com.example.android;
 
-import android.os.Build;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.util.Log;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.support.v4.app.NavUtils;
 
 /**
- *   This file is part of Handalfabetet.
+ * 	 Copyright© 2012, Grupp02
+ * 
+ *     This file is part of Handalfabetet.
  *
  *   Handalfabetet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -37,9 +37,7 @@ import android.support.v4.app.NavUtils;
  * The GameEnd class is the display screen once the game has ended.
  * 
  * @author  : Grupp02
- * @version : 2012-10-14, v0.5
- * @License : GPLv3
- * @Copyright :Copyright© 2012, Grupp02
+ * @version : 2012-10-19, v1.0
  *
  */
 public class GameEnd extends Activity {

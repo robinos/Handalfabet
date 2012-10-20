@@ -1,6 +1,7 @@
 package com.example.android;
 
 import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +22,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 /**
- *   This file is part of Handalfabetet.
+ * 	 Copyright© 2012, Grupp02
+ * 
+ *     This file is part of Handalfabetet.
  *
  *   Handalfabetet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -41,9 +44,7 @@ import android.widget.TextView;
  * The UserActivity class handles the user login screen.
  * 
  * @author  : Grupp02
- * @version : 2012-10-14, v0.5
- * @License : GPLv3
- * @Copyright : Copyright© 2012, Grupp02
+ * @version : 2012-10-19, v1.0
  *
  */
 public class UserActivity extends Activity {

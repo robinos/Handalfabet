@@ -1,11 +1,8 @@
 package com.example.android;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -17,11 +14,13 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 /**
- *   This file is part of Handalfabetet.
+ * 	 Copyright© 2012, Grupp02
+ * 
+ *     This file is part of Handalfabetet.
  *
  *   Handalfabetet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -41,9 +40,7 @@ import android.widget.ProgressBar;
  * The Game Activity houses all GUI for the main game.
  * 
  * @author  : Grupp02
- * @version : 2012-10-14, v0.5
- * @License : GPLv3
- * @Copyright :Copyright© 2012, Grupp02  
+ * @version : 2012-10-19, v1.0 
  */
 public class Game extends Activity {	
 	
@@ -439,7 +436,7 @@ public class Game extends Activity {
 		
 		return resource;		
 	}
-	
+	 
 	/**
 	 * The getAudioFocus method attempts to gain focus for playing audio.
 	 * If full access can't be gained, transitive access at a quiet volume

@@ -14,7 +14,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 /**
- *   This file is part of Handalfabetet.
+ * 	 Copyright© 2012, Grupp02
+ * 
+ *     This file is part of Handalfabetet.
  *
  *   Handalfabetet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -33,11 +35,9 @@ import android.widget.Toast;
 /**
  * The PhotoHandler class is used to handle taking pictures with the camera.
  * 
-  * @author  : Grupp02
-  * @version : 2012-10-14, v0.5
-  * @License : GPLv3
-  * @Copyright :Copyright© 2012, Grupp02  
-  */
+ * @author  : Grupp02
+ * @version : 2012-10-19, v1.0  
+ */
 public class PhotoHandler implements PictureCallback {
 
   private final Context context;

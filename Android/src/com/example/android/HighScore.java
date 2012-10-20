@@ -7,7 +7,9 @@ import android.view.View;
 import android.widget.Button;
 
 /**
- *   This file is part of Handalfabetet.
+ * 	 Copyright© 2012, Grupp02
+ * 
+ *     This file is part of Handalfabetet.
  *
  *   Handalfabetet is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -27,9 +29,7 @@ import android.widget.Button;
  * The HighScore class is no longer used.
  * 
  * @author  : Grupp02
- * @version : 2012-10-14, v0.4
- * @License : GPLv3
- * @Copyright : Copyright© 2012, Grupp02
+ * @version : 2012-10-19, v1.0
  *
  */
 public class HighScore extends Activity {
@@ -40,7 +40,7 @@ public class HighScore extends Activity {
         
         // Make sure we're running on Honeycomb or higher to use ActionBar APIs
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+            //getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         
         

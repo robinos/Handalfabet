@@ -1,12 +1,15 @@
 package com.example.android;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,7 +36,7 @@ import android.widget.TextView;
  * The Help class.
  * 
  * @author  : Grupp02
- * @version : 2012-10-19, v1.0
+ * @version : 2012-10-20, v1.0
  *
  */
 public class Help extends Activity {
@@ -64,6 +67,28 @@ public class Help extends Activity {
 		userName = ( TextView ) findViewById( R.id.textView2 );
 		userName.setText( getIntent().getStringExtra( "Name" ) );         
 	    
+        final Button gameHelpButton = ( Button ) findViewById( R.id.game_help_button ); 
+        final Button alphabetHelpButton = ( Button ) findViewById( R.id.alphabet_help_button );         
+
+        gameHelpButton.setOnClickListener( new View.OnClickListener() {
+			public void onClick( View v ) {
+				SoundPlayer.playButton(Help.this);								
+				startActivity( new Intent( "android.intent.action.GAMEHELPACTIVITY" )
+				    .putExtra( "Name", userName.getText().toString() )
+				    .putExtra( "userImg", img )
+				    .putExtra( "User", userStatus.getText() ) );				
+			}
+		});        
+        
+        alphabetHelpButton.setOnClickListener( new View.OnClickListener() {
+			public void onClick( View v ) {
+				SoundPlayer.playButton(Help.this);				
+				startActivity( new Intent( "android.intent.action.ALPHABETHELPACTIVITY" )
+				    .putExtra( "Name", userName.getText().toString() )
+				    .putExtra( "userImg", img )
+				    .putExtra( "User", userStatus.getText() ) );				
+			}
+		});		
 	}
 	
 	 @Override

@@ -2,15 +2,15 @@
     package="com.example.android"
     android:versionCode="1"
     android:versionName="1.0" >
-    <uses-permission android:name="android.permission.VIBRATE"/>  
-    
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <uses-sdk
-        android:minSdkVersion="8" 
-        android:targetSdkVersion="16"/>
-    
-    // Permission to use camera and to store photo 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+        android:minSdkVersion="8"
+        android:targetSdkVersion="16" />
+    // Permission to use camera and to store photo 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -61,7 +61,7 @@
                 android:value="com.example.android.MainActivity" />
         </activity>
         <activity
-            android:name=".UserActivity" 
+            android:name=".UserActivity"
             android:label="@string/login" >
             <intent-filter>
                 <action android:name="android.intent.action.USER" />
@@ -132,7 +132,8 @@
                 <action android:name="android.intent.action.PROFILESETTINGSACTIVITY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>            
+            </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.GameSettingsActivity" />
@@ -144,7 +145,8 @@
                 <action android:name="android.intent.action.SOUNDSETTINGSACTIVITY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>             
+            </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.GameSettingsActivity" />
@@ -152,11 +154,12 @@
         <activity
             android:name=".UserActivityWithUserImage"
             android:label="@string/title_activity_main" >
-            <intent-filter>                                
+            <intent-filter>
                 <action android:name="android.intent.action.USERACTIVITYWITHUSERIMAGE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>             
+            </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.MainActivity" />
@@ -164,11 +167,12 @@
         <activity
             android:name=".TakePhotoActivity"
             android:label="@string/take_photo" >
-            <intent-filter>                                
+            <intent-filter>
                 <action android:name="android.intent.action.TAKEPHOTOACTIVITY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>             
+            </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.MainActivity" />
@@ -176,16 +180,40 @@
         <activity
             android:name=".CreateNewPlayer"
             android:label="@string/createNewPlayer" >
-            <intent-filter>                                
+            <intent-filter>
                 <action android:name="android.intent.action.CREATENEWPLAYER" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.UserActivityWithUserImage" />
+        </activity>
+        <activity
+            android:name=".AlphabetHelpActivity"
+            android:label="@string/title_activity_alphabet_help" >
+            <intent-filter>
+                <action android:name="android.intent.action.ALPHABETHELPACTIVITY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>             
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.UserActivityWithUserImage" />
+                android:value="com.example.android.Help" />
+        </activity>
+        <activity
+            android:name=".GameHelpActivity"
+            android:label="@string/title_activity_game_help" >
+            <intent-filter>
+                <action android:name="android.intent.action.GAMEHELPACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>             
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.Help" />
         </activity>
     </application>
- 
 
 </manifest>

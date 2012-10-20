@@ -52,7 +52,7 @@ public class GameLogic
 	 
 	 //The count down timer and time variables
      private CountDownTimer countDownTimer;	 
-     private int timeCount;
+     private int timeCount = 0;
      //maxCount is the maximum value of time count, which is 10s
      private int maxCountLevel1 = 10;
      private int maxCountLevel2 = 5;
@@ -636,6 +636,9 @@ public class GameLogic
 	    	//a long is required by onTick, timeLeft is not used
 	         public void onTick( long timeLeft ) 
 	         {   
+	        	 if(diffLevel == 1) {
+	        		factor = 10; 
+	        	 }
 	        	 if(diffLevel == 2) {
 	        		 factor = 20;
 	        	 }
@@ -647,7 +650,10 @@ public class GameLogic
 	        	 //is 10 to 0, so *factor for display
 	             game.getTimerBar().setProgress( timeCount*factor );
 	             
-	             timeCount--;
+	             // Stops the timeCount from going beyond zero time.
+	             if (timeCount > 0) {
+	            	 timeCount--;
+	             }
 	         }
 	        	 
 	         public void onFinish()

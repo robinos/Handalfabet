@@ -318,7 +318,9 @@ public class GameLogic {
 	    score = (one + timeCount); // - time taken
 	}
 
-	if (score > zero) {
+	if(timeCount <= one) {
+		roundScore = zero;
+	} else if (score > zero) {
 	    roundScore = score;
 	} else {
 	    roundScore = zero;

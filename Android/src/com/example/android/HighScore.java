@@ -28,31 +28,29 @@ import android.widget.Button;
 /**
  * The HighScore class is no longer used.
  * 
- * @author  : Grupp02
+ * @author : Grupp02
  * @version : 2012-10-19, v1.0
- *
+ * 
  */
 public class HighScore extends Activity {
-	@Override
+    @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_highscore);
-        
-        // Make sure we're running on Honeycomb or higher to use ActionBar APIs
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            //getActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-        
-        
-        final Button backButton = (Button) findViewById(R.id.back_Button);
-        
-        backButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				finish();
-			}
-		});
-        
-    }
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.activity_display_highscore);
 
+	// Make sure we're running on Honeycomb or higher to use ActionBar APIs
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+	    // getActionBar().setDisplayHomeAsUpEnabled(true);
+	}
+
+	final Button backButton = (Button) findViewById(R.id.back_Button);
+
+	backButton.setOnClickListener(new View.OnClickListener() {
+	    public void onClick(View v) {
+		finish();
+	    }
+	});
+
+    }
 
 }

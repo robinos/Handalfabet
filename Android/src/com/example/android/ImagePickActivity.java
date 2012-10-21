@@ -34,47 +34,48 @@ import android.widget.ImageView;
 /**
  * The ImagePickActvity class is used to pick an existing picture for the user.
  * 
- * @author  : Grupp02
- * @version : 2012-10-19, v1.0 
-  */
-public class ImagePickActivity extends Activity{
-	private static final int REQUEST_CODE = 1;
-	private Bitmap bitmap;
-	private ImageView imageView;
-	
-	 @Override
-	  public void onCreate(Bundle savedInstanceState) {
-	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.activity_user);
-	    imageView = (ImageView) findViewById(R.id.userImage);
-	  }
-	 
-	 public void pickImage(View View) {
-		    Intent intent = new Intent();
-		    intent.setType("image/*");
-		    intent.setAction(Intent.ACTION_GET_CONTENT);
-		    intent.addCategory(Intent.CATEGORY_OPENABLE);
-		    startActivityForResult(intent, REQUEST_CODE);
-		  }
+ * @author : Grupp02
+ * @version : 2012-10-19, v1.0
+ */
+public class ImagePickActivity extends Activity {
+    private static final int REQUEST_CODE = 1;
+    private Bitmap bitmap;
+    private ImageView imageView;
 
-		  @Override
-		  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		    if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK)
-		      try {
-		        // We need to recyle unused bitmaps
-		        if (bitmap != null) {
-		          bitmap.recycle();
-		        }
-		        InputStream stream = getContentResolver().openInputStream(data.getData());
-		        bitmap = BitmapFactory.decodeStream(stream);
-		        stream.close();
-		        imageView.setImageBitmap(bitmap);
-		      } catch (FileNotFoundException e) {
-		        e.printStackTrace();
-		      } catch (IOException e) {
-		        e.printStackTrace();
-		      }
-		    super.onActivityResult(requestCode, resultCode, data);
-		  }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.activity_user);
+	imageView = (ImageView) findViewById(R.id.userImage);
+    }
+
+    public void pickImage(View View) {
+	Intent intent = new Intent();
+	intent.setType("image/*");
+	intent.setAction(Intent.ACTION_GET_CONTENT);
+	intent.addCategory(Intent.CATEGORY_OPENABLE);
+	startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+	    try {
+		// We need to recyle unused bitmaps
+		if (bitmap != null) {
+		    bitmap.recycle();
+		}
+		InputStream stream = getContentResolver().openInputStream(
+			data.getData());
+		bitmap = BitmapFactory.decodeStream(stream);
+		stream.close();
+		imageView.setImageBitmap(bitmap);
+	    } catch (FileNotFoundException e) {
+		e.printStackTrace();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
 	}
-
+	super.onActivityResult(requestCode, resultCode, data);
+    }
+}

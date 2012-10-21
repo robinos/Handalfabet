@@ -32,32 +32,34 @@ import android.widget.TextView;
 /**
  * The UserArrayAdapter class aids showing pictures in the UserActivity.
  * 
- * @author  : Grupp02
+ * @author : Grupp02
  * @version : 2012-10-19, v1.0
- *
+ * 
  */
 public class UserArrayAdapter extends ArrayAdapter<User> {
 
-	private List<User> users;
-	public LayoutInflater inflater;
-	
-	public UserArrayAdapter(Context context, int textViewResourceId, List<User> users) {
-		super(context, textViewResourceId, users);
-		this.users = users;
-	}
-	
-	@Override
-	  public View getView(int position, View convertView, ViewGroup parent) {
-	    View rowView = inflater.inflate(R.layout.activity_user_array_adapter, null);
-	    
-	    ImageView imageView = (ImageView) rowView.findViewById(R.id.user_pic);
-	    TextView userNameView = (TextView) rowView.findViewById(R.id.user_name);
-		 
-	    User user = users.get(position);
-	    imageView.setImageBitmap(user.getUserImg());
-	    userNameView.setText(user.getName());
-	   
-	    return rowView;
-	}
-	 	
+    private List<User> users;
+    public LayoutInflater inflater;
+
+    public UserArrayAdapter(Context context, int textViewResourceId,
+	    List<User> users) {
+	super(context, textViewResourceId, users);
+	this.users = users;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+	View rowView = inflater.inflate(R.layout.activity_user_array_adapter,
+		null);
+
+	ImageView imageView = (ImageView) rowView.findViewById(R.id.user_pic);
+	TextView userNameView = (TextView) rowView.findViewById(R.id.user_name);
+
+	User user = users.get(position);
+	imageView.setImageBitmap(user.getUserImg());
+	userNameView.setText(user.getName());
+
+	return rowView;
+    }
+
 }

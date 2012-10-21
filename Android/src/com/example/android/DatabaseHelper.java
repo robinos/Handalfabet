@@ -65,17 +65,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 								      colMaxDifficulty + " INTEGER, " +
 								      colMaxLetters + " INTEGER)";
 	
-
-	private static final String DATABASE_CREATEe = "CREATE TABLE "+ USER_TABLE +   
-								"(" + colName + " VARCHAR(36) PRIMARY KEY,"+ colPassword + 
-														" TEXT,"+ colHighScore + " INTEGER )";
-	
+													
 	public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-	//Skappar en tabel med sex kolumer UserName, UserPassword, HighScore,
-	//Image, MaxDifficulty, och MaxLetters
+	//Skappar en tabel med sex kolumer UserName, UserPassword, 
+    //	       UserHighScore, UserImage, MaxDifficulty och MaxLetters
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
@@ -119,7 +115,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.close(); // Closing database connection
     }
     
-    // Getting single contact
+    // Getting single user
     public User getUser(String userName) {
         SQLiteDatabase db = this.getReadableDatabase();
      
@@ -258,15 +254,15 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 //                new String[] { String.valueOf(user.getName()) });
     }
  
-    // Deleting single contact
-    public void deleteContact(User user) {
+    // Deleting single user
+    public void deleteUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(USER_TABLE, colName + " = ?",
                 new String[] { String.valueOf(user.getName()) });
         db.close();
     }
  
-    // Getting contacts Count
+    // Getting user Count
     public int getUserCount() {
         String countQuery = "SELECT  * FROM " + USER_TABLE;
         SQLiteDatabase db = this.getReadableDatabase();

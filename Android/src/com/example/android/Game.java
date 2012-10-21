@@ -40,7 +40,7 @@ import android.widget.TextView;
  * The Game Activity houses all GUI for the main game.
  * 
  * @author  : Grupp02
- * @version : 2012-10-19, v1.0 
+ * @version : 2012-10-21, v1.0 
  */
 public class Game extends Activity {	
 	
@@ -69,7 +69,17 @@ public class Game extends Activity {
 
 	 private Bitmap img;
 	 private ImageView userImg;
-	  
+	 
+	 private final int maxProgress = 100;	 
+	 private final int difficultyOne = 1;
+	 private final int oneLetter = 1;
+	 private final int twoLetters = 2;
+	 private final int threeLetters = 3;	 
+	 private final int firstButton = 1;
+	 private final int secondButton = 2;
+	 private final int thirdButton = 3;	
+	 private final int zero = 0;
+	 
 	
 	@Override
     public void onCreate( Bundle savedInstanceState ) {
@@ -81,16 +91,18 @@ public class Game extends Activity {
         	 //getActionBar().setDisplayHomeAsUpEnabled( true );
         }     
           
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO)
-        	focusHelper = new AudioFocusHelper(this);
-        else focusHelper = null;
+        if ( android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO )
+        	focusHelper = new AudioFocusHelper( this );
+        else {
+        	focusHelper = null;
+        }
         
         //The text prompt view
         TextView questionView = ( TextView ) findViewById( R.id.question_view );        
         
         //game difficulty, default level 1
-        difficulty = getIntent().getIntExtra( "Difficulty", 1 ); 
-        numLetters = getIntent().getIntExtra( "Letters", 1 );         
+        difficulty = getIntent().getIntExtra( "Difficulty", difficultyOne ); 
+        numLetters = getIntent().getIntExtra( "Letters", oneLetter );         
         
         //The game logic object
         gameLogic = new GameLogic( difficulty, numLetters, this );        
@@ -106,7 +118,7 @@ public class Game extends Activity {
 		
 		//Depending on one letter, or several letter words, alter the
 		//question view text and the button appearance
-		if( numLetters > 1 ) {
+		if( numLetters > oneLetter ) {
 			questionView.setText( R.string.word_view );
 			nextButton.setBackgroundResource(R.drawable.next_word);
 		}
@@ -139,11 +151,12 @@ public class Game extends Activity {
         
         //Resets for a new round
         nextRound();
+        
         //Changes the picture and button text
         deployTextButtons(); 
         
         //Start the ticking noise
-        playTicking();        
+        playTicking();             
     }
 	
 	 @Override
@@ -161,10 +174,13 @@ public class Game extends Activity {
 	    	 }
 	    	 SoundPlayer.stop();
 	     }
-	     else SoundPlayer.resume();
+	     else {
+	    	 SoundPlayer.resume();
+	     }
 	     
+	     //Sadly this is going to give FULL time again.  Have to try to fix this
 		 //restarts the count down timer
-		 gameLogic.getCountDownTimer().start();	     
+		 //gameLogic.getCountDownTimer().start();	     
 	}	
 	
 	 @Override
@@ -172,36 +188,39 @@ public class Game extends Activity {
 	     super.onPause();  // Always call the superclass method first
 
 	     // Pause sound when paused
-         if(SoundPlayer.getSoundEnabled()) SoundPlayer.pause();
-		 //cancels the count down timer
-		 gameLogic.getCountDownTimer().cancel();
+         if( SoundPlayer.getSoundEnabled() ) {
+        	 SoundPlayer.pause();
+         }
+         
+		 //cancels the count down timer, this runs on startup though, so not good
+		 //gameLogic.getCountDownTimer().cancel();
 	 }	 
 	 
 		@Override
-		public void onSaveInstanceState(Bundle savedInstanceState) {
+		public void onSaveInstanceState( Bundle savedInstanceState ) {
 		    // Save name, user status, and user picture
-		    savedInstanceState.putString("Name", userName.getText().toString());
-		    savedInstanceState.putString("status", userStatus.getText().toString());	     
-		    savedInstanceState.putParcelable("picture", img);
-		    savedInstanceState.putInt("difficulty", difficulty);
-		    savedInstanceState.putInt("letters", numLetters);
+		    savedInstanceState.putString( "Name", userName.getText().toString() );
+		    savedInstanceState.putString( "status", userStatus.getText().toString() );	     
+		    savedInstanceState.putParcelable( "picture", img );
+		    //savedInstanceState.putInt( "difficulty", difficulty );
+		    //savedInstanceState.putInt( "letters", numLetters );
 		    
 		    // Always call the superclass so it can save the view hierarchy state
-		    super.onSaveInstanceState(savedInstanceState);
+		    super.onSaveInstanceState( savedInstanceState );
 		} 
 		
 		@Override
-		public void onRestoreInstanceState(Bundle savedInstanceState) {
+		public void onRestoreInstanceState( Bundle savedInstanceState ) {
 		    // Always call the superclass so it can restore the view hierarchy
-		    super.onRestoreInstanceState(savedInstanceState);
+		    super.onRestoreInstanceState( savedInstanceState );
 		   
 		    // Restore name, user status, and user picture
-		    userName.setText(savedInstanceState.getString( "Name" ));
-		    userStatus.setText(savedInstanceState.getString( "status" ));
-		    img = savedInstanceState.getParcelable("picture");
-		    userImg.setImageBitmap(img);
-		    difficulty = savedInstanceState.getInt("difficulty");
-		    numLetters = savedInstanceState.getInt("letters");		    
+		    userName.setText( savedInstanceState.getString( "Name" ) );
+		    userStatus.setText( savedInstanceState.getString( "status" ) );
+		    img = savedInstanceState.getParcelable( "picture" );
+		    userImg.setImageBitmap( img );
+		    //difficulty = savedInstanceState.getInt( "difficulty" );
+		    //numLetters = savedInstanceState.getInt( "letters" );	 		    
 		}	 
 	 
 	 /**
@@ -262,7 +281,7 @@ public class Game extends Activity {
 		 
 		 	case R.id.first_opt_button: 
 		 		
-		 		if( gameLogic.getCorrectButton() == 1 ) {
+		 		if( gameLogic.getCorrectButton() == firstButton ) {
 					firstOptionButton.setBackgroundColor( android.graphics.Color.GREEN );
 					scoreCounter();
 					playRightChoice();					
@@ -275,7 +294,7 @@ public class Game extends Activity {
 		 	
 		 	case R.id.second_opt_button:
 		 		
-		 		if( gameLogic.getCorrectButton() == 2 ) {
+		 		if( gameLogic.getCorrectButton() == secondButton ) {
 					secondOptionButton.setBackgroundColor( android.graphics.Color.GREEN );
 					scoreCounter();
 					playRightChoice();					
@@ -288,7 +307,7 @@ public class Game extends Activity {
 		 		
 		 	case R.id.third_opt_button:
 		 		
-		 		if( gameLogic.getCorrectButton() == 3 ) {
+		 		if( gameLogic.getCorrectButton() == thirdButton ) {
 					thirdOptionButton.setBackgroundColor( android.graphics.Color.GREEN );
 					scoreCounter();
 					playRightChoice();					
@@ -311,12 +330,14 @@ public class Game extends Activity {
 	  * called as long as sound or vibrations are enabled.
 	  */
      public void playRightChoice() {
-    	 if(SoundPlayer.getSoundEnabled() || SoundPlayer.getVibrationEnabled()) {
-		     if(focusHelper != null) {
-		         if(getAudioFocus()) focusHelper.playRightChoice();
+    	 if( SoundPlayer.getSoundEnabled() || SoundPlayer.getVibrationEnabled() ) {
+		     if( focusHelper != null ) {
+		         if( getAudioFocus() ) {
+		        	 focusHelper.playRightChoice();
+		         }
 			 }
 			 else {		
-				 SoundPlayer.playRightChoice(this);
+				 SoundPlayer.playRightChoice( this );
 			 }
          }
     }
@@ -328,12 +349,14 @@ public class Game extends Activity {
 	  * called as long as sound or vibrations are enabled.
 	  */
 	public void playWrongChoice() {
-	    if(SoundPlayer.getSoundEnabled() || SoundPlayer.getVibrationEnabled()) {			
-		    if(focusHelper != null) {
-	            if(getAudioFocus()) focusHelper.playWrongChoice();
+	    if( SoundPlayer.getSoundEnabled() || SoundPlayer.getVibrationEnabled() ) {			
+		    if( focusHelper != null ) {
+	            if( getAudioFocus() ) {
+	            	focusHelper.playWrongChoice();
+	            }
 		    }
 		    else {					
-			    SoundPlayer.playWrongChoice(this);
+			    SoundPlayer.playWrongChoice( this );
 		    }
 		}
 	}
@@ -388,7 +411,7 @@ public class Game extends Activity {
 					nextButton.setEnabled( false );
 					
 					//Reset the timer
-					timerBar.setProgress( 100 );
+					timerBar.setProgress( maxProgress );
 					gameLogic.resetTimeCount();
 					//(re)starts the count down timer				
 					gameLogic.getCountDownTimer().start();	
@@ -408,9 +431,13 @@ public class Game extends Activity {
 		//Set the picture
 		image1.setImageResource( picSetter( gameLogic.getFirstPicture() ) );		
 		
-		if( numLetters >= 2 ) image2.setImageResource( picSetter( gameLogic.getSecondPicture() ) );
-		if( numLetters == 3 ) image3.setImageResource( picSetter( gameLogic.getThirdPicture() ) );
-		
+		if( numLetters >= twoLetters ) {
+			image2.setImageResource( picSetter( gameLogic.getSecondPicture() ) );
+		}
+		if( numLetters == threeLetters ) {
+			image3.setImageResource( picSetter( gameLogic.getThirdPicture() ) );
+		}
+			
 		//Set the button text
 		firstOptionButton.setText( gameLogic.getFirstButtonString() );
 		secondOptionButton.setText( gameLogic.getSecondButtonString() );
@@ -446,12 +473,18 @@ public class Game extends Activity {
 	 */
 	private boolean getAudioFocus() {
 		
-		if(focusHelper != null) {
-			if(!focusHelper.requestFocus()) {
-				if(!focusHelper.requestQuietFocus()) return false;
-				else return true;
+		if( focusHelper != null ) {
+			if( !focusHelper.requestFocus() ) {
+				if( !focusHelper.requestQuietFocus() ) {
+					return false;
+				}
+				else {
+					return true;
+				}
 			}
-			else return true;
+			else {
+				return true;
+			}
 		}
 		
 		return false;
@@ -480,11 +513,15 @@ public class Game extends Activity {
       * otherwise default to SoundPlayer
       */	
       public void playButton() {
-	   	  if(SoundPlayer.getSoundEnabled()) {
+	   	  if( SoundPlayer.getSoundEnabled() ) {
 		   	      if(focusHelper != null) {
-		   		      if(getAudioFocus()) focusHelper.playButton();
+		   		      if( getAudioFocus() ) {
+		   		    	  focusHelper.playButton();
+		   		      }
 		   	      }
-		   	      else SoundPlayer.playButton(this);
+		   	      else {
+		   	    	  SoundPlayer.playButton( this );
+		   	      }
 	   	  }
      }
 
@@ -495,31 +532,51 @@ public class Game extends Activity {
       * otherwise default to SoundPlayer
       */	
 	  public void playTicking() {
-		  if(SoundPlayer.getSoundEnabled()) { 
-			  if(focusHelper != null) {
-	    		  if(getAudioFocus()) focusHelper.playTicking();
+		  if( SoundPlayer.getSoundEnabled() ) { 
+			  if( focusHelper != null ) {
+	    	  	  if( getAudioFocus() ) {
+	    	  		  focusHelper.playTicking();
+	    	  	  }
 			  }
-			  else SoundPlayer.playTicking(this);
+			  else {
+				  SoundPlayer.playTicking( this );
+			  }
 		  }
 	  }	 
 	 
-	 @Override
-	 /**
+	  /**
+	   * onStop is called when the activity is shut down, usually before
+	   * being destroyed.  We need to stop the timer and media players to
+	   * properly free up memory.  The focus helper should lose focus
+	   * anyway, but no reason not to tie up loose ends.
+	   */
+	 @Override 
+	 public void onStop() {
+    	 //cancels the count down timer
+		 gameLogic.getCountDownTimer().cancel();
+		 
+         //cancel the ticking noise
+    	 SoundPlayer.stop();
+		 if( focusHelper != null ) {
+		 	 focusHelper.abandonFocus();			 
+		 }
+		 
+		 //call the super method
+		 super.onStop();		 
+	 } 
+	 
+	/**
 	  * onKeyDown overrides onKeyDown and allows code to be executed when
 	  * the back button is pushed in the simulator / on the mobile phone 
+	  * Since pushing "back" won't necessarily call the destroy method as
+	  * far as I understand it.
 	  * 
 	  * @param keyCode : code of the key pressed
 	  * @param event   : the event for the key pressed
 	  */
+	 @Override	 
 	 public boolean onKeyDown(int keyCode, KeyEvent event)  {
-	     if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-			 
-	    	 //cancels the count down timer
-			 gameLogic.getCountDownTimer().cancel();
-			 
-	         //cancel the ticking noise
-	    	 SoundPlayer.stop();
-			 if(focusHelper != null) focusHelper.abandonFocus();	        
+	     if ( keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == zero ) {
 	    	 
 	    	 //continue backwards (kills current activity)
 	    	 finish();
@@ -527,6 +584,6 @@ public class Game extends Activity {
 	    	 return true;
 	     }
 
-	     return super.onKeyDown(keyCode, event);
+	     return super.onKeyDown( keyCode, event );
 	 }		 
 }

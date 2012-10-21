@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.*;
-//import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,16 +31,14 @@ import android.widget.TextView;
 //http://www.aktivitetsbanken.se/aktivitetsbanken/images/1/14/Handalfabet.JPG
 
 /**
-  * The AlphabetHelpActivity displays the swedish sign alphabet and
-  * starts a slideshow of the alphabet if the start button is pushed. 
+  * The AlphabetHelpActivity displays the swedish sign alphabet and was
+  * meant to start a slideshow of the alphabet if the start button wa
+  * pushed, but that functionality is removed for the time being 
   * 
   * @author  : Grupp02
-  * @version : 2012-10-20, v1.0 
+  * @version : 2012-10-21, v1.0 
   */
-public class AlphabetHelpActivity extends Activity {
-
-	//Audio Focus helper
-	private AudioFocusHelper focusHelper;	
+public class AlphabetHelpActivity extends Activity {	
 	
 	private Bitmap img;
 	private ImageView userImg;
@@ -56,19 +53,19 @@ public class AlphabetHelpActivity extends Activity {
 	 * @param savedInstanceState : the save state for the activity 
 	 */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alphabet_help);
+    public void onCreate( Bundle savedInstanceState ) {
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_alphabet_help );
         
         // Make sure we're running on Honeycomb or higher to use ActionBar APIs
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
-            //getActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+            //getActionBar().setDisplayHomeAsUpEnabled( true );
+        }       
         
         // User Image      
-        userImg = (ImageView)findViewById(R.id.userpic);
-        img = (Bitmap)( getIntent().getExtras().getParcelable("userImg"));
-		userImg.setImageBitmap(img);
+        userImg = ( ImageView )findViewById(R.id.userpic );
+        img = ( Bitmap )( getIntent().getExtras().getParcelable( "userImg" ) );
+		userImg.setImageBitmap( img );
         
 		userStatus = ( TextView )findViewById( R.id.textView1 );
 		userStatus.setText( getIntent().getStringExtra( "User" ) );
@@ -85,96 +82,36 @@ public class AlphabetHelpActivity extends Activity {
 
     
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+    public boolean onOptionsItemSelected( MenuItem item ) {
+        switch ( item.getItemId() ) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                NavUtils.navigateUpFromSameTask( this );                
                 return true;
         }
-        return super.onOptionsItemSelected(item);
-    }
-    
-	 @Override
-	 /**
-	  * onResume is overriden in order to utterly abandon sound focus if
-	  * sound has been turned off, or resume sound if on.
-	  * 
-	  */
-	 public void onResume() {
-	 	 super.onResume();
-	 	 
-	     if(SoundPlayer.getSoundEnabled() == false) {
-	    	 if(focusHelper != null) {
-	             focusHelper.abandonFocus();
-	    	 }
-	    	 SoundPlayer.stop();
-	     }
-	     else SoundPlayer.resume();
-	}	
-	
-	 @Override
-	 public void onPause() {
-	     super.onPause();  // Always call the superclass method first
-
-	     // Pause sound when paused
-       if(SoundPlayer.getSoundEnabled()) SoundPlayer.pause();
-	 }    
+        return super.onOptionsItemSelected( item );
+    }    
     
 	@Override
-	public void onSaveInstanceState(Bundle savedInstanceState) {
+	public void onSaveInstanceState( Bundle savedInstanceState ) {
 	    // Save name, user status, and user picture
-	    savedInstanceState.putString("Name", userName.getText().toString());
-	    savedInstanceState.putString("status", userStatus.getText().toString());	     
-	    savedInstanceState.putParcelable("picture", img);
+	    savedInstanceState.putString( "Name", userName.getText().toString() );
+	    savedInstanceState.putString( "status", userStatus.getText().toString() );	     
+	    savedInstanceState.putParcelable( "picture", img );
 	    
 	    // Always call the superclass so it can save the view hierarchy state
 	    super.onSaveInstanceState(savedInstanceState);
 	} 
 	
 	@Override
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
+	public void onRestoreInstanceState( Bundle savedInstanceState ) {
 	    // Always call the superclass so it can restore the view hierarchy
-	    super.onRestoreInstanceState(savedInstanceState);
+	    super.onRestoreInstanceState( savedInstanceState );
 	   
 	    // Restore name, user status, and user picture
-	    userName.setText(savedInstanceState.getString( "Name" ));
-	    userStatus.setText(savedInstanceState.getString( "status" ));
-	    img = savedInstanceState.getParcelable("picture");
-	    userImg.setImageBitmap(img);
-	}    
-
-	/**
-	 * The getAudioFocus method attempts to gain focus for playing audio.
-	 * If full access can't be gained, transitive access at a quiet volume
-	 * is attempted.  If that can't be granted, false is returned.
-	 * 
-	 * @return : true if focus in some form is granted, otherwise false
-	 */
-	private boolean getAudioFocus() {
-		
-		if(focusHelper != null) {
-			if(!focusHelper.requestFocus()) {
-				if(!focusHelper.requestQuietFocus()) return false;
-				else return true;
-			}
-			else return true;
-		}
-		
-		return false;
-	}    
-    
-    /**
-     * playButton plays the button sound
-     * 
-     * If there is an AudioFocusHelper (api >= 8) use it,
-     * otherwise default to SoundPlayer
-     */	
-    public void playButton() {
-	  	if(SoundPlayer.getSoundEnabled()) {
-		   	if(focusHelper != null) {
-		   	    if(getAudioFocus()) focusHelper.playButton();
-		   	}
-		   	else SoundPlayer.playButton(this);
-	  	}
-   }			
+	    userName.setText( savedInstanceState.getString( "Name" ) );
+	    userStatus.setText( savedInstanceState.getString(  "status" ) );
+	    img = savedInstanceState.getParcelable( "picture" );
+	    userImg.setImageBitmap( img );
+	}   
+	
 }

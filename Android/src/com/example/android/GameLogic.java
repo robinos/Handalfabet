@@ -49,17 +49,22 @@ public class GameLogic
 	 
 	 //Number of allowed rounds
 	 private int playRoundCounter; 
+	 private final int maxRounds = 10;		 
 	 
 	 //The count down timer and time variables
      private CountDownTimer countDownTimer;	 
      private int timeCount = 0;
      //maxCount is the maximum value of time count, which is 10s
-     private int maxCountLevel1 = 10;
-     private int maxCountLevel2 = 5;
-     private int maxCountLevel3 = 2;
-     //timeLimit needs to add extra time at the beginning and end for the bar
-	 private int timeLimit = 12000; //12000 ms = 12s (needed instead of 10s)
-	 private int tickTime = 1000;  //1000 ms = 1s	 
+     private final int maxCountLevel1 = 10;
+     private final int maxCountLevel2 = 5;
+     private final int maxCountLevel3 = 2;
+	 private int timeLimit; 
+	 private final int tickTime = 1000;  //1000 ms = 1s	 
+	 
+     //timeLimit needs to add extra time at the beginning and end for the bar	 
+     private final int maxTimeLimit1 = 12000; //12000 ms = 12s (needed instead of 10s)
+     private final int maxTimeLimit2 = 7000;
+     private final int maxTimeLimit3 = 4000;	 
 	 
 	 //statistic variables
 	 private int totalTime;
@@ -74,8 +79,8 @@ public class GameLogic
 	 
 	 //file reading variables
      private Scanner fileScanner;	 
-	 final private String level2 = "level2.txt";
-	 final private String level3 = "level3.txt";	 
+	 private final String level2 = "level2.txt";
+	 private final String level3 = "level3.txt";	 
 	 
 	 //Answer string logic variables
 	 private String correctSign;	 
@@ -93,6 +98,22 @@ public class GameLogic
 	 private String second_picture = "blank";	
 	 private String third_picture = "blank";	 
 	 
+	 //private final int minus_one = -1;	 
+	 private final int zero = 0; 
+	 private final int one = 1;
+	 private final int two = 2;
+	 private final int three = 3;	 
+	 private final int difficultyOne = 1;
+	 private final int difficultyTwo = 2;		 
+	 private final int difficultyThree = 3;	 
+	 private final int oneLetter = 1;
+	 private final int twoLetters = 2;
+	 private final int threeLetters = 3;	 
+	 private final int factorTwo = 2; 
+	 private final int factorFive = 5; 	 
+	 private final int factorTen = 10; 	 
+	 private final int factorTwenty = 20; 
+	 private final int factorFifty = 50; 	 
 	 
 	/**
 	 * The GameLogic Constructor
@@ -105,16 +126,13 @@ public class GameLogic
 		debug = false;		
 	    
 		//Number of rounds one may play
-	    playRoundCounter = 10;  
+	    playRoundCounter = maxRounds;  
 	    
 	    //Initialize start scores and statistics to 0
-		totalTime = 0;
-		numCorrect = 0;
-		totalScore = 0;	 
-		roundScore = 0;	    
-	    
-		//10 max seconds in a round (this decrements down to 0 under a round)
-		timeCount = maxCountLevel1; 
+		totalTime = zero;
+		numCorrect = zero;
+		totalScore = zero;	 
+		roundScore = zero;	    
 		    
 	    //Initialize arrays
 	    answerForButtons = new ArrayList< Integer >();
@@ -124,11 +142,12 @@ public class GameLogic
 	    wordList = new ArrayList< String >();	    
 	    
 		//number of letters between 1 and 3 (Default 1)
-		if( numLetters > 0 && numLetters < 4 ) {
-		    this.numLetters = numLetters;
-		}
+		//if( numLetters > 0 && numLetters < 4 ) {
+		 if( numLetters >= oneLetter && numLetters <= threeLetters )
+	        this.numLetters = numLetters;
+		//}
 		 else {
-			numLetters = 1;
+			numLetters = oneLetter;
 			
 			if( debug ) {
 				System.err.println( "Error choosing letter number." );
@@ -136,25 +155,31 @@ public class GameLogic
 		}	   		
 		
 		//number of letters between 1 and 3 (Default 1)
-		if( diffLevel > 0 && diffLevel < 4 ) {
+		//if( diffLevel > 0 && diffLevel < 4 ) {
+		if( diffLevel >= difficultyOne && diffLevel <= difficultyThree )
 		    this.diffLevel = diffLevel;
-		}
+		//}
 		else {
-			diffLevel = 1;
+			diffLevel = difficultyOne;
 			
 			if( debug ) {
 				System.err.println( "Error choosing difficulty." );
 			}
 		}		
 		
+		//Max seconds in a round (this decrements down to 0 under a round)		
 		if(diffLevel == 2) {
-			timeCount = 5;
-			timeLimit = 7000;  
+			timeCount = maxCountLevel2;
+			timeLimit = maxTimeLimit2;  
 		}
-		if(diffLevel == 3) {
-			timeCount = 2;
-			timeLimit = 4000; 
+		else if(diffLevel == 3) {
+			timeCount = maxCountLevel3;
+			timeLimit = maxTimeLimit3; 
 		}
+		else { //difficulty 1
+			timeCount = maxCountLevel1;
+			timeLimit = maxTimeLimit1;
+		}		
 		
         //The Game object (for updating the timer bar)		
 		this.game = game;
@@ -166,7 +191,7 @@ public class GameLogic
 	    setWordList(); 
 	    
         //Initializes and starts the count down timer
-        startTimer(); 	    
+        startTimer(); 
 	}
 	
 	/**
@@ -218,7 +243,7 @@ public class GameLogic
                                            "åka","ägg","öga","öka","öst"};		
 		
 		//Initialize word list based on difficulty level
-	    if( numLetters == 3 ) {
+	    if( numLetters == threeLetters ) {
 	         //Read in word list from file
 	    	 try {
 	    	     readFile( level3 );
@@ -232,12 +257,12 @@ public class GameLogic
 	    	 
 	    	 //if something else went wrong, 
 	    	 //like an empty file, also use the default list
-	    	 if( wordList.size() <= 0) {
+	    	 if( wordList.size() <= zero) {
 	    	     if ( debug ) System.err.println("Error : Empty level3 file");
 	    	     Collections.addAll( wordList, thirdList ); //default		    		 
 	    	 }
 	    }
-	    else if ( numLetters == 2 ) {
+	    else if ( numLetters == twoLetters ) {
 	         //Read in word list from file
 	    	 try {
 	    	     readFile( level2 );
@@ -251,7 +276,7 @@ public class GameLogic
 	    	 
 	    	 //if something else went wrong, like an empty file,
 	    	 //also use the default list
-	    	 if( wordList.size() <= 0) {
+	    	 if( wordList.size() <= zero) {
 	    	     if ( debug ) System.err.println("Error : Empty level2 file");
 	    	     Collections.addAll( wordList, secondList ); //default		    		 
 	    	 }	    	 
@@ -290,22 +315,37 @@ public class GameLogic
 	  */
 	 public void scoreCounter() {
 		 
+		 int score;
+		 int time;
+		 
 		 //timeCount is the number of seconds left on the counter
 		 //when a correct answer was given.  +1 is because timeCount
 		 //is actually always at least 1 less than it should be due to display
 		 //issues.
-		 if(diffLevel == 3) {
-			 totalTime += 1+maxCountLevel3-timeCount; //2 seconds to answer
-			 roundScore = (1+timeCount)*5*diffLevel;
+		 if(diffLevel == difficultyThree) {
+			 time = one+maxCountLevel3-timeCount; //2 seconds to answer
+			 score = (one+timeCount)*factorFive*diffLevel;
 		 }
-		 else if(diffLevel == 2) {
-			 totalTime += 1+maxCountLevel2-timeCount; //5 seconds to answer	
-			 roundScore = (1 + timeCount)*2*diffLevel;			 
+		 else if(diffLevel == difficultyTwo) {
+			 time = one+maxCountLevel2-timeCount; //5 seconds to answer	
+			 score = (one+timeCount)*factorTwo*diffLevel;			 
 		 }
 		 else {
-			 totalTime += 1+maxCountLevel1-timeCount; //10 seconds to answer
-			 roundScore = (1 + timeCount);			  //- time taken			 			 
+			 time = one+maxCountLevel1-timeCount; //10 seconds to answer
+			 score = (one+timeCount);			  //- time taken			 			 
 		 }
+		 
+		 if(score > zero) {
+			 roundScore = score;
+		 }
+		 else {
+			 roundScore = zero;
+		 }
+		 
+		 if(time > zero) {
+			 totalTime += time;
+		 }
+		 
 		 totalScore += roundScore;		 
 		 numCorrect++;		 
 	 }	 
@@ -332,7 +372,7 @@ public class GameLogic
 	  * The clearRoundScore method clears (sets to 0) the round score.
 	  */
 	 public void clearRoundScore() {
-		 roundScore = 0;
+		 roundScore = zero;
 	 }	 
 	 
 	 /**
@@ -353,7 +393,7 @@ public class GameLogic
 	  */
 	 public boolean countDownRounds () {
 		 playRoundCounter--;
-		 if( playRoundCounter == 0 ) {
+		 if( playRoundCounter == zero ) {
 			 return true;
 		 }
 		 else {
@@ -367,10 +407,10 @@ public class GameLogic
 	  * @param max : an integer representing max time left
 	  */
 	 public void resetTimeCount() {
-		 if (diffLevel == 3) {
+		 if (diffLevel == difficultyThree) {
 			 timeCount = maxCountLevel3;
 		 }
-		 else if (diffLevel == 2) {
+		 else if (diffLevel == difficultyTwo) {
 			 timeCount = maxCountLevel2;
 		 }
 		 else {
@@ -385,10 +425,10 @@ public class GameLogic
 	  * @return : an integer representing the round score
 	  */
 	 public int getAverageTime() {
-		 if(diffLevel == 3) {
+		 if(diffLevel == difficultyThree) {
 			 return ( totalTime / numCorrect );
 		 }
-		 else if(diffLevel == 2) {
+		 else if(diffLevel == difficultyTwo) {
 			 return ( totalTime / numCorrect );
 		 }
 		 else {
@@ -415,19 +455,19 @@ public class GameLogic
 	 */
 	public int getCorrectButton() {
 		if( correctSign.equals( firstButtonString ) ) {
-			return 1;
+			return one;
 		}
 		else if( correctSign.equals(secondButtonString ) ) {
-			return 2;		
+			return two;		
 		}
 		else if( correctSign.equals(thirdButtonString ) ) {
-			return 3;
+			return three;
 		}
 		else {
 			if( debug ) {
 			    System.err.println( "Invalid correct sign." );
 			}
-			return 1;
+			return one;
 		}
 	}
 		
@@ -499,7 +539,7 @@ public class GameLogic
 			//one of which is the right answer (into answerForButtons)
 			randomizeWordsForAnswerButtons( randomNumber() );
 			//The first number in answerForButtons is the correct one
-			str = randomWord( answerForButtons.get(0) );
+			str = randomWord( answerForButtons.get( zero ) );
 			correctSign = str;
 			
 			if( putUsedSignsInArray( str ) ){
@@ -510,29 +550,29 @@ public class GameLogic
 		        answerForButtons.clear();
 		}
 		
-		if( numLetters == 3) {
-	    	first_picture = Character.toString( str.charAt( 0 ) );	
-	    	second_picture = Character.toString( str.charAt( 1 ) );
-	    	third_picture = Character.toString( str.charAt( 2 ) );	    	
+		if( numLetters == threeLetters) {
+	    	first_picture = Character.toString( str.charAt( zero ) );	
+	    	second_picture = Character.toString( str.charAt( one ) );
+	    	third_picture = Character.toString( str.charAt( two ) );	    	
 		}
-		else if( numLetters == 2) {
-	    	first_picture = Character.toString( str.charAt( 0 ) );	
-	    	second_picture = Character.toString( str.charAt( 1 ) );			
+		else if( numLetters == twoLetters) {
+	    	first_picture = Character.toString( str.charAt( zero ) );	
+	    	second_picture = Character.toString( str.charAt( one ) );			
 		}
 		else first_picture = str;
 		
-		int y = randomGen.nextInt( 3 ); 
+		int y = randomGen.nextInt( three ); 
 
 		str = randomWord( answerForButtons.get( y ) );
 		firstButtonString = str;
 		answerForButtons.remove( y );
 		
-		y = randomGen.nextInt(2);
+		y = randomGen.nextInt( two );
 		str = randomWord( answerForButtons.get( y ) );
 		secondButtonString = str;
-		answerForButtons.remove(y);
+		answerForButtons.remove( y );
 		
-		str = randomWord( answerForButtons.get( 0 ) );
+		str = randomWord( answerForButtons.get( zero ) );
 		thirdButtonString = str;
 
 		answerForButtons.clear();
@@ -612,7 +652,7 @@ public class GameLogic
 	 * @param the position in the alphabet for correct answer
 	 */
 	private void randomizeWordsForAnswerButtons( int x ){
-		for( int y = 0; y < 3; y++ ){
+		for( int y = zero; y < three; y++ ){
 			if( !answerForButtons.contains( x ) ){
 				answerForButtons.add( x );
 				x = randomNumber();
@@ -631,19 +671,20 @@ public class GameLogic
 	  */
 	 public void startTimer() {
 	     countDownTimer = new CountDownTimer( timeLimit, tickTime ) {
-	    	 private int factor = 10;
+	    	 private int factor;
 	    	 
 	    	//a long is required by onTick, timeLeft is not used
 	         public void onTick( long timeLeft ) 
 	         {   
-	        	 if(diffLevel == 1) {
-	        		factor = 10; 
+	        	 
+	        	 if(diffLevel == difficultyTwo) {
+	        		 factor = factorTwenty;
 	        	 }
-	        	 if(diffLevel == 2) {
-	        		 factor = 20;
+	        	 else if(diffLevel == difficultyThree) {
+	        		 factor = factorFifty;
 	        	 }
-	        	 if(diffLevel == 3) {
-	        		 factor = 50;
+	        	 else {
+	        		 factor = factorTen; //Diff 1
 	        	 }
 	        	 
 	        	 //The progress bar goes from 100 to 0 while timeCount
@@ -651,9 +692,9 @@ public class GameLogic
 	             game.getTimerBar().setProgress( timeCount*factor );
 	             
 	             // Stops the timeCount from going beyond zero time.
-	             if (timeCount > 0) {
+	             if (timeCount > zero) {
 	            	 timeCount--;
-	             }
+	             }	             
 	         }
 	        	 
 	         public void onFinish()
@@ -664,7 +705,7 @@ public class GameLogic
 	        	 SoundPlayer.stop();
 	        	 SoundPlayer.playTimeout(game);
 	        	 SoundPlayer.buzz( game, "timeout" );
-	        	 timeCount = -1;
+	        	 timeCount = zero;
 	         }
 	     }.start();		 
 	 }		

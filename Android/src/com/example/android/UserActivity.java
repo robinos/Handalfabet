@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,6 +66,9 @@ public class UserActivity extends Activity {
 	private Bitmap bitImg;
 	private TextView userName;
 	
+	private final int zero = 0;
+	private final int one = 1;
+	private final int two = 2;
 	 
 	@Override 
     public void onCreate(Bundle savedInstanceState) {
@@ -72,18 +76,15 @@ public class UserActivity extends Activity {
         setContentView(R.layout.activity_user);
         
         db = new DatabaseHelper(this); 
-        soundData = new SoundSettings(this); 
-        
-        // Make sure we're running on Honeycomb or higher to use ActionBar APIs
-        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
-        	 //getActionBar().setDisplayHomeAsUpEnabled( true );
-        }     
+        soundData = new SoundSettings(this);      
           
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO)
-        	focusHelper = new AudioFocusHelper(this);
-        else focusHelper = null;	
-        
-        
+        if ( android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO ) {
+        	focusHelper = new AudioFocusHelper( this );
+        }
+        else {
+        	focusHelper = null;	
+        }
+                
         listView =(ListView)findViewById(R.id.list);
         userName = (TextView) findViewById(R.id.textView1);
         loginButton = (Button) findViewById(R.id.login);
@@ -113,27 +114,16 @@ public class UserActivity extends Activity {
         	  }
         });
         
-//		list = db.getAllUsersName();
-//        // Create ArrayAdapter using the user list.  
-//        ArrayAdapter<String> userList = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
-//        listView.setAdapter(userList);
-//       
-//        listView.setOnItemClickListener(new OnItemClickListener() {
-//        	  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        		  userName.setText(list.get(position).toString());
-//        		  User user = db.getUser(userName.getText().toString());
-//        		  bitImg = user.getUserImg();
-//        	  }
-//        });
-        
          //On resume for sound
-	     if(SoundPlayer.getSoundEnabled() == false) {
-	    	 if(focusHelper != null) {
+	     if( SoundPlayer.getSoundEnabled() == false ) {
+	    	 if( focusHelper != null ) {
 	             focusHelper.abandonFocus();
 	    	 }
 	    	 SoundPlayer.stop();
 	     }
-	     else SoundPlayer.resume();
+	     else {
+	    	 SoundPlayer.resume();
+	     }
 	}	
 	
 	 @Override
@@ -141,29 +131,31 @@ public class UserActivity extends Activity {
 	     super.onPause();  // Always call the superclass method first
 
 	     // Pause sound when paused
-        if(SoundPlayer.getSoundEnabled()) SoundPlayer.pause();
+        if( SoundPlayer.getSoundEnabled() ) {
+        	SoundPlayer.pause();
+        }
 	 }	
 	
 		@Override
-		public void onSaveInstanceState(Bundle savedInstanceState) {
+		public void onSaveInstanceState( Bundle savedInstanceState ) {
 		    // Save name, user status, and user picture
-		    savedInstanceState.putString("Name", userName.getText().toString());	     
-		    savedInstanceState.putParcelable("picture", bitImg);
-		    savedInstanceState.putBoolean("login", loginButton.isEnabled());		    
+		    savedInstanceState.putString( "Name", userName.getText().toString() );	     
+		    savedInstanceState.putParcelable( "picture", bitImg );
+		    savedInstanceState.putBoolean( "login", loginButton.isEnabled() );		    
 		    
 		    // Always call the superclass so it can save the view hierarchy state
-		    super.onSaveInstanceState(savedInstanceState);
+		    super.onSaveInstanceState( savedInstanceState );
 		} 
 		
 		@Override
-		public void onRestoreInstanceState(Bundle savedInstanceState) {
+		public void onRestoreInstanceState( Bundle savedInstanceState ) {
 		    // Always call the superclass so it can restore the view hierarchy
-		    super.onRestoreInstanceState(savedInstanceState);
+		    super.onRestoreInstanceState( savedInstanceState );
 		   
 		    // Restore name, user status, and user picture
 		    userName.setText(savedInstanceState.getString( "Name" ));
-		    bitImg = savedInstanceState.getParcelable("picture");
-		    loginButton.setEnabled(savedInstanceState.getBoolean("login"));		    
+		    bitImg = savedInstanceState.getParcelable( "picture" );
+		    loginButton.setEnabled( savedInstanceState.getBoolean( "login" ) );		    
 		}	 
 	 
 	/** Called when the user clicks the Create New Player button */
@@ -181,7 +173,7 @@ public class UserActivity extends Activity {
 	        	
 	        }
 	        public void onTextChanged(CharSequence s, int start, int before, int count){
-	        	if(userName.getText().length() > 2){
+	        	if(userName.getText().length() > two){
 					loginButton.setEnabled(true);
 				}else{
 					loginButton.setEnabled(false);
@@ -190,13 +182,23 @@ public class UserActivity extends Activity {
 	    }); 
 	}
 	
+	/**
+	 * Retrieve and set the user sound settings from database
+	 */
     private void getSoundSettings() {	   
      	String name = userName.getText().toString();
      	
  	    // Restores data to SoundPlayer     	
      	if(name != null) {
-     		if(name != "") soundData.getEntry(name); ;
-     	} 		     	    
+     		if( name != "" ) soundData.getEntry( name );
+     	}
+     	
+	    int soundVolume = SoundPlayer.getCurrentVolume();	    
+	    
+	    //Restore volume setting
+    	float volume = ( float ) ( one - ( Math.log(MAX_VOLUME - soundVolume)
+    			/ Math.log( MAX_VOLUME ) ) );
+    	SoundPlayer.setVolume( volume, volume );       	
     }	
 	
 	/** Scales down User picture */
@@ -217,6 +219,8 @@ public class UserActivity extends Activity {
 	public void Login (View v){
 		playButton();		
 		Bitmap img = scaleDownBitmap(bitImg, 55 ,this);
+		
+		//Get and set the user sound settings upon login
 		getSoundSettings();
 		
 		Intent intent = getIntent();              
@@ -235,12 +239,18 @@ public class UserActivity extends Activity {
 	 */
 	private boolean getAudioFocus() {
 		
-		if(focusHelper != null) {
-			if(!focusHelper.requestFocus()) {
-				if(!focusHelper.requestQuietFocus()) return false;
-				else return true;
+		if( focusHelper != null ) {
+			if( !focusHelper.requestFocus() ) {
+				if( !focusHelper.requestQuietFocus() ) {
+					return false;
+				}
+				else {
+					return true;
+				}
 			}
-			else return true;
+			else {
+				return true;
+			}
 		}
 		
 		return false;
@@ -253,30 +263,56 @@ public class UserActivity extends Activity {
      * otherwise default to SoundPlayer
      */	
      public void playButton() {
-    	  if(SoundPlayer.getSoundEnabled()) {
-	   	      if(focusHelper != null) {
-	   		      if(getAudioFocus()) focusHelper.playButton();
+    	  if( SoundPlayer.getSoundEnabled() ) {
+	   	      if( focusHelper != null ) {
+	   		      if( getAudioFocus() ) {
+	   		    	  focusHelper.playButton();
+	   		      }
 	   	      }
-	   	      else SoundPlayer.playButton(this);
+	   	      else {
+	   	    	  SoundPlayer.playButton( this );
+	   	      }
     	  }
-     }
-	
-	/** Skappar knappen högst upp i menyn */   
-	@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_level_chooser, menu);
-        return true;
-    }
-
-	/** Går tillbaka till Main Activity när användaren klickar på knappen*/
-	 @Override
-	    public boolean onOptionsItemSelected(MenuItem item) {
-	        switch (item.getItemId()) {
-	            case android.R.id.home:
-	                NavUtils.navigateUpFromSameTask(this);
-	                return true;
-	        }
-	        return super.onOptionsItemSelected(item);
-	    } 
+     } 
 	 
+	   /**
+		* onStop is called when the activity is shut down, usually before
+		* being destroyed.  We need to stop any media players to
+		* properly free up memory.  The focus helper should lose focus
+		* anyway, but no reason not to tie up loose ends.
+	    */
+		@Override 
+		public void onStop() {		 
+	       //cancel any noises and abandon focus
+	  	    SoundPlayer.stop();
+	  	
+			if( focusHelper != null ) {
+				focusHelper.abandonFocus();
+			}
+			 
+			//call the super method
+			super.onStop();		 
+		}
+		
+		/**
+		 * onKeyDown overrides onKeyDown and allows code to be executed when
+		 * the back button is pushed in the simulator / on the mobile phone 
+		 * Since pushing "back" won't necessarily call the destroy method as
+		 * far as I understand it.
+		 * 
+		 * @param keyCode : code of the key pressed
+		 * @param event   : the event for the key pressed
+		 */
+		 @Override	 
+		 public boolean onKeyDown(int keyCode, KeyEvent event)  {
+		     if ( keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == zero ) {
+		    	 
+		    	 //continue backwards (kills current activity calling onDestroy)
+		    	 finish();
+		    	 
+		    	 return true;
+		     }
+
+		     return super.onKeyDown( keyCode, event );
+		 }	 
 }

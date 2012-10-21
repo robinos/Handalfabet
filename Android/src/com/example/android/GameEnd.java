@@ -37,7 +37,7 @@ import android.widget.TextView;
  * The GameEnd class is the display screen once the game has ended.
  * 
  * @author  : Grupp02
- * @version : 2012-10-19, v1.0
+ * @version : 2012-10-21, v1.0
  *
  */
 public class GameEnd extends Activity {
@@ -58,6 +58,10 @@ public class GameEnd extends Activity {
     private int totalScore;
     private int averageTime;
     private TextView highView;
+
+	private final int zero = 0;    
+	private final int difficultyOne = 1;
+	private final int oneLetter = 1;	    
     
     @Override
     public void onCreate( Bundle savedInstanceState ) {
@@ -69,12 +73,14 @@ public class GameEnd extends Activity {
             //getActionBar().setDisplayHomeAsUpEnabled( true );
         }         
          
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO)
-        	focusHelper = new AudioFocusHelper(this);
-        else focusHelper = null;        
+        if ( android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO )
+        	focusHelper = new AudioFocusHelper( this );
+        else {
+        	focusHelper = null;        
+        }
         
-        difficulty = getIntent().getIntExtra( "Difficulty", 1 );         
-        numLetters = getIntent().getIntExtra( "Letters", 1 );
+        difficulty = getIntent().getIntExtra( "Difficulty", difficultyOne );         
+        numLetters = getIntent().getIntExtra( "Letters", oneLetter );
         
         db = new DatabaseHelper(this);
         
@@ -82,44 +88,52 @@ public class GameEnd extends Activity {
         final ImageButton highScoreButton = ( ImageButton ) findViewById( R.id.high_scores_button ); 
         final ImageButton mainMenuButton = ( ImageButton ) findViewById( R.id.main_menu_button );
         
-        highView = (TextView)findViewById(R.id.high_view);        
-        userStatus = (TextView)findViewById(R.id.textView1);
-        userName = (TextView)findViewById(R.id.textView2);
+        highView = ( TextView ) findViewById( R.id.high_view );        
+        userStatus = ( TextView ) findViewById( R.id.textView1 );
+        userName = ( TextView ) findViewById( R.id.textView2 );
         
-        numCorrect = getIntent().getIntExtra( "NumCorrect", 0 );         
-        totalScore = getIntent().getIntExtra( "TotalScore", 0 ); 
-        averageTime = getIntent().getIntExtra( "AverageTime", 0 );    
+        numCorrect = getIntent().getIntExtra( "NumCorrect", zero );         
+        totalScore = getIntent().getIntExtra( "TotalScore", zero ); 
+        averageTime = getIntent().getIntExtra( "AverageTime", zero );    
         
         // User Image      
-        userImg = (ImageView)findViewById(R.id.userpic);
-        img = (Bitmap)( getIntent().getExtras().getParcelable("userImg"));
-		userImg.setImageBitmap(img);
+        userImg =  ( ImageView ) findViewById( R.id.userpic );
+        img = ( Bitmap )( getIntent().getExtras().getParcelable( "userImg" ) );
+		userImg.setImageBitmap( img );
         
         //Displays the userName
-        userStatus.setText(R.string.logged_in);
-		userName.setText(getIntent().getStringExtra("name"));
+        userStatus.setText( R.string.logged_in );
+		userName.setText( getIntent().getStringExtra( "name" ) );
 		
-		User user = db.getUser(userName.getText().toString());
+		User user = db.getUser( userName.getText().toString() );
 		  
 		// Update HighScore 
-		if(user.getHighScore() < totalScore){
-			user.setHighScore(totalScore);
-			user.setMaxDifficulty(difficulty);
-			user.setMaxLetters(numLetters);
-			db.updateUserHighScore(user);
-			//Display congratulations to user
-			highView.setText(R.string.high_view);
+		if( user.getHighScore() < totalScore ){
+			user.setHighScore( totalScore );
+			user.setMaxDifficulty( difficulty );
+			user.setMaxLetters( numLetters );
+			db.updateUserHighScore( user );
 			
-			  if(focusHelper != null) {
-	    		  if(getAudioFocus()) focusHelper.playApplause();
-			  }
-			  else SoundPlayer.playApplause(this);
+			//Display congratulations to user
+			highView.setText( R.string.high_view );
+			
+			if(focusHelper != null) {
+	            if( getAudioFocus() ) {
+	            	focusHelper.playApplause();
+	            }
+			}
+			else {
+				SoundPlayer.playApplause( this );
+			}
 		}
 		else {
 			//Display no new high score to user
-			highView.setText(R.string.low_view);			
+			highView.setText( R.string.low_view );			
 		}
 
+		/**
+		 * The New Game buttons starts a new game with previous settings
+		 */
         newGameButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
 				playButton();					
@@ -134,6 +148,9 @@ public class GameEnd extends Activity {
 			}
 		} ); 
         
+        /**
+         * The high score button displays the high scores
+         */
         highScoreButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
 				playButton();				
@@ -141,6 +158,9 @@ public class GameEnd extends Activity {
 			}
 		}); 
         
+        /**
+         * The menu menu button returns to the main menu
+         */
         mainMenuButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
 		        playButton();		        
@@ -168,13 +188,15 @@ public class GameEnd extends Activity {
 	 public void onResume() {
 	 	 super.onResume();
 	 	 
-	     if(SoundPlayer.getSoundEnabled() == false) {
-	    	 if(focusHelper != null) {
+	     if( SoundPlayer.getSoundEnabled() == false ) {
+	    	 if( focusHelper != null ) {
 	             focusHelper.abandonFocus();
 	    	 }
 	    	 SoundPlayer.stop();
 	     }
-	     else SoundPlayer.resume();
+	     else {
+	    	 SoundPlayer.resume();
+	     }
 	}	
 	
 	 @Override
@@ -182,43 +204,51 @@ public class GameEnd extends Activity {
 	     super.onPause();  // Always call the superclass method first
 
 	     // Pause sound when paused
-        if(SoundPlayer.getSoundEnabled()) SoundPlayer.pause();
+        if( SoundPlayer.getSoundEnabled() ) {
+        	SoundPlayer.pause();
+        }
 	 }   
-    
-		@Override
-		public void onSaveInstanceState(Bundle savedInstanceState) {
-		    // Save name, user status, and user picture
-		    savedInstanceState.putString("Name", userName.getText().toString());
-		    savedInstanceState.putString("status", userStatus.getText().toString());	     
-		    savedInstanceState.putParcelable("picture", img);
-		    savedInstanceState.putInt("difficulty", difficulty);
-		    savedInstanceState.putInt("letters", numLetters);
-		    savedInstanceState.putInt("NumScore", numCorrect);
-		    savedInstanceState.putInt("TotalScore", totalScore);
-		    savedInstanceState.putInt("AverageTime", averageTime);
-		    savedInstanceState.putString("High", highView.getText().toString());		    
+	 
+	/**
+	 * Saving in case of interruption or layout change
+	 */
+	@Override
+	public void onSaveInstanceState( Bundle savedInstanceState ) {
+		  // Save name, user status, and user picture
+	     savedInstanceState.putString( "Name", userName.getText().toString() );
+		 savedInstanceState.putString( "status", userStatus.getText().toString() );	     
+		 savedInstanceState.putParcelable( "picture", img );
+		 savedInstanceState.putInt( "difficulty", difficulty );
+		 savedInstanceState.putInt( "letters", numLetters );
+		 savedInstanceState.putInt( "NumScore", numCorrect );
+		 savedInstanceState.putInt( "TotalScore", totalScore );
+		 savedInstanceState.putInt( "AverageTime", averageTime );
+		 savedInstanceState.putString( "High", highView.getText().toString() );		    
 		    
-		    // Always call the superclass so it can save the view hierarchy state
-		    super.onSaveInstanceState(savedInstanceState);
-		} 
+		 // Always call the superclass so it can save the view hierarchy state
+		 super.onSaveInstanceState( savedInstanceState );
+	} 
 		
-		@Override
-		public void onRestoreInstanceState(Bundle savedInstanceState) {
-		    // Always call the superclass so it can restore the view hierarchy
-		    super.onRestoreInstanceState(savedInstanceState);
+   /**
+	* Restoring after interruption or layout change
+	*/
+	@Override
+	public void onRestoreInstanceState( Bundle savedInstanceState ) {
+	     // Always call the superclass so it can restore the view hierarchy
+		 super.onRestoreInstanceState( savedInstanceState );
 		   
-		    // Restore name, user status, and user picture
-		    userName.setText(savedInstanceState.getString( "Name" ));
-		    userStatus.setText(savedInstanceState.getString( "status" ));
-		    img = savedInstanceState.getParcelable("picture");
-		    userImg.setImageBitmap(img);
-		    difficulty = savedInstanceState.getInt("difficulty");
-		    numLetters = savedInstanceState.getInt("letters");
-		    numCorrect = savedInstanceState.getInt("NumScore");
-		    totalScore = savedInstanceState.getInt("TotalScore");
-		    averageTime = savedInstanceState.getInt("AverageTime");
-		    highView.setText(savedInstanceState.getString("High"));
-		}	 
+		 // Restore name, user status, and user picture
+		 userName.setText(savedInstanceState.getString( "Name" ) );
+		 userStatus.setText(savedInstanceState.getString( "status" ) );
+		 img = savedInstanceState.getParcelable( "picture" );
+		 userImg.setImageBitmap( img );
+		 difficulty = savedInstanceState.getInt( "difficulty" );
+		 numLetters = savedInstanceState.getInt( "letters" );
+		 numCorrect = savedInstanceState.getInt( "NumScore" );
+		 totalScore = savedInstanceState.getInt( "TotalScore" );
+		 averageTime = savedInstanceState.getInt( "AverageTime" );
+		 highView.setText( savedInstanceState.getString( "High" ) );
+	}	 
 	 
 	/**
 	 * The getAudioFocus method attempts to gain focus for playing audio.
@@ -229,12 +259,18 @@ public class GameEnd extends Activity {
 	 */
 	private boolean getAudioFocus() {
 		
-		if(focusHelper != null) {
-			if(!focusHelper.requestFocus()) {
-				if(!focusHelper.requestQuietFocus()) return false;
-				else return true;
+		if( focusHelper != null ) {
+			if( !focusHelper.requestFocus() ) {
+				if( !focusHelper.requestQuietFocus() ) {
+					return false;
+				}
+				else {
+					return true;
+				}
 			}
-			else return true;
+			else {
+				return true;
+			}
 		}
 		
 		return false;
@@ -247,11 +283,15 @@ public class GameEnd extends Activity {
      * otherwise default to SoundPlayer
      */	
     public void playButton() {
-	  	if(SoundPlayer.getSoundEnabled()) {
-		   	if(focusHelper != null) {
-		   	    if(getAudioFocus()) focusHelper.playButton();
+	  	if( SoundPlayer.getSoundEnabled() ) {
+		   	if( focusHelper != null ) {
+		   	    if( getAudioFocus() ) {
+		   	    	focusHelper.playButton();
+		   	    }
 		   	}
-		   	else SoundPlayer.playButton(this);
+		   	else {
+		   		SoundPlayer.playButton( this );
+		   	}
 	  	}
    }	
 	
@@ -272,27 +312,45 @@ public class GameEnd extends Activity {
         return super.onOptionsItemSelected( item );
     } 
     
-	 @Override
-	 /**
-	  * onKeyDown overrides onKeyDown and allows code to be executed when
-	  * the back button is pushed in the simulator / on the mobile phone 
-	  * 
-	  * @param keyCode : code of the key pressed
-	  * @param event   : the event for the key pressed
-	  */
+	  /**
+   /**
+	* onStop is called when the activity is shut down, usually before
+	* being destroyed.  We need to stop any media players to
+	* properly free up memory.  The focus helper should lose focus
+	* anyway, but no reason not to tie up loose ends.
+    */
+	@Override 
+	public void onStop() {		 
+       //cancel any noises and abandon focus
+  	    SoundPlayer.stop();
+  	
+		if( focusHelper != null ) {
+			focusHelper.abandonFocus();
+		}
+		 
+		//call the super method
+		super.onStop();		 
+	}
+	
+	/**
+	 * onKeyDown overrides onKeyDown and allows code to be executed when
+	 * the back button is pushed in the simulator / on the mobile phone 
+	 * Since pushing "back" won't necessarily call the destroy method as
+	 * far as I understand it.
+	 * 
+	 * @param keyCode : code of the key pressed
+	 * @param event   : the event for the key pressed
+	 */
+	 @Override	 
 	 public boolean onKeyDown(int keyCode, KeyEvent event)  {
-	     if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-			 
-	         //cancel the applause noise
-	    	 SoundPlayer.stop();
-			 if(focusHelper != null) focusHelper.abandonFocus();	        
+	     if ( keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == zero ) {
 	    	 
-	    	 //continue backwards (kills current activity)
+	    	 //continue backwards (kills current activity calling onDestroy)
 	    	 finish();
 	    	 
 	    	 return true;
 	     }
 
-	     return super.onKeyDown(keyCode, event);
-	 }    
+	     return super.onKeyDown( keyCode, event );
+	 }   
 }

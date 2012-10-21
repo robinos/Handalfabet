@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -34,7 +35,7 @@ import android.widget.TextView;
  * The MainActivity class.
  * 
  * @author  : Grupp02
- * @version : 2012-10-19, v1.0
+ * @version : 2012-10-21, v1.0
  *
  */
 public class MainActivity extends Activity {
@@ -62,9 +63,11 @@ public class MainActivity extends Activity {
         	 //getActionBar().setDisplayHomeAsUpEnabled( true );
         }     
           
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO)
-        	focusHelper = new AudioFocusHelper(this);
-        else focusHelper = null;	
+        if ( android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO )
+        	focusHelper = new AudioFocusHelper( this );
+        else {
+        	focusHelper = null;	
+        }
           
         userImg = (ImageView)findViewById(R.id.userpic);
         userStatus = (TextView)findViewById(R.id.textView1);
@@ -86,13 +89,15 @@ public class MainActivity extends Activity {
 	 public void onResume() {
 	 	 super.onResume();
 	 	 
-	     if(SoundPlayer.getSoundEnabled() == false) {
-	    	 if(focusHelper != null) {
+	     if( SoundPlayer.getSoundEnabled() == false ) {
+	    	 if( focusHelper != null ) {
 	             focusHelper.abandonFocus();
 	    	 }
 	    	 SoundPlayer.stop();
 	     }
-	     else SoundPlayer.resume();
+	     else {
+	    	 SoundPlayer.resume();
+	     }
 	}	
 	
 	 @Override
@@ -100,36 +105,38 @@ public class MainActivity extends Activity {
 	     super.onPause();  // Always call the superclass method first
 
 	     // Pause sound when paused
-        if(SoundPlayer.getSoundEnabled()) SoundPlayer.pause();
+        if( SoundPlayer.getSoundEnabled() ) {
+        	SoundPlayer.pause();
+        }
 	 }	
 	
 	@Override
-	public void onSaveInstanceState(Bundle savedInstanceState) {
+	public void onSaveInstanceState( Bundle savedInstanceState ) {
 	    // Save name, user status, and user picture
-	    savedInstanceState.putString("Name", playerName);
-	    savedInstanceState.putString("status", userStatus.getText().toString());	     
-	    savedInstanceState.putParcelable("picture", img);
-	    savedInstanceState.putBoolean("game", startGameButton.isEnabled());	
-	    savedInstanceState.putBoolean("settings", settingsButton.isEnabled());	
+	    savedInstanceState.putString( "Name", playerName );
+	    savedInstanceState.putString( "status", userStatus.getText().toString() );	     
+	    savedInstanceState.putParcelable( "picture", img );
+	    savedInstanceState.putBoolean( "game", startGameButton.isEnabled() );	
+	    savedInstanceState.putBoolean( "settings", settingsButton.isEnabled() );	
 	    
 	    // Always call the superclass so it can save the view hierarchy state
-	    super.onSaveInstanceState(savedInstanceState);
+	    super.onSaveInstanceState( savedInstanceState );
 	} 
 	
 	@Override
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
+	public void onRestoreInstanceState( Bundle savedInstanceState ) {
 	    // Always call the superclass so it can restore the view hierarchy
-	    super.onRestoreInstanceState(savedInstanceState);
+	    super.onRestoreInstanceState( savedInstanceState );
 	   
 	    // Restore name, user status, and user picture
 	    playerName = savedInstanceState.getString( "Name" );
 	    name = playerName;
-	    nameField.setText(playerName);
-	    userStatus.setText(savedInstanceState.getString( "status" ));
-	    img = savedInstanceState.getParcelable("picture");
-	    userImg.setImageBitmap(img);
-	    startGameButton.setEnabled(savedInstanceState.getBoolean("game"));
-	    settingsButton.setEnabled(savedInstanceState.getBoolean("settings"));	    
+	    nameField.setText( playerName );
+	    userStatus.setText( savedInstanceState.getString( "status" ));
+	    img = savedInstanceState.getParcelable( "picture" );
+	    userImg.setImageBitmap( img );
+	    startGameButton.setEnabled( savedInstanceState.getBoolean( "game" ) );
+	    settingsButton.setEnabled( savedInstanceState.getBoolean( "settings" ) );	    
 	}		
 
 	/** Called when the user clicks the New Game button */
@@ -201,12 +208,18 @@ public class MainActivity extends Activity {
 	 */
 	private boolean getAudioFocus() {
 		
-		if(focusHelper != null) {
-			if(!focusHelper.requestFocus()) {
-				if(!focusHelper.requestQuietFocus()) return false;
-				else return true;
+		if( focusHelper != null ) {
+			if( !focusHelper.requestFocus() ) {
+				if( focusHelper.requestQuietFocus() ) {
+					return false;
+				}
+				else {
+					return true;
+				}
 			}
-			else return true;
+			else {
+				return true;
+			}
 		}
 		
 		return false;
@@ -219,17 +232,40 @@ public class MainActivity extends Activity {
      * otherwise default to SoundPlayer
      */	
      public void playButton() {
-	   	 if(SoundPlayer.getSoundEnabled()) {
-		   	 if(focusHelper != null) {
-		   	    if(getAudioFocus()) focusHelper.playButton();
+	   	 if( SoundPlayer.getSoundEnabled() ) {
+		   	 if( focusHelper != null ) {
+		   	    if( getAudioFocus() ) {
+		   	    	focusHelper.playButton();
+		   	    }
 		   	 }
-		   	 else SoundPlayer.playButton(this);
+		   	 else {
+		   		 SoundPlayer.playButton( this );
+		   	 }
 	  	 }
     }      
      
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
+    public boolean onCreateOptionsMenu( Menu menu ) {
+        getMenuInflater().inflate( R.menu.activity_main, menu );
         return true;
     }
+    
+    /**
+ 	* onStop is called when the activity is shut down, usually before
+ 	* being destroyed.  We need to stop any media players to
+ 	* properly free up memory.  The focus helper should lose focus
+ 	* anyway, but no reason not to tie up loose ends.
+     */
+ 	@Override 
+ 	public void onStop() {		 
+        //cancel any noises and abandon focus
+   	    SoundPlayer.stop();
+   	
+ 		if( focusHelper != null ) {
+ 			focusHelper.abandonFocus();
+ 		}
+ 		 
+ 		//call the super method
+ 		super.onStop();		 
+ 	}    
 }

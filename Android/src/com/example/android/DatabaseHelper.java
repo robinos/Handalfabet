@@ -36,7 +36,7 @@ import android.util.Log;
  * The DatabaseHelper class is used to interact with the User database.
  * 
  * @author  : Grupp02
- * @version : 2012-10-19, v1.0 
+ * @version : 2012-10-21, v1.0 
  */
 public class DatabaseHelper extends SQLiteOpenHelper{
 	 
@@ -64,6 +64,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 									  colImage + " blob," +
 								      colMaxDifficulty + " INTEGER, " +
 								      colMaxLetters + " INTEGER)";
+
+	private final int oneHundred = 100;
+	private final int zero = 0;
+	private final int two = 2;	
 	
 													
 	public DatabaseHelper(Context context) {
@@ -101,7 +105,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        user.getUserImg().compress(Bitmap.CompressFormat.PNG, 100, out);
+        user.getUserImg().compress(Bitmap.CompressFormat.PNG, oneHundred, out);
  
         ContentValues values = new ContentValues();
         values.put(colName, user.getName()); // User Name
@@ -126,8 +130,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             cursor.moveToFirst();
      // retriving user image from SQlite 
         byte[] blob = cursor.getBlob(cursor.getColumnIndex(colImage));
-        Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0, blob.length);
-        User user = new User(cursor.getString(0),cursor.getInt(2), bmp,
+        Bitmap bmp = BitmapFactory.decodeByteArray(blob, zero, blob.length);
+        User user = new User(cursor.getString(zero),cursor.getInt(two), bmp,
         		cursor.getInt(cursor.getColumnIndex(colMaxDifficulty)), cursor.getInt(cursor.getColumnIndex(colMaxLetters)));
         
         db.close();
@@ -153,12 +157,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         if (cursor.moveToFirst()) {
             do {
             	User user = new User();
-                user.setName(cursor.getString(0));
+                user.setName(cursor.getString(zero));
              // user.setPassword(cursor.getString(1));
-                user.setHighScore(cursor.getInt(2));
+                user.setHighScore(cursor.getInt(two));
                 // retriving user image from SQlite
                 byte[] blob = cursor.getBlob(cursor.getColumnIndex(colImage));
-                Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0, blob.length);
+                Bitmap bmp = BitmapFactory.decodeByteArray(blob, zero, blob.length);
                 user.setUserImg(bmp);
                 user.setMaxDifficulty(cursor.getInt(cursor.getColumnIndex(colMaxDifficulty))); 
                 user.setMaxLetters(cursor.getInt(cursor.getColumnIndex(colMaxLetters)));                
@@ -192,12 +196,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         if (cursor.moveToFirst()) {
             do {
             	User user = new User();
-                user.setName(cursor.getString(0));
+                user.setName(cursor.getString(zero));
              // user.setPassword(cursor.getString(1));
-                user.setHighScore(cursor.getInt(2));
+                user.setHighScore(cursor.getInt(two));
                 // retriving user image from SQlite
                 byte[] blob = cursor.getBlob(cursor.getColumnIndex(colImage));
-                Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0, blob.length);
+                Bitmap bmp = BitmapFactory.decodeByteArray(blob, zero, blob.length);
                 user.setUserImg(bmp);
                 user.setMaxDifficulty(cursor.getInt(cursor.getColumnIndex(colMaxDifficulty))); 
                 user.setMaxLetters(cursor.getInt(cursor.getColumnIndex(colMaxLetters)));                 
@@ -210,32 +214,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 //      return user list
         return userList;
     }
-    
-    
-    
-//     Getting All Users name
-//    public List<String> getAllUsersName() {
-//       List<String> userList = new ArrayList<String>();
-//       // Select All Query
-//       String selectQuery = "SELECT * FROM " + USER_TABLE;
-//    
-//       SQLiteDatabase db = this.getWritableDatabase();
-//       Cursor cursor = db.rawQuery(selectQuery, null);
-//    
-//       // looping through all rows and adding to list
-//       if (cursor.moveToFirst()) {
-//           do {
-//               //User user = new User();
-//        	   String user = cursor.getString(0);
-//               // Adding user to list
-//               userList.add(user);
-//           } while (cursor.moveToNext());
-//       }
-//    
-//       db.close();
-//       // return user list
-//       return userList;
-//   }
     
  // Updating single user
     public int updateUserHighScore(User user) {

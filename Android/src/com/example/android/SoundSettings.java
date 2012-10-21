@@ -47,6 +47,9 @@ public class SoundSettings extends SQLiteOpenHelper {
 	private static final String colVolume = "Volume";
 	private static final String colSound = "Sound";
 	private static final String colVibrations = "Vibrations";	
+
+	private final int zero = 0;
+	private final int one = 1;
 	
 	static final String USER_VIEW = "UserView";
 	
@@ -95,14 +98,22 @@ public class SoundSettings extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String name;
         int volume = SoundPlayer.getCurrentVolume();        
-        int sound = 1;
-        int vibrations = 1;
+        int sound = one;
+        int vibrations = one;
         
-        if(user == null) name = "default";
-        else name = user.getName();
+        if( user == null ) {
+        	name = "default";
+        }
+        else {
+        	name = user.getName();
+        }
         
-        if(!SoundPlayer.getSoundEnabled()) sound = 0;
-        if(!SoundPlayer.getVibrationEnabled()) vibrations = 0;
+        if( !SoundPlayer.getSoundEnabled() ) {
+        	sound = zero;
+        }
+        if( !SoundPlayer.getVibrationEnabled() ) {
+        	vibrations = zero;
+        }
         
         ContentValues values = new ContentValues();
         values.put(colName, name); // User Name
@@ -121,18 +132,25 @@ public class SoundSettings extends SQLiteOpenHelper {
         Cursor cursor = db.query(SOUND_TABLE, new String[] { colName,
                 colVolume, colSound, colVibrations }, colName + "=?",
                 new String[] { String.valueOf(userName) }, null, null, null, null);
-        if (cursor != null) 
+        if (cursor != null) { 
             cursor.moveToFirst();
-        
+        }
+            
         SoundPlayer.setCurrentVolume((cursor.getInt(cursor.getColumnIndex(colVolume)))); 
         int sound = cursor.getInt(cursor.getColumnIndex(colSound));         
         int vibrations = cursor.getInt(cursor.getColumnIndex(colVibrations)); 
         
-        if(sound == 1) SoundPlayer.setSoundEnabled(true);
+        if(sound == one) {
+        	SoundPlayer.setSoundEnabled(true);
+        }
         else SoundPlayer.setSoundEnabled(false);
 
-        if(vibrations == 1) SoundPlayer.setVibrationEnabled(true);
-        else SoundPlayer.setVibrationEnabled(false);
+        if(vibrations == one) {
+        	SoundPlayer.setVibrationEnabled(true);
+        }
+        else {
+        	SoundPlayer.setVibrationEnabled(false);
+        }
         
         db.close();
     }
@@ -143,14 +161,22 @@ public class SoundSettings extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String name;
         int volume = SoundPlayer.getCurrentVolume();        
-        int sound = 1;
-        int vibrations = 1;
+        int sound = one;
+        int vibrations = one;
         
-        if(user == null) name = "default";
-        else name = user.getName();
+        if( user == null ) {
+        	name = "default";
+        }
+        else {
+        	name = user.getName();
+        }
         
-        if(!SoundPlayer.getSoundEnabled()) sound = 0;
-        if(!SoundPlayer.getVibrationEnabled()) vibrations = 0;
+        if( !SoundPlayer.getSoundEnabled() ) {
+        	sound = zero;
+        }
+        if( !SoundPlayer.getVibrationEnabled() ) {
+        	vibrations = zero;
+        }
         
         ContentValues values = new ContentValues();
         values.put(colVolume, volume); // User Volume

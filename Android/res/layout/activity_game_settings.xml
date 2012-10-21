@@ -34,6 +34,7 @@
         android:layout_alignLeft="@+id/sound_settings_button"
         android:layout_centerVertical="true"
         android:text="@string/profile_settings"
+        android:enabled="false"
         android:focusable="true" />
 
 </RelativeLayout>

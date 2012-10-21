@@ -2,9 +2,12 @@ package com.example.android;
 
 import java.util.HashSet;
 
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.IBinder;
 
 /**
  * 	 Copyright© 2012, Grupp02
@@ -36,9 +39,9 @@ import android.media.MediaPlayer;
  * For course and licensing information on the sounds used, see SoundPlayer.
  * 
  * @author  : Grupp02
- * @version : 2012-10-19, v1.0
+ * @version : 2012-10-21, v1.0
  */
-public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
+public class AudioFocusHelper extends Service implements AudioManager.OnAudioFocusChangeListener
 {
 	
 	//The audio manager
@@ -55,20 +58,21 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
      *                 is associated with
      */
     public AudioFocusHelper(Context context) {
-        mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        mAudioManager = ( AudioManager ) context.getSystemService( Context.AUDIO_SERVICE );
         this.context = context;
     }
 
     /**
      * The requestFocus method is used when a sound is about to be played,
-     * to ensure that the context has sound focus.
+     * to ensure that the context has sound focus.  The RING stream is used
+     * since then the devices own hardware volume control will also function.
      * 
      * @return : true if focus was granted, otherwise false
      */
     public boolean requestFocus() {
         return AudioManager.AUDIOFOCUS_REQUEST_GRANTED ==
-            mAudioManager.requestAudioFocus(null, AudioManager.STREAM_RING,
-                AudioManager.AUDIOFOCUS_GAIN);
+            mAudioManager.requestAudioFocus (null, AudioManager.STREAM_RING,
+                AudioManager.AUDIOFOCUS_GAIN );
     }
 
     /**
@@ -83,8 +87,8 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
      */    
     public boolean requestQuietFocus() {
         return AudioManager.AUDIOFOCUS_REQUEST_GRANTED ==
-        	mAudioManager.requestAudioFocus(null, AudioManager.STREAM_RING,
-                AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK); 
+        	mAudioManager.requestAudioFocus( null, AudioManager.STREAM_RING,
+                AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK ); 
     }    
     
     /**
@@ -95,9 +99,9 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
      */
     public boolean abandonFocus() {
         return AudioManager.AUDIOFOCUS_REQUEST_GRANTED ==
-            mAudioManager.abandonAudioFocus(this);
-    }
-
+            mAudioManager.abandonAudioFocus( this );
+    }    
+    
     /**
      * The onAudioFocusChange method detects audio focus change (such as
      * a phone call starting or music being played) and changes audio
@@ -110,24 +114,24 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
     public void onAudioFocusChange(int focusChange) {
     	
     	//If sound is enabled
-		if(SoundPlayer.getSoundEnabled()) {	
+		if( SoundPlayer.getSoundEnabled() ) {	
 			//For each media player active for this context
-	        for(MediaPlayer mp : mpSet) {
+	        for( MediaPlayer mp : mpSet ) {
 	        	//Check the form of focus change
-		        switch (focusChange) {
+		        switch ( focusChange ) {
 		            //Full focus was regained, continue playing
 			        case AudioManager.AUDIOFOCUS_GAIN:
-			            if (mp == null) {
+			            if ( mp == null ) {
 			            	//It has already been played and destroyed by SoundPlayer
-			            	mpSet.remove(mp);
+			            	mpSet.remove( mp );
 			            }
 			            //If the media player is not playing, restart it at currently set
 			            //volume
-			            else if (!mp.isPlaying())
+			            else if ( !mp.isPlaying() )
 			            {
 			                mp.start();
-			                mp.setVolume(SoundPlayer.getVolumeLeft(),
-			                		     SoundPlayer.getVolumeRight());
+			                mp.setVolume( SoundPlayer.getVolumeLeft(),
+			                		     SoundPlayer.getVolumeRight() );
 			            }
 			            break;
 			
@@ -135,7 +139,9 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
 			        case AudioManager.AUDIOFOCUS_LOSS:
 			            // Lost focus for an unbounded amount of time:
 			        	//stop playback and release media player
-			            if (mp.isPlaying()) mp.stop();
+			            if ( mp.isPlaying() ) {
+			            	mp.stop();
+			            }
 			            mp.release();
 			            mp = null;
 			            break;
@@ -145,14 +151,18 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
 			            // Lost focus for a short time, but we have to stop
 			            // playback. We don't release the media player because playback
 			            // is likely to resume
-			            if (mp.isPlaying()) mp.pause();
+			            if ( mp.isPlaying() ) {
+			            	mp.pause();
+			            }
 			            break;
 			
 				    //Transient focus that allows quiet play volume			            
 			        case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
 			            // Lost focus for a short time, but it's ok to keep playing
 			            // at an attenuated level
-			            if (mp.isPlaying()) mp.setVolume(0.1f, 0.1f);
+			            if ( mp.isPlaying() ) {
+			            	mp.setVolume( 0.1f, 0.1f );
+			            }
 			            break;
 		        }
 	        }
@@ -165,9 +175,9 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
 	 */
 	public void playTimeout() {	
 		//If sound is enabled play the timeout sound		
-		if(SoundPlayer.getSoundEnabled()) {
-			MediaPlayer mp = SoundPlayer.play(context, R.raw.mp3_timeout);
-			mpSet.add(mp);
+		if( SoundPlayer.getSoundEnabled() ) {
+			MediaPlayer mp = SoundPlayer.play( context, R.raw.mp3_timeout );
+			mpSet.add( mp );
 		}
 	}	
 
@@ -176,9 +186,9 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
 	 */	
 	public void playButton() {		
 		//If sound is enabled play the button sound		
-		if(SoundPlayer.getSoundEnabled()) {		
-			MediaPlayer mp = SoundPlayer.play(context, R.raw.mp3_button);	
-			mpSet.add(mp);	
+		if( SoundPlayer.getSoundEnabled() ) {		
+			MediaPlayer mp = SoundPlayer.play( context, R.raw.mp3_button );	
+			mpSet.add( mp );	
 		}
 	}
 
@@ -187,9 +197,9 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
 	 */	
 	public void playTicking() {	
 		//If sound is enabled play the ticking sound		
-		if(SoundPlayer.getSoundEnabled()) {			
-			MediaPlayer mp = SoundPlayer.play(context, R.raw.mp3_clockticking);		
-			mpSet.add(mp);		
+		if( SoundPlayer.getSoundEnabled() ) {			
+			MediaPlayer mp = SoundPlayer.play( context, R.raw.mp3_clockticking );		
+			mpSet.add( mp );		
 		}
 	}	
 	
@@ -199,12 +209,12 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
 	 */	
 	public void playApplause() {
 		//If vibration is enabled play the applause buzzing sequence		
-		if (SoundPlayer.getVibrationEnabled()) {
+		if ( SoundPlayer.getVibrationEnabled() ) {
 			SoundPlayer.buzz( context, "applause" );		
 		}
 		//If sound is enabled play the applause sound		
-		if (SoundPlayer.getSoundEnabled()) {	
-			MediaPlayer mp = SoundPlayer.play(context, R.raw.mp3_applause);	
+		if ( SoundPlayer.getSoundEnabled() ) {	
+			MediaPlayer mp = SoundPlayer.play( context, R.raw.mp3_applause );	
 			mpSet.add(mp);		
 		}
 	}
@@ -215,14 +225,14 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
 	 */
 	public void playRightChoice() {		
 		//If vibration is enabled play the right answer buzzing sequence		
-		if (SoundPlayer.getVibrationEnabled()) {
+		if ( SoundPlayer.getVibrationEnabled() ) {
 			//Use the right answer pattern (short vibration, pause, short vibration)			
 			SoundPlayer.buzz( context, "right" );		
 		}
         //Play the right answer sound		
-		if(SoundPlayer.getSoundEnabled()) {	
+		if( SoundPlayer.getSoundEnabled() ) {	
 			MediaPlayer mp = SoundPlayer.play(context, R.raw.mp3_right);
-			mpSet.add(mp);			
+			mpSet.add( mp );			
 		}
 	}
 
@@ -232,14 +242,47 @@ public class AudioFocusHelper implements AudioManager.OnAudioFocusChangeListener
 	 */
 	public void playWrongChoice() {
 		//If vibration is enabled play the wrong answer buzzing sequence		
-		if (SoundPlayer.getVibrationEnabled()) {
+		if ( SoundPlayer.getVibrationEnabled() ) {
 			//Use the medium length buzz for a wrong answer			
 			SoundPlayer.buzz( context, "wrong" );
 		}
         //Play the wrong answer sound	
-		if(SoundPlayer.getSoundEnabled()) {			
-		    MediaPlayer mp = SoundPlayer.play(context, R.raw.mp3_wrong);
-		    mpSet.add(mp);			
+		if( SoundPlayer.getSoundEnabled() ) {			
+		    MediaPlayer mp = SoundPlayer.play( context, R.raw.mp3_wrong );
+		    mpSet.add (mp );			
 		}
+	}
+	
+	@Override
+	/**
+	 * The onDestroy methods overrides onDestroy from Service, making sure that
+	 * MediaPlayer objects properly release their memory when the AudioFocusHelper
+	 * is destroyed.
+	 */
+	public void onDestroy() {		
+    	//For the set of media players, stop and release all
+        for ( MediaPlayer mp : mpSet ) {
+            if ( mp != null ) {
+                mp.stop();
+                mp.release();
+            }
+        }
+        //Empty the media player set
+        mpSet.clear();
+        
+	    SoundPlayer.stop();
+		super.onDestroy();	    
+	}
+
+	@Override
+	/**
+	 * Required override of abstract class for Service inheritance
+	 * 
+	 * @param intent
+	 * @return
+	 */
+	public IBinder onBind( Intent intent ) {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 }

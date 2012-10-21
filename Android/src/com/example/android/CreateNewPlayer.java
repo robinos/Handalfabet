@@ -14,8 +14,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,9 +49,9 @@ import android.widget.ImageView;
   * created
   * 
   * @author  : Grupp02
-  * @version : 2012-10-19, v1.0 
+  * @version : 2012-10-21, v1.0 
   */
-public class CreateNewPlayer extends Activity{
+public class CreateNewPlayer extends Activity {
 	
 	//Audio Focus helper
 	private AudioFocusHelper focusHelper;	
@@ -60,20 +64,25 @@ public class CreateNewPlayer extends Activity{
 	private SoundSettings soundData;	
 	private EditText userName; 
 	private Button createPlayerButton;
+	private final int zero = 0;	
+	private final int minLetters = 2;
 	
 	@Override 	
-	public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_new_player);
+	public void onCreate( Bundle savedInstanceState ) {
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_create_new_player );
 	
         // Make sure we're running on Honeycomb or higher to use ActionBar APIs
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
         	 //getActionBar().setDisplayHomeAsUpEnabled( true );
         }     
           
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO)
-        	focusHelper = new AudioFocusHelper(this);
-        else focusHelper = null;        
+        if ( android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO ) {
+        	focusHelper = new AudioFocusHelper( this );
+        }
+        else {
+        	focusHelper = null;        
+        }
         
         db = new DatabaseHelper(this); 
         soundData = new SoundSettings(this);
@@ -93,20 +102,22 @@ public class CreateNewPlayer extends Activity{
 	
 	 @Override
 	 /**
-	  * onResume is overriden in order to utterly abandon sound focus if
+	  * onResume is overridden in order to utterly abandon sound focus if
 	  * sound has been turned off, or resume sound if on.
 	  * 
 	  */
 	 public void onResume() {
 	 	 super.onResume();
 	 	 
-	     if(SoundPlayer.getSoundEnabled() == false) {
-	    	 if(focusHelper != null) {
+	     if( SoundPlayer.getSoundEnabled() == false ) {
+	    	 if( focusHelper != null ) {
 	             focusHelper.abandonFocus();
 	    	 }
 	    	 SoundPlayer.stop();
 	     }
-	     else SoundPlayer.resume();
+	     else {
+	    	 SoundPlayer.resume();
+	     }
 	}	
 	
 	 @Override
@@ -114,7 +125,9 @@ public class CreateNewPlayer extends Activity{
 	     super.onPause();  // Always call the superclass method first
 
 	     // Pause sound when paused
-         if(SoundPlayer.getSoundEnabled()) SoundPlayer.pause();
+         if( SoundPlayer.getSoundEnabled() ) {
+        	 SoundPlayer.pause();
+         }
 	 }	 
 	 
 	/**
@@ -136,7 +149,7 @@ public class CreateNewPlayer extends Activity{
 									(BitmapDrawable) imageView.getDrawable();
 				Bitmap bitmap = drawable.getBitmap();		
 				User user = new User(userName.getText().toString()
-													, 0,  bitmap, 0, 0);		
+													, zero,  bitmap, zero, zero);		
 				db.addUser(user);
 				soundData.addEntry(user);
 				finish();
@@ -184,7 +197,7 @@ public class CreateNewPlayer extends Activity{
 	 */
 	private boolean checkIfUsernameIsValid(String name) {
 		
-		if(name.length() <= 2 ) {
+		if(name.length() <= minLetters ) {
 			return false;
 		}
 		else if(name.equals("")) { 
@@ -235,12 +248,12 @@ public class CreateNewPlayer extends Activity{
 		        public void beforeTextChanged(CharSequence s, int start, int count, int after){
 		        	
 		        }
-		        public void onTextChanged(CharSequence s, int start, int before, int count){
+		        public void onTextChanged(CharSequence s, int start, int before, int count) {
 		        	
 		        	
 		        	if(userName.getText().length() > 2){
 		        		createPlayerButton.setEnabled(true);
-					}else{
+					}else {
 						createPlayerButton.setEnabled(false);
 					}		
 		        }
@@ -256,12 +269,18 @@ public class CreateNewPlayer extends Activity{
 		 */
 		private boolean getAudioFocus() {
 			
-			if(focusHelper != null) {
-				if(!focusHelper.requestFocus()) {
-					if(!focusHelper.requestQuietFocus()) return false;
-					else return true;
+			if( focusHelper != null ) {
+				if( !focusHelper.requestFocus() ) {
+					if( !focusHelper.requestQuietFocus() ) {
+						return false;
+					}
+					else {
+						return true;
+					}
 				}
-				else return true;
+				else {
+					return true;
+				}
 			}
 			
 			return false;
@@ -271,11 +290,73 @@ public class CreateNewPlayer extends Activity{
 		 * playButton plays the button sound
 		 */	
 	     public void playButton() {
-	    	  if(SoundPlayer.getSoundEnabled()) {
-		   	      if(focusHelper != null) {
-		   		      if(getAudioFocus()) focusHelper.playButton();
+	    	  if( SoundPlayer.getSoundEnabled() ) {
+		   	      if( focusHelper != null ) {
+		   		      if( getAudioFocus() ) {
+		   		    	  focusHelper.playButton();
+		   		      }
 		   	      }
-		   	      else SoundPlayer.playButton(this);
+		   	      else {
+		   	    	  SoundPlayer.playButton(this);
+		   	      }
 	    	  }
-	     }		
+	     }
+	   
+		 @Override
+		 public boolean onCreateOptionsMenu( Menu menu ) {
+		     getMenuInflater().inflate( R.menu.activity_game, menu );
+		     return true;
+		 }	 
+		    
+		 @Override
+		 public boolean onOptionsItemSelected( MenuItem item ) {
+		     switch ( item.getItemId() ) {
+		          case android.R.id.home:
+		              NavUtils.navigateUpFromSameTask( this );
+		              finish();
+		              return true;
+		     }
+		     return super.onOptionsItemSelected( item );
+		 }	     
+	     
+	     /**
+	 	* onStop is called when the activity is shut down, usually before
+	 	* being destroyed.  We need to stop any media players to
+	 	* properly free up memory.  The focus helper should lose focus
+	 	* anyway, but no reason not to tie up loose ends.
+	     */
+	 	@Override 
+	 	public void onStop() {		 
+	        //cancel any noises and abandon focus
+	   	    SoundPlayer.stop();
+	   	
+	 		if( focusHelper != null ) {
+	 			focusHelper.abandonFocus();
+	 		}
+	 		 
+	 		//call the super method
+	 		super.onStop();		 
+	 	}
+	 	
+		/**
+		 * onKeyDown overrides onKeyDown and allows code to be executed when
+		 * the back button is pushed in the simulator / on the mobile phone 
+		 * Since pushing "back" won't necessarily call the destroy method as
+		 * far as I understand it.
+	 	 * 
+	 	 * @param keyCode : code of the key pressed
+	 	 * @param event   : the event for the key pressed
+	 	 */
+	 	 @Override	 
+	 	 public boolean onKeyDown( int keyCode, KeyEvent event )  {
+	 	     if ( keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == zero ) {
+	 	    	 
+	 	    	 //continue backwards (kills current activity calling onDestroy)
+	 	    	 finish();
+	 	    	 
+	 	    	 return true;
+	 	     }
+
+	 	     return super.onKeyDown( keyCode, event );
+	 	 }     
 }

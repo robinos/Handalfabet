@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,7 +43,7 @@ import android.support.v4.app.NavUtils;
  * next buttons allow for navigation.
  * 
  * @author  : Grupp02
- * @version : 2012-10-20, v1.0 
+ * @version : 2012-10-21, v1.0 
  */
 public class GameHelpActivity extends Activity {
 
@@ -53,6 +54,8 @@ public class GameHelpActivity extends Activity {
 	private ImageView userImg;
     private TextView userName;
 	private TextView userStatus;		
+	
+	private final int zero = 0;
 	
 	private int page = 0;
 	private final int firstPage = 0;
@@ -78,21 +81,27 @@ public class GameHelpActivity extends Activity {
 	private TextView displayText;
 	
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_help);
+    public void onCreate( Bundle savedInstanceState ) {
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_game_help );
         
         // Make sure we're running on Honeycomb or higher to use ActionBar APIs
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
             //getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         
-        // User Image      
-        userImg = (ImageView)findViewById(R.id.userpic);
-        img = (Bitmap)( getIntent().getExtras().getParcelable("userImg"));
-		userImg.setImageBitmap(img);
+        if ( android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO )
+        	focusHelper = new AudioFocusHelper( this );
+        else {
+        	focusHelper = null;
+        }        
         
-		userStatus = ( TextView )findViewById( R.id.textView1 );
+        // User Image      
+        userImg = ( ImageView ) findViewById( R.id.userpic );
+        img = ( Bitmap )( getIntent().getExtras().getParcelable("userImg"));
+		userImg.setImageBitmap( img );
+        
+		userStatus = ( TextView ) findViewById( R.id.textView1 );
 		userStatus.setText( getIntent().getStringExtra( "User" ) );
 		//Displays the username
 		userName = ( TextView ) findViewById( R.id.textView2 );
@@ -104,52 +113,54 @@ public class GameHelpActivity extends Activity {
 		displayText = (TextView) findViewById( R.id.helpTextView );		
 		
 		if(page == firstPage) {
-			previousButton.setEnabled(false);
-			nextButton.setEnabled(true);			
+			previousButton.setEnabled( false );
+			nextButton.setEnabled( true );			
             displayText.setText( R.string.first_help_page );
             displayPicture.setImageResource( R.drawable.new_player_button_screen );			
 		}
 		
 		if(page == lastPage) {
-			previousButton.setEnabled(true);			
-			nextButton.setEnabled(false);
+			previousButton.setEnabled( true );			
+			nextButton.setEnabled( false );
 		}
 		
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_game_help, menu);
+    public boolean onCreateOptionsMenu( Menu menu ) {
+        getMenuInflater().inflate( R.menu.activity_game_help, menu );
         return true;
     }
 
     
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected( MenuItem item ) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                NavUtils.navigateUpFromSameTask( this );
                 return true;
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected( item );
     }
 
-	 @Override
-	 /**
-	  * onResume is overriden in order to utterly abandon sound focus if
-	  * sound has been turned off, or resume sound if on.
-	  * 
-	  */
-	 public void onResume() {
-	 	 super.onResume();
+	@Override
+	/**
+	 * onResume is overridden in order to utterly abandon sound focus if
+	 * sound has been turned off, or resume sound if on.
+	 * 
+	 */
+	public void onResume() {
+	    super.onResume();
 	 	 
-	     if(SoundPlayer.getSoundEnabled() == false) {
-	    	 if(focusHelper != null) {
+	    if( SoundPlayer.getSoundEnabled() == false ) {
+	    	 if( focusHelper != null ) {
 	             focusHelper.abandonFocus();
 	    	 }
 	    	 SoundPlayer.stop();
 	     }
-	     else SoundPlayer.resume();
+	     else {
+	    	 SoundPlayer.resume();
+	     }
 	}	
 	
 	 @Override
@@ -157,53 +168,55 @@ public class GameHelpActivity extends Activity {
 	     super.onPause();  // Always call the superclass method first
 
 	     // Pause sound when paused
-       if(SoundPlayer.getSoundEnabled()) SoundPlayer.pause();
+       if( SoundPlayer.getSoundEnabled() ) {
+    	   SoundPlayer.pause();
+       }
 	 } 	    
    
 	@Override
-	public void onSaveInstanceState(Bundle savedInstanceState) {
+	public void onSaveInstanceState( Bundle savedInstanceState ) {
 	    // Save name, user status, and user picture
-	    savedInstanceState.putString("Name", userName.getText().toString());
-	    savedInstanceState.putString("status", userStatus.getText().toString());	     
-	    savedInstanceState.putParcelable("picture", img);
-	    savedInstanceState.putInt("page", page );
+	    savedInstanceState.putString( "Name", userName.getText().toString() );
+	    savedInstanceState.putString( "status", userStatus.getText().toString() );	     
+	    savedInstanceState.putParcelable( "picture", img );
+	    savedInstanceState.putInt( "page", page );
 	    
 	    // Always call the superclass so it can save the view hierarchy state
-	    super.onSaveInstanceState(savedInstanceState);
+	    super.onSaveInstanceState( savedInstanceState );
 	} 
 	
 	@Override
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
+	public void onRestoreInstanceState( Bundle savedInstanceState ) {
 	    // Always call the superclass so it can restore the view hierarchy
-	    super.onRestoreInstanceState(savedInstanceState);
+	    super.onRestoreInstanceState( savedInstanceState );
 	   
 	    // Restore name, user status, and user picture
-	    userName.setText(savedInstanceState.getString( "Name" ));
-	    userStatus.setText(savedInstanceState.getString( "status" ));
-	    img = savedInstanceState.getParcelable("picture");
-	    userImg.setImageBitmap(img);
-	    page = savedInstanceState.getInt("page");
+	    userName.setText( savedInstanceState.getString( "Name" ));
+	    userStatus.setText( savedInstanceState.getString( "status" ));
+	    img = savedInstanceState.getParcelable( "picture" );
+	    userImg.setImageBitmap( img );
+	    page = savedInstanceState.getInt( "page" );
 	    
-		if(page == firstPage) {
-			previousButton.setEnabled(false);			
+		if( page == firstPage ) {
+			previousButton.setEnabled( false );			
 		}	    
 		else {
-			previousButton.setEnabled(true);
+			previousButton.setEnabled( true );
 		}
 		
-		if(page == lastPage) {
-			nextButton.setEnabled(false);
+		if( page == lastPage ) {
+			nextButton.setEnabled( false );
 		}
 		else {
-			nextButton.setEnabled(true);
+			nextButton.setEnabled( true );
 		}
 	}	
 	
 	/** Called when the user clicks the Previous button */
-	public void previousPage(View v) {
+	public void previousPage( View v ) {
 		playButton();		
 		
-		switch (page) {
+		switch ( page ) {
 		    case secondPage:     page = firstPage;
                                  displayText.setText( R.string.first_help_page );
                                  displayPicture.setImageResource( R.drawable.new_player_button_screen );		               
@@ -267,20 +280,20 @@ public class GameHelpActivity extends Activity {
 	    }
 		
 		
-		if(page == firstPage) {
-			previousButton.setEnabled(false);
-			nextButton.setEnabled(true);			
+		if( page == firstPage ) {
+			previousButton.setEnabled( false );
+			nextButton.setEnabled( true );			
 		}
 		else {
-			previousButton.setEnabled(true);			
+			previousButton.setEnabled( true );			
 		}
 	}	
 	
 	/** Called when the user clicks the Next button */
-	public void nextPage(View v) {
+	public void nextPage( View v ) {
 		playButton();		
 	
-		switch (page) {
+		switch ( page ) {
 		
 	    case firstPage:      page = secondPage;
 		                     previousButton.setEnabled(true);	    
@@ -356,12 +369,18 @@ public class GameHelpActivity extends Activity {
 	 */
 	private boolean getAudioFocus() {
 		
-		if(focusHelper != null) {
-			if(!focusHelper.requestFocus()) {
-				if(!focusHelper.requestQuietFocus()) return false;
-				else return true;
+		if( focusHelper != null ) {
+			if( !focusHelper.requestFocus() ) {
+				if( !focusHelper.requestQuietFocus() ) {
+					return false;
+				}
+				else {
+					return true;
+				}
 			}
-			else return true;
+			else {
+				return true;
+			}
 		}
 		
 		return false;
@@ -374,12 +393,57 @@ public class GameHelpActivity extends Activity {
     * otherwise default to SoundPlayer
     */	
    public void playButton() {
-	  	if(SoundPlayer.getSoundEnabled()) {
-		   	if(focusHelper != null) {
-		   	    if(getAudioFocus()) focusHelper.playButton();
+	  	if( SoundPlayer.getSoundEnabled() ) {
+		   	if( focusHelper != null ) {
+		   	    if( getAudioFocus() ) {
+		   	    	focusHelper.playButton();
+		   	    }
 		   	}
-		   	else SoundPlayer.playButton(this);
+		   	else {
+		   		SoundPlayer.playButton( this );
+		   	}
 	  	}
-  }		
+  }	
+   
+   /**
+	* onStop is called when the activity is shut down, usually before
+	* being destroyed.  We need to stop any media players to
+	* properly free up memory.  The focus helper should lose focus
+	* anyway, but no reason not to tie up loose ends.
+    */
+	@Override 
+	public void onStop() {		 
+       //cancel any noises and abandon focus
+  	    SoundPlayer.stop();
+  	
+		if( focusHelper != null ) {
+			focusHelper.abandonFocus();
+		}
+		 
+		//call the super method
+		super.onStop();		 
+	}
+	
+	/**
+	 * onKeyDown overrides onKeyDown and allows code to be executed when
+	 * the back button is pushed in the simulator / on the mobile phone 
+	 * Since pushing "back" won't necessarily call the destroy method as
+	 * far as I understand it.
+	 * 
+	 * @param keyCode : code of the key pressed
+	 * @param event   : the event for the key pressed
+	 */
+	 @Override	 
+	 public boolean onKeyDown(int keyCode, KeyEvent event)  {
+	     if ( keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == zero ) {
+	    	 
+	    	 //continue backwards (kills current activity calling onDestroy)
+	    	 finish();
+	    	 
+	    	 return true;
+	     }
+
+	     return super.onKeyDown( keyCode, event );
+	 }   
     
 }

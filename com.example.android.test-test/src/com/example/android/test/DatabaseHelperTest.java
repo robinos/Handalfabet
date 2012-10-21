@@ -13,6 +13,8 @@ import com.example.android.User;
 
 
 /**
+ * 	 Copyright© 2012, Grupp02
+ * 
  *     This file is part of Handalfabetet.
  *
  *   Handalfabetet is free software: you can redistribute it and/or modify
@@ -34,8 +36,6 @@ import com.example.android.User;
  * 
  * @author  : Grupp02
  * @version : 2012-10-02, v0.2
- * @License : GPLv3
- * @Copyright :Copyright 2012, Grupp02
  *
  */
 
@@ -62,7 +62,7 @@ public class DatabaseHelperTest extends AndroidTestCase {
 	}
 	
 	/**
-	 * Test if Database Exists
+	 * Test if Database Exists.
 	 */
 	public void testIfDatabaseExists(){
 		assertNotNull(db);
@@ -70,7 +70,7 @@ public class DatabaseHelperTest extends AndroidTestCase {
 	
 	
 	/**
-	 * Test add new player to Database
+	 * Test add new player to Database.
 	 */
 	public void testAddNewUser() throws Exception{
 		db.addUser(user);
@@ -79,7 +79,7 @@ public class DatabaseHelperTest extends AndroidTestCase {
 	
 	
 	/**
-	 * Test player highscore
+	 * Test player highscore.
 	 */
 	public void testHighscore() throws Exception{
 		User usr = db.getUser(user.getName());
@@ -88,7 +88,7 @@ public class DatabaseHelperTest extends AndroidTestCase {
 	}
 	
 	/**
-	 * Test change highscore 
+	 * Test change highscore .
 	 */
 	public void testChangeHighscore() throws Exception{
 		user.setHighScore(10);
@@ -100,7 +100,7 @@ public class DatabaseHelperTest extends AndroidTestCase {
 	}
 	
 	/**
-	 * Test add 100 players in database
+	 * Test add 100 players in database.
 	 */
 	public void testAdd100PlayersInDatabase() throws Exception{
 		int player;
@@ -113,7 +113,7 @@ public class DatabaseHelperTest extends AndroidTestCase {
 	}
 	
 	/**
-	 * Test delete 100 players in database
+	 * Test delete 100 players in database.
 	 */
 	public void testDelete100PlayersFromDatabase() throws Exception{
 		testAdd100PlayersInDatabase();

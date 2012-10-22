@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF000000" >
+
+    <ImageView
+        android:id="@+id/imagechange"
+        android:layout_width="211dp"
+        android:layout_height="109dp"
+        android:layout_x="50dp"
+        android:layout_y="70dp"
+        android:src="@android:drawable/alert_dark_frame" />
+
+    <Button
+        android:id="@+id/stop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_x="1dp"
+        android:layout_y="243dp"
+        android:text="Stop"
+        android:textColor="#FFFFFFFF" />
+
+    <TextView
+        android:id="@+id/letters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="156dp"
+        android:layout_y="190dp"
+        android:text="  "
+        android:textColor="#FFFFFFFF" />
+
+</AbsoluteLayout>

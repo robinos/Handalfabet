@@ -239,4 +239,13 @@
         android:layout_alignTop="@+id/space"
         android:src="@drawable/shift" />
 
+    <ImageButton
+        android:id="@+id/imageButton16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/arrow"
+        android:layout_alignRight="@+id/arrow"
+        android:layout_alignTop="@+id/message"
+        android:src="@drawable/enteryellow" />
+
 </RelativeLayout>

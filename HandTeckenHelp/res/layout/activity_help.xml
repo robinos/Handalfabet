@@ -5,11 +5,19 @@
     android:background="#FF000000" >
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/imageChange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/handalfabet" />
+
+    <Button
+        android:id="@+id/start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/handalfabet" />
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/imageChange"
+        android:text="Start" 
+        android:textColor="#FFFFFFFF"/>
 
 </RelativeLayout>

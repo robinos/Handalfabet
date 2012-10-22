@@ -48,10 +48,19 @@ public class nextpage extends Activity {
 	        shiftOn.setOnClickListener(new View.OnClickListener() {
 	            public void onClick(View arg0) { 
 	            	
-	            	shift_on=true;
-	            	shiftOn.setBackgroundColor(android.graphics.Color.YELLOW);
-
 	            	
+	            	
+	            	if(shift_on)
+	            	{
+	            		shift_on=false;
+	            		shiftOn.setBackgroundColor(android.graphics.Color.DKGRAY);
+	            	}
+	            	else
+	            	{
+	            		shift_on=true;
+	            		shiftOn.setBackgroundColor(android.graphics.Color.YELLOW);
+	            	}
+	            		            	
 	            }
 	        });
 	            
@@ -359,6 +368,10 @@ public class nextpage extends Activity {
 	        
             Bundle bundle = new Bundle();
             bundle.putString("key", stb2.toString());
+            
+            
             	        
 	 }
+	 
+	 
 }

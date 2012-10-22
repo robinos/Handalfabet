@@ -4,6 +4,7 @@ package com.example.handsms;
 //shift button: http://www.fedbybirds.com/2008/07/time_goes_up.html
 
 import android.telephony.SmsManager;
+import android.text.Layout;
 import android.util.Log;
 import java.lang.*;
 import java.util.ArrayList;
@@ -35,17 +36,19 @@ public class SMSActivity extends Activity {
 	static final int START_ACTIVITY_BUTTON_CODE=0;
 	static final String str = " ";
 	private ArrayList<String> editTextList = new ArrayList<String>();
-	private ImageButton next_page,shift,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p;
+	private ImageButton next_page,shift,enter,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p;
 	private Button space,send;
 	static final  String letter = "";
 	private String letter2, messagetext, phoneNr;
 	private int shiftOn = 0;
+	private int pressNumber;
 	
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sms);
+        pressNumber = 0;
         
         phone_nr = (EditText) findViewById(R.id.editText1);
         
@@ -65,20 +68,47 @@ public class SMSActivity extends Activity {
         n= (ImageButton) findViewById(R.id.imageButton13);
         o= (ImageButton) findViewById(R.id.imageButton14);
         p= (ImageButton) findViewById(R.id.imageButton15);
+        enter= (ImageButton) findViewById(R.id.imageButton16);
         space= (Button) findViewById(R.id.space);
         send= (Button) findViewById(R.id.send);
         shift= (ImageButton) findViewById(R.id.shift);
-         
         
         shift.setOnClickListener(new View.OnClickListener() 
         {
             public void onClick(View v) 
-            {                
-            	shiftOn = 1;
-            	shift.setBackgroundColor(android.graphics.Color.YELLOW);
+            { 
+            	
+            	Log.v("the position is ", String.valueOf(getCursorX(message)));
+            	if(shiftOn == 1)
+            	{
+            		shiftOn = 0;
+                	shift.setBackgroundColor(android.graphics.Color.DKGRAY);
+            	}
+            	else
+            	{
+            		shiftOn = 1;
+                	shift.setBackgroundColor(android.graphics.Color.YELLOW);
+            	}
             }
         });    
         
+        
+        enter.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) { 
+            	
+            		editTextList.add("\n");
+            		StringBuilder stringBuilder = new StringBuilder();
+            		for (String editText : editTextList) {
+            			stringBuilder.append(editText);
+            		}
+            	 
+            		if(!(letter.equals(null)))
+            			message.append(letter+"\n");
+            		else
+            			message.setText(stringBuilder); 
+            	
+            }
+        });
 
 
         a.setOnClickListener(new View.OnClickListener() {
@@ -745,6 +775,23 @@ public class SMSActivity extends Activity {
         				e.printStackTrace();
         		}
     }    
+    
+    
+    public float getCursorX(EditText editText){
+        float ret = -1;
+        try{
+            int pos = editText.getSelectionStart();
+            Layout layout = editText.getLayout();
+            float x = layout.getPrimaryHorizontal(pos);
+            
+                ret = x;
+            
+        }
+        catch(Exception exception){
+            Log.d("getCursorX", exception.toString());
+        }
+        
+        return ret;}
 
     
 

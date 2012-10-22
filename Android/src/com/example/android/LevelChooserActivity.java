@@ -3,6 +3,7 @@ package com.example.android;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -270,27 +271,6 @@ public class LevelChooserActivity extends Activity {
     }
 
     /**
-     * onStop is called when the activity is shut down, usually before being
-     * destroyed. We need to stop any media players to properly free up memory.
-     * The focus helper should lose focus anyway, but no reason not to tie up
-     * loose ends.
-     */
-    @Override
-    public void onStop() {
-	// cancel any noises and abandon focus
-	// ignore the stop in this case because it screws up game,
-	// and level chooser only plays a button noise anyway
-	// SoundPlayer.stop();
-
-	if (focusHelper != null) {
-	    focusHelper.abandonFocus();
-	}
-
-	// call the super method
-	super.onStop();
-    }
-
-    /**
      * onKeyDown overrides onKeyDown and allows code to be executed when the
      * back button is pushed in the simulator / on the mobile phone Since
      * pushing "back" won't necessarily call the destroy method as far as I
@@ -305,9 +285,14 @@ public class LevelChooserActivity extends Activity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 	if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == zero) {
 
-	    // cancel any noises and abandon focus
+		//This code cannot be in onStop in LevelChooserActivity because
+		//it also kills the ticking noise as Game begins
+	    //cancel any noises and abandon focus
 	    SoundPlayer.stop();
-
+		if (focusHelper != null) {
+		    focusHelper.abandonFocus();
+		}
+	    
 	    // continue backwards (kills current activity calling onDestroy)
 	    finish();
 

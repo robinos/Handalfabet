@@ -394,7 +394,7 @@ public class Game extends Activity {
 		    playTicking();
 
 		    // Reset round points to 0
-		    roundPoint.setText(Integer.toString(0));
+		    roundPoint.setText(Integer.toString(zero));
 
 		    // Reset answer button backgrounds
 		    firstOptionButton
@@ -560,12 +560,6 @@ public class Game extends Activity {
 	// cancels the count down timer
 	gameLogic.getCountDownTimer().cancel();
 
-	// cancel the ticking noise
-	SoundPlayer.stop();
-	if (focusHelper != null) {
-	    focusHelper.abandonFocus();
-	}
-
 	// call the super method
 	super.onStop();
     }
@@ -585,6 +579,14 @@ public class Game extends Activity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 	if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == zero) {
 
+		//This code cannot be in onStop in Game because
+		//it also kills the applause noise as GameEnd begins		
+	    // cancel any noises and abandon focus
+	    SoundPlayer.stop();
+		if (focusHelper != null) {
+		    focusHelper.abandonFocus();
+		}		
+		
 	    // continue backwards (kills current activity)
 	    finish();
 

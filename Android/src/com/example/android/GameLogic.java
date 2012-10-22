@@ -168,10 +168,10 @@ public class GameLogic {
 	}
 
 	// Max seconds in a round (this decrements down to 0 under a round)
-	if (diffLevel == 2) {
+	if (diffLevel == difficultyTwo) {
 	    timeCount = maxCountLevel2;
 	    timeLimit = maxTimeLimit2;
-	} else if (diffLevel == 3) {
+	} else if (diffLevel == difficultyThree) {
 	    timeCount = maxCountLevel3;
 	    timeLimit = maxTimeLimit3;
 	} else { // difficulty 1
@@ -318,6 +318,7 @@ public class GameLogic {
 	    score = (one + timeCount); // - time taken
 	}
 
+	//Bugfix for score when time has run out
 	if(timeCount <= one) {
 		roundScore = zero;
 	} else if (score > zero) {

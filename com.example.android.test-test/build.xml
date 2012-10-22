@@ -3,22 +3,26 @@
               Any modifications will be overwritten.
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. --><project basedir="." default="build" name="com.example.android">
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="com.example.android.test">
     <property environment="env"/>
-    <property name="com.example.android.test.location" value="../com.example.android.test-test"/>
+    <property name="com.example.android.location" value="../Android"/>
     <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="1.5"/>
-    <property name="source" value="1.5"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
     <path id="Android 4.1.2.libraryclasspath">
         <pathelement location="../../../../../../Program Files (x86)/Android/android-sdk/platforms/android-16/android.jar"/>
     </path>
-    <path id="Android Dependencies.libraryclasspath">
-        <pathelement location="libs/android-support-v4.jar"/>
-    </path>
+    <path id="Android Dependencies.libraryclasspath"/>
     <path id="com.example.android.classpath">
         <path refid="Android 4.1.2.libraryclasspath"/>
         <path refid="Android Dependencies.libraryclasspath"/>
+        <pathelement location="${com.example.android.location}/bin/classes"/>
+    </path>
+    <path id="com.example.android.test.classpath">
+        <path refid="Android 4.1.2.libraryclasspath"/>
+        <path refid="Android Dependencies.libraryclasspath"/>
         <pathelement location="bin/classes"/>
+        <path refid="com.example.android.classpath"/>
     </path>
     <target name="init">
         <mkdir dir="bin/classes"/>
@@ -36,25 +40,26 @@
     <target name="clean">
         <delete dir="bin/classes"/>
     </target>
-    <target depends="clean" name="cleanall"/>
-    <target depends="build-subprojects,build-project" name="build"/>
-    <target name="build-subprojects"/>
-    <target depends="init" name="build-project">
-        <echo message="${ant.project.name}: ${ant.file}"/>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="bin/classes" includeantruntime="false" source="${source}" target="${target}">
-            <src path="src"/>
-            <src path="gen"/>
-            <classpath refid="com.example.android.classpath"/>
-        </javac>
+    <target depends="clean" name="cleanall">
+        <ant antfile="build.xml" dir="${com.example.android.location}" inheritAll="false" target="clean"/>
     </target>
-    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects">
-        <ant antfile="build.xml" dir="${com.example.android.test.location}" inheritAll="false" target="clean"/>
-        <ant antfile="build.xml" dir="${com.example.android.test.location}" inheritAll="false" target="build">
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects">
+        <ant antfile="build.xml" dir="${com.example.android.location}" inheritAll="false" target="build-project">
             <propertyset>
                 <propertyref name="build.compiler"/>
             </propertyset>
         </ant>
     </target>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin/classes" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <src path="gen"/>
+            <classpath refid="com.example.android.test.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
     <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
         <copy todir="${ant.library.dir}">
             <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>

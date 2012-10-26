@@ -69,7 +69,8 @@ public class Game extends Activity {
 
     private Bitmap img;
     private ImageView userImg;
-
+    private int answerID = 0;
+    
     private final int maxProgress = 100;
     private final int difficultyOne = 1;
     private final int oneLetter = 1;
@@ -99,13 +100,6 @@ public class Game extends Activity {
 	// The text prompt view
 	TextView questionView = (TextView) findViewById(R.id.question_view);
 
-	// game difficulty, default level 1
-	difficulty = getIntent().getIntExtra("Difficulty", difficultyOne);
-	numLetters = getIntent().getIntExtra("Letters", oneLetter);
-
-	// The game logic object
-	gameLogic = new GameLogic(difficulty, numLetters, this);
-
 	// GUI variables
 	timerBar = (ProgressBar) findViewById(R.id.timer_bar);
 
@@ -115,6 +109,92 @@ public class Game extends Activity {
 	nextButton = (ImageButton) findViewById(R.id.next_button);
 	String pic_blank = "blank";
 
+	// User Image
+	userImg = (ImageView) findViewById(R.id.userpic);	
+	userStatus = (TextView) findViewById(R.id.textView1);
+	// Displays the username
+	userName = (TextView) findViewById(R.id.textView2);
+	
+	// Initialize the layout
+	setButtonsAndTextView();	
+	
+    // Check whether we're recreating a previously destroyed instance
+    if (savedInstanceState != null) {	
+    	
+    	//basic settings
+    	difficulty = savedInstanceState.getInt( "difficulty" );
+    	numLetters = savedInstanceState.getInt( "letters" );
+  
+    	// The game logic object
+    	gameLogic = new GameLogic(difficulty, numLetters, this);     	
+    	
+    	//score
+    	int round = savedInstanceState.getInt( "roundScore" );
+    	int total = savedInstanceState.getInt( "totalScore" );   	
+  
+    	gameLogic.setRoundScore(round);
+    	roundPoint.setText(Integer.toString( round ));
+    	gameLogic.setTotalScore(round);    	
+    	totalPoint.setText(Integer.toString( total ));   	
+    	
+    	// Restore name, user status, and user picture
+    	userName.setText(savedInstanceState.getString("Name"));
+    	userStatus.setText(savedInstanceState.getString("status"));
+    	img = savedInstanceState.getParcelable("picture");
+    	userImg.setImageBitmap(img);    	   	
+    	
+    	//statistics
+    	gameLogic.setTotalTime(savedInstanceState.getInt( "totalTime" ));	
+    	gameLogic.setNumCorrect(savedInstanceState.getInt( "numCorrect" ));    	
+    	
+    	//Buttons and correct sign
+    	String firstButtonString = savedInstanceState.getString( "firstButtonString" );
+    	gameLogic.setFirstButtonString( firstButtonString );
+    	firstOptionButton.setText(firstButtonString);
+    	String secondButtonString = savedInstanceState.getString( "secondButtonString" );
+    	gameLogic.setSecondButtonString( secondButtonString ); 
+    	secondOptionButton.setText(secondButtonString);    	
+    	String thirdButtonString = savedInstanceState.getString( "thirdButtonString" );
+    	gameLogic.setThirdButtonString( thirdButtonString );  
+    	thirdOptionButton.setText(thirdButtonString);    	
+    	gameLogic.setCorrectChoice(savedInstanceState.getString( "correctSign" ));
+    	
+    	//Pictures
+    	String firstPicture = savedInstanceState.getString( "firstPicture" );
+    	gameLogic.setFirstPicture( firstPicture );
+    	image1.setImageResource(picSetter(firstPicture));    	
+    	String secondPicture = savedInstanceState.getString( "secondPicture" );
+    	gameLogic.setSecondPicture( secondPicture );
+    	image2.setImageResource(picSetter(secondPicture)); 
+    	String thirdPicture = savedInstanceState.getString( "thirdPicture" );
+    	gameLogic.setThirdPicture( thirdPicture );
+    	image3.setImageResource(picSetter(thirdPicture));     	  	   	
+    }
+    else {
+    	// game difficulty, default level 1
+    	difficulty = getIntent().getIntExtra("Difficulty", difficultyOne);
+    	numLetters = getIntent().getIntExtra("Letters", oneLetter);    	
+    	
+    	// User Image
+    	img = (Bitmap) (getIntent().getExtras().getParcelable("userImg"));
+    	userImg.setImageBitmap(img);	
+    	userStatus.setText(R.string.logged_in);
+    	// Displays the username
+    	userName.setText(getIntent().getStringExtra("Name"));	    	
+    	
+    	// The game logic object
+    	gameLogic = new GameLogic(difficulty, numLetters, this);
+    	
+    	// Changes the picture and button text
+    	deployTextButtons();
+
+    	// Start the ticking noise
+    	playTicking();    	
+    }
+       
+	// Sets up the next button
+	nextRound();    
+    
 	// Depending on one letter, or several letter words, alter the
 	// question view text and the button appearance
 	if (numLetters > oneLetter) {
@@ -132,29 +212,6 @@ public class Game extends Activity {
 	    image2.setImageResource(picSetter(pic_blank));
 	    image3.setImageResource(picSetter(pic_blank));
 	}
-
-	// User Image
-	userImg = (ImageView) findViewById(R.id.userpic);
-	img = (Bitmap) (getIntent().getExtras().getParcelable("userImg"));
-	userImg.setImageBitmap(img);
-
-	userStatus = (TextView) findViewById(R.id.textView1);
-	userStatus.setText(R.string.logged_in);
-	// Displays the username
-	userName = (TextView) findViewById(R.id.textView2);
-	userName.setText(getIntent().getStringExtra("Name"));
-
-	// Initialize the layout
-	setButtonsAndTextView();
-
-	// Resets for a new round
-	nextRound();
-
-	// Changes the picture and button text
-	deployTextButtons();
-
-	// Start the ticking noise
-	playTicking();
     }
 
     @Override
@@ -175,6 +232,8 @@ public class Game extends Activity {
 	    SoundPlayer.resume();
 	}
 
+    gameLogic.restartTimer();
+	
 	// Sadly this is going to give FULL time again. Have to try to fix this
 	// restarts the count down timer
 	// gameLogic.getCountDownTimer().start();
@@ -191,36 +250,182 @@ public class Game extends Activity {
 
 	// cancels the count down timer, this runs on startup though, so not
 	// good
-	// gameLogic.getCountDownTimer().cancel();
+    // gameLogic.getCountDownTimer().cancel();
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-	// Save name, user status, and user picture
-	savedInstanceState.putString("Name", userName.getText().toString());
-	savedInstanceState.putString("status", userStatus.getText().toString());
-	savedInstanceState.putParcelable("picture", img);
-	// savedInstanceState.putInt( "difficulty", difficulty );
-	// savedInstanceState.putInt( "letters", numLetters );
-
-	// Always call the superclass so it can save the view hierarchy state
-	super.onSaveInstanceState(savedInstanceState);
+		// Save name, user status, and user picture
+		savedInstanceState.putString("Name", userName.getText().toString());
+		savedInstanceState.putString("status", userStatus.getText().toString());
+		savedInstanceState.putParcelable("picture", img);
+		//basic settings
+		savedInstanceState.putInt( "difficulty", difficulty );
+		savedInstanceState.putInt( "letters", numLetters );
+		//score
+		savedInstanceState.putInt( "roundScore", gameLogic.getRoundScore() );
+		savedInstanceState.putInt( "totalScore", gameLogic.getTotalScore() );
+		//time
+		savedInstanceState.putInt( "timeCount", gameLogic.getTimeCount() );
+		savedInstanceState.putInt( "timeLimit", gameLogic.getTimeLimit() );
+		//Buttons and correct sign
+		savedInstanceState.putString( "firstButtonString", gameLogic.getFirstButtonString() );
+		savedInstanceState.putString( "secondButtonString", gameLogic.getSecondButtonString() );
+		savedInstanceState.putString( "thirdButtonString", gameLogic.getThirdButtonString() );	
+		savedInstanceState.putString( "correctSign", gameLogic.getCorrectChoice() );	
+		//Pictures
+		savedInstanceState.putString( "firstPicture", gameLogic.getFirstPicture() );
+		savedInstanceState.putString( "secondPicture", gameLogic.getSecondPicture() );
+		savedInstanceState.putString( "thirdPicture", gameLogic.getThirdPicture() );
+		//Answer ID
+		savedInstanceState.putInt( "answer", answerID );	
+		//statistics
+		savedInstanceState.putInt( "totalTime", gameLogic.getTotalTime() );	
+		savedInstanceState.putInt( "numCorrect", gameLogic.getNumCorrect() );	
+		
+		// Always call the superclass so it can save the view hierarchy state
+		super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-	// Always call the superclass so it can restore the view hierarchy
-	super.onRestoreInstanceState(savedInstanceState);
-
-	// Restore name, user status, and user picture
-	userName.setText(savedInstanceState.getString("Name"));
-	userStatus.setText(savedInstanceState.getString("status"));
-	img = savedInstanceState.getParcelable("picture");
-	userImg.setImageBitmap(img);
-	// difficulty = savedInstanceState.getInt( "difficulty" );
-	// numLetters = savedInstanceState.getInt( "letters" );
+		// Always call the superclass so it can restore the view hierarchy
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		//If the save is a valid one, restore the game
+		if(getValidInstance()) {
+			//time
+			int timeCount = savedInstanceState.getInt( "timeCount" );
+			gameLogic.setTimeCount(timeCount);
+			int tickTime = 1000;			
+			
+			//Answer ID
+			answerID = savedInstanceState.getInt( "answer" );			
+			
+			//If the timer was on it's way down and an answer wasn't given,
+			//the timer should start where it left off
+			if(timeCount < 10 && timeCount > 0 && answerID == 0) {				
+			    int timeLimit = savedInstanceState.getInt( "timeLimit" );
+			    gameLogic.setTimeLimit(timeLimit-(timeCount*tickTime));
+			    gameLogic.restartTimer();
+			    
+			    // Start the ticking noise
+			    //playTicking();				    
+			}
+			//If an answer was given, restore that state
+			else if(answerID != 0){
+				gameLogic.getCountDownTimer().cancel();				
+				
+				firstOptionButton.setEnabled(false);
+				secondOptionButton.setEnabled(false);
+				thirdOptionButton.setEnabled(false);
+			
+				switch (answerID) {
+			
+				case R.id.first_opt_button:
+			
+				    if (gameLogic.getCorrectButton() == firstButton) {
+					firstOptionButton
+						.setBackgroundColor(android.graphics.Color.GREEN);
+				    } else {
+					firstOptionButton
+						.setBackgroundColor(android.graphics.Color.RED);
+				    }
+				    break;
+			
+				case R.id.second_opt_button:
+			
+				    if (gameLogic.getCorrectButton() == secondButton) {
+					secondOptionButton
+						.setBackgroundColor(android.graphics.Color.GREEN);
+				    } else {
+					secondOptionButton
+						.setBackgroundColor(android.graphics.Color.RED);
+				    }
+				    break;
+			
+				case R.id.third_opt_button:
+			
+				    if (gameLogic.getCorrectButton() == thirdButton) {
+					thirdOptionButton
+						.setBackgroundColor(android.graphics.Color.GREEN);
+				    } else {
+					thirdOptionButton
+						.setBackgroundColor(android.graphics.Color.RED);
+				    }
+				    break;
+				}
+			
+				// Enable the next letter/word button
+				nextButton.setEnabled(true);
+			}
+			//If time stopped make sure the countdown timer has stopped
+			else if(timeCount <= 0){
+				gameLogic.getCountDownTimer().cancel();
+			}
+			
+			timerBar.setProgress(timeCount*tickTime);
+		}
+		//Otherwise create a new game round
+		else { 
+		    // game difficulty, default level 1
+		    difficulty = getIntent().getIntExtra("Difficulty", difficultyOne);
+		    numLetters = getIntent().getIntExtra("Letters", oneLetter);    	
+		    	
+		    gameLogic.setDiffLevel(difficulty);
+		    gameLogic.setNumLetters(numLetters);
+		    
+		    // User Image
+		    img = (Bitmap) (getIntent().getExtras().getParcelable("userImg"));
+		    userImg.setImageBitmap(img);	
+		    userStatus.setText(R.string.logged_in);
+		    // Displays the username
+		    userName.setText(getIntent().getStringExtra("Name"));	    	
+		   	
+		    // Changes the picture and button text
+		    deployTextButtons();
+		
+		    // Start the ticking noise
+		    playTicking();	    
+		}	
     }
 
+    /**
+     * getValidInstance
+     */
+    private boolean getValidInstance() {
+    	
+    	if(firstOptionButton.getText().toString() != null &&
+    	   firstOptionButton.getText().toString() != "" &&
+    	   secondOptionButton.getText().toString() != null &&
+    	   secondOptionButton.getText().toString() != "" &&
+    	   thirdOptionButton.getText().toString() != null &&
+    	   thirdOptionButton.getText().toString() != "" &&
+    	   image1.getDrawable() != null) {
+    	    
+    		if(difficulty == 3) {
+    	    	if(image3.getDrawable() != null &&
+    	    	   image2.getDrawable() != null	&&
+    	    	   firstOptionButton.getText().toString().length() == 3) {
+    	    	    return true;
+    	    	}
+    		}
+    		else if(difficulty == 2) {
+    	    	if(image2.getDrawable() != null	&&
+    	    	   firstOptionButton.getText().toString().length() == 2) {
+    	    	    return true;
+    	    	}
+    		}
+    		else { //difficulty 1
+    	    	if(firstOptionButton.getText().toString().length() == 1) {
+    	    	    return true;
+    	    	}    			
+    		}
+    	}
+    	
+    	return false;
+    }
+    
     /**
      * getTimerBar
      * 
@@ -261,68 +466,78 @@ public class Game extends Activity {
      */
     public void markButtonsAfterClicked(View v) {
 
-	// stop the clock ticking sound, and play the button sound
-	SoundPlayer.stop();
-	playButton();
-
-	// cancels the count down timer
-	gameLogic.getCountDownTimer().cancel();
-
-	int button_id = v.getId();
-
-	firstOptionButton.setEnabled(false);
-	secondOptionButton.setEnabled(false);
-	thirdOptionButton.setEnabled(false);
-
-	switch (button_id) {
-
-	case R.id.first_opt_button:
-
-	    if (gameLogic.getCorrectButton() == firstButton) {
-		firstOptionButton
-			.setBackgroundColor(android.graphics.Color.GREEN);
-		scoreCounter();
-		playRightChoice();
-	    } else {
-		firstOptionButton
-			.setBackgroundColor(android.graphics.Color.RED);
-		playWrongChoice();
-	    }
-	    break;
-
-	case R.id.second_opt_button:
-
-	    if (gameLogic.getCorrectButton() == secondButton) {
-		secondOptionButton
-			.setBackgroundColor(android.graphics.Color.GREEN);
-		scoreCounter();
-		playRightChoice();
-	    } else {
-		secondOptionButton
-			.setBackgroundColor(android.graphics.Color.RED);
-		playWrongChoice();
-	    }
-	    break;
-
-	case R.id.third_opt_button:
-
-	    if (gameLogic.getCorrectButton() == thirdButton) {
-		thirdOptionButton
-			.setBackgroundColor(android.graphics.Color.GREEN);
-		scoreCounter();
-		playRightChoice();
-	    } else {
-		thirdOptionButton
-			.setBackgroundColor(android.graphics.Color.RED);
-		playWrongChoice();
-	    }
-	    break;
-	}
-
-	// Enable the next letter/word button
-	nextButton.setEnabled(true);
+		// stop the clock ticking sound, and play the button sound
+		SoundPlayer.stop();
+		playButton();
+	
+		// cancels the count down timer
+		gameLogic.getCountDownTimer().cancel();
+	
+		int button_id = v.getId();
+	    answerID = button_id;
+		
+	    //Set the answer and activate the next button
+        setAnswer(button_id);
     }
 
+    /**
+     * setAnswer sets the answer and activate the next button
+     */
+    private void setAnswer(int button_id) {
+    	
+		firstOptionButton.setEnabled(false);
+		secondOptionButton.setEnabled(false);
+		thirdOptionButton.setEnabled(false);
+	
+		switch (button_id) {
+	
+		case R.id.first_opt_button:
+	
+		    if (gameLogic.getCorrectButton() == firstButton) {
+			firstOptionButton
+				.setBackgroundColor(android.graphics.Color.GREEN);
+			scoreCounter();
+			playRightChoice();
+		    } else {
+			firstOptionButton
+				.setBackgroundColor(android.graphics.Color.RED);
+			playWrongChoice();
+		    }
+		    break;
+	
+		case R.id.second_opt_button:
+	
+		    if (gameLogic.getCorrectButton() == secondButton) {
+			secondOptionButton
+				.setBackgroundColor(android.graphics.Color.GREEN);
+			scoreCounter();
+			playRightChoice();
+		    } else {
+			secondOptionButton
+				.setBackgroundColor(android.graphics.Color.RED);
+			playWrongChoice();
+		    }
+		    break;
+	
+		case R.id.third_opt_button:
+	
+		    if (gameLogic.getCorrectButton() == thirdButton) {
+			thirdOptionButton
+				.setBackgroundColor(android.graphics.Color.GREEN);
+			scoreCounter();
+			playRightChoice();
+		    } else {
+			thirdOptionButton
+				.setBackgroundColor(android.graphics.Color.RED);
+			playWrongChoice();
+		    }
+		    break;
+		}
+	
+		// Enable the next letter/word button
+		nextButton.setEnabled(true);   	
+    }
+    
     /**
      * playRightChoice
      * 
@@ -369,6 +584,8 @@ public class Game extends Activity {
 
 	nextButton.setOnClickListener(new OnClickListener() {
 	    public void onClick(View arg0) {
+	    //Reset the answer variable
+	    answerID = 0;	    	
 		// play the button sound
 		playButton();
 
@@ -417,7 +634,7 @@ public class Game extends Activity {
 		    timerBar.setProgress(maxProgress);
 		    gameLogic.resetTimeCount();
 		    // (re)starts the count down timer
-		    gameLogic.getCountDownTimer().start();
+		    //gameLogic.getCountDownTimer().start();
 		}
 	    }
 	});

@@ -97,7 +97,7 @@ public class GameLogic {
     private String first_picture = "blank";
     private String second_picture = "blank";
     private String third_picture = "blank";
-
+    
     // private final int minus_one = -1;
     private final int zero = 0;
     private final int one = 1;
@@ -319,7 +319,7 @@ public class GameLogic {
 	}
 
 	//Bugfix for score when time has run out
-	if(timeCount <= one) {
+	if(timeCount <= zero) {
 		roundScore = zero;
 	} else if (score > zero) {
 	    roundScore = score;
@@ -345,6 +345,13 @@ public class GameLogic {
     }
 
     /**
+     * Sets the total score after a restore. 
+     */
+    public void setTotalScore(int score) {
+    	this.totalScore = score;
+    }    
+    
+    /**
      * The getRoundScore method returns the round score.
      * 
      * @return : an integer representing the round score
@@ -352,7 +359,14 @@ public class GameLogic {
     public int getRoundScore() {
 	return roundScore;
     }
-
+    
+    /**
+     * Sets the round score after a restore. 
+     */
+    public void setRoundScore(int score) {
+    	this.roundScore = score;
+    }
+    
     /**
      * The clearRoundScore method clears (sets to 0) the round score.
      */
@@ -360,6 +374,20 @@ public class GameLogic {
 	roundScore = zero;
     }
 
+    /**
+     * Sets the difficulty level after a restore. 
+     */
+    public void setDiffLevel(int diff) {
+    	this.diffLevel = diff;
+    }     
+    
+    /**
+     * Sets the number of letters after a restore. 
+     */
+    public void setNumLetters(int letters) {
+    	this.numLetters = letters;
+    }    
+    
     /**
      * The getCountDownTimer method returns the count down timer. object
      * 
@@ -384,19 +412,41 @@ public class GameLogic {
     }
 
     /**
-     * Resets time left to max.
+     * Gets the round counter before a save. 
+     */
+    public int getRoundCounter() {
+    	return playRoundCounter;
+    } 
+    
+    /**
+     * Sets the round counter after a restore. 
+     */
+    public void setRoundCounter(int counter) {
+    	this.playRoundCounter = counter;
+    }     
+    
+    /**
+     * Resets time count (time left) and time limit (max time) to max.
+     * Time limit is important to reset is cases when the application
+     * has been interrupted and needed to continue.  This also requires
+     * making a 'new' timer with the new time limit.
      * 
      * @param max
      *            : an integer representing max time left
      */
     public void resetTimeCount() {
+    countDownTimer.cancel();    	
 	if (diffLevel == difficultyThree) {
 	    timeCount = maxCountLevel3;
+	    timeLimit = maxTimeLimit3;	    
 	} else if (diffLevel == difficultyTwo) {
 	    timeCount = maxCountLevel2;
+	    timeLimit = maxTimeLimit2;	    
 	} else {
 	    timeCount = maxCountLevel1;
+	    timeLimit = maxTimeLimit1;	    
 	}
+    countDownTimer.start();	
     }
 
     /**
@@ -416,6 +466,20 @@ public class GameLogic {
     }
 
     /**
+     * Gets the total time before a save. 
+     */
+    public int getTotalTime() {
+    	return totalTime;
+    } 
+    
+    /**
+     * Sets the total time after a restore. 
+     */
+    public void setTotalTime(int total) {
+    	this.totalTime = total;
+    }    
+    
+    /**
      * The getNumCorrect method returns the number of correct answers after 10
      * rounds.
      * 
@@ -425,6 +489,13 @@ public class GameLogic {
 	return numCorrect;
     }
 
+    /**
+     * Sets the number correct after a restore. 
+     */
+    public void setNumCorrect(int correct) {
+    	this.numCorrect = correct;
+    }    
+    
     /**
      * Returns the number (1, 2, or 3) of the button with the correct answer.
      * 
@@ -455,6 +526,13 @@ public class GameLogic {
     }
 
     /**
+     * Sets the first button string after a restore. 
+     */
+    public void setFirstButtonString(String buttonWord) {
+    	this.firstButtonString = buttonWord;
+    }    
+    
+    /**
      * Returns the random letter(s) for button 2
      * 
      * return : the random letter(s) for button 2 as a String
@@ -463,6 +541,13 @@ public class GameLogic {
 	return secondButtonString;
     }
 
+    /**
+     * Sets the second button string after a restore. 
+     */
+    public void setSecondButtonString(String buttonWord) {
+    	this.secondButtonString = buttonWord;
+    }    
+    
     /**
      * Returns the random letter(s) for button 3
      * 
@@ -473,6 +558,13 @@ public class GameLogic {
     }
 
     /**
+     * Sets the third button string after a restore. 
+     */
+    public void setThirdButtonString(String buttonWord) {
+    	this.thirdButtonString = buttonWord;
+    }     
+    
+    /**
      * Returns the picture string for the first hand sign
      * 
      * return : the String representing the hand sign
@@ -481,6 +573,13 @@ public class GameLogic {
 	return first_picture;
     }
 
+    /**
+     * Sets the first picture string after a restore. 
+     */
+    public void setFirstPicture(String picture) {
+    	this.first_picture = picture;
+    }    
+    
     /**
      * Returns the picture string for the second hand sign
      * 
@@ -491,6 +590,13 @@ public class GameLogic {
     }
 
     /**
+     * Sets the second picture string after a restore. 
+     */
+    public void setSecondPicture(String picture) {
+    	this.second_picture = picture;
+    }    
+    
+    /**
      * Returns the picture string for the third hand sign
      * 
      * return : the String representing the hand sign
@@ -499,6 +605,27 @@ public class GameLogic {
 	return third_picture;
     }
 
+    /**
+     * Sets the third picture string after a restore. 
+     */
+    public void setThirdPicture(String picture) {
+    	this.third_picture = picture;
+    }    
+
+    /**
+     * Gets the correct choice string before a save. 
+     */
+    public String getCorrectChoice() {
+    	return correctSign;
+    }    
+    
+    /**
+     * Sets the correct choice string after a restore. 
+     */
+    public void setCorrectChoice(String choice) {
+    	this.correctSign = choice;
+    } 
+    
     /**
      * Returns random letters/words for the buttons and the correct letter/word
      * for the shown sign.
@@ -515,7 +642,7 @@ public class GameLogic {
 	    // The first number in answerForButtons is the correct one
 	    str = randomWord(answerForButtons.get(zero));
 	    correctSign = str;
-
+	    
 	    if (putUsedSignsInArray(str)) {
 		Log.e(">>>>>>>", str);
 		break;
@@ -637,6 +764,45 @@ public class GameLogic {
 	}
     }
 
+    /**
+     * Gets the time count before a save.
+     */
+    public int getTimeCount() {
+    	return timeCount;
+    }
+    
+    /**
+     * Sets the time count after a restore. 
+     */
+    public void setTimeCount(int count) {
+    	this.timeCount = count;
+    }    
+    
+    /**
+     * Gets the time limit before a save.
+     */    
+    public int getTimeLimit() {
+    	return timeLimit;
+    } 
+    
+    /**
+     * Sets the time limit after a restore.
+     */
+    public void setTimeLimit(int limit) {
+    	this.timeLimit = limit;
+    }
+    
+    /**
+     * The restartTimer method restarts the count down timer
+     * when after the application has been interrupted.
+     */
+    public void restartTimer() {
+    	countDownTimer.cancel();
+    	timeLimit = timeLimit - timeCount*tickTime;
+    	countDownTimer.start();
+    }
+    
+    
     /**
      * The startTimer method starts the count down timer for making a choice in
      * the game. The variable timeCount is even used to determine bonus points

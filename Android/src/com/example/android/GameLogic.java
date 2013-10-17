@@ -300,8 +300,8 @@ public class GameLogic {
      */
     public void scoreCounter() {
 
-	int score;
-	int time;
+	int score = 0;
+	int time = 0;
 
 	// timeCount is the number of seconds left on the counter
 	// when a correct answer was given. +1 is because timeCount
@@ -309,20 +309,36 @@ public class GameLogic {
 	// issues.
 	if (diffLevel == difficultyThree) {
 	    time = one + maxCountLevel3 - timeCount; // 2 seconds to answer
-	    score = (one + timeCount) * factorFive * diffLevel;
+		if(timeCount < zero) {
+			roundScore = zero;
+		} else if(timeCount == zero) { //1 second left
+			score = (one + timeCount) * factorFive * diffLevel;
+	    } else {
+	    	score = (one + timeCount) * factorFive * diffLevel;
+	    }
 	} else if (diffLevel == difficultyTwo) {
 	    time = one + maxCountLevel2 - timeCount; // 5 seconds to answer
-	    score = (one + timeCount) * factorTwo * diffLevel;
+		if(timeCount < zero) {
+			roundScore = zero;
+		} else if(timeCount == zero) { //1 second left
+			score = (one + timeCount) * factorTwo * diffLevel;
+	    } else {
+	    	score = (one + timeCount) * factorTwo * diffLevel;
+	    }	    
 	} else {
 	    time = one + maxCountLevel1 - timeCount; // 10 seconds to answer
-	    score = (one + timeCount); // - time taken
+		if(timeCount < zero) {
+			roundScore = zero;
+		} else if(timeCount == zero) { //1 second left
+			score = (one + timeCount);
+	    } else {	    
+	    	score = (one + timeCount); // - time taken
+	    }
 	}
 
-	//Bugfix for score when time has run out
-	if(timeCount <= zero) {
-		roundScore = zero;
-	} else if (score > zero) {
-	    roundScore = score;
+	//Bugfix			
+	if (score > zero) {
+	    roundScore = score;    
 	} else {
 	    roundScore = zero;
 	}
@@ -828,21 +844,21 @@ public class GameLogic {
 		// is 10 to 0, so *factor for display
 		game.getTimerBar().setProgress(timeCount * factor);
 
-		// Stops the timeCount from going beyond zero time.
-		if (timeCount > zero) {
+		// Stops the timeCount from going beyond minus one time.
+		//if (timeCount > zero) {
 		    timeCount--;
-		}
+		//}
 	    }
 
 	    @Override
 	    public void onFinish() {
-		// on finish bonus points are -1, because timeCount is
+		// on finish bonus points are -2, because timeCount is
 		// always 1 point lower than it 'should be' due to display
 		// issues
 		SoundPlayer.stop();
 		SoundPlayer.playTimeout(game);
 		SoundPlayer.buzz(game, "timeout");
-		timeCount = zero;
+		timeCount = -2;
 	    }
 	}.start();
     }

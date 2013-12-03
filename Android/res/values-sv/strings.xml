@@ -26,7 +26,7 @@
     <string name="sound_settings">Ljud Inställningar</string>
     <string name="profile_settings">Profil Inställningar</string>       
     <string name="newGame">Ny Spelomgång</string>
-    <string name="newPlayer">Ny Spelare</string>
+    <string name="newPlayer">Inloggning / Ny Spelare</string>
     <string name="level">Nivå</string>
     <string name="help">Hjälp</string>
     <string name="submit">Skicka</string>

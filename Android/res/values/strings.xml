@@ -27,7 +27,7 @@
     <string name="sound_settings">Sound Settings</string>
     <string name="profile_settings">Profile Settings</string>
     <string name="newGame">New Game</string>
-    <string name="newPlayer">New Player</string>
+    <string name="newPlayer">Log In / New Player</string>
     <string name="level">Level</string>
     <string name="help">Help</string>
     <string name="submit">Submit</string>

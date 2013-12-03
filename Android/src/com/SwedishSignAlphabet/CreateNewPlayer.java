@@ -154,7 +154,7 @@ public class CreateNewPlayer extends Activity {
 	} else {
 	    // Show a dialog that the username is invalid
 	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    builder.setMessage("Användarnamnet är inte tillåtet")
+	    builder.setMessage("Anvandarnamnet ar inte tillatet")
 		    .setCancelable(false)
 		    .setPositiveButton("OK",
 			    new DialogInterface.OnClickListener() {

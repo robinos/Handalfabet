@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.android"
+    package="com.SwedishSignAlphabet"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="com.SwedishSignAlphabet.MainActivity"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Game"
+            android:name="com.SwedishSignAlphabet.Game"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_main" >
             <intent-filter>
@@ -40,7 +40,7 @@
                 android:value="com.example.android.MainActivity" />
         </activity>
         <activity
-            android:name=".HighScore"
+            android:name="com.SwedishSignAlphabet.HighScore"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.HIGHSCORE" />
@@ -49,7 +49,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LevelChooserActivity"
+            android:name="com.SwedishSignAlphabet.LevelChooserActivity"
             android:label="@string/title_activity_level_chooser" >
             <intent-filter>
                 <action android:name="android.intent.action.LEVELCHOOSERACTIVITY" />
@@ -62,7 +62,7 @@
                 android:value="com.example.android.MainActivity" />
         </activity>
         <activity
-            android:name=".UserActivity"
+            android:name="com.SwedishSignAlphabet.UserActivity"
             android:label="@string/login" >
             <intent-filter>
                 <action android:name="android.intent.action.USER" />
@@ -75,7 +75,7 @@
                 android:value="com.example.android.MainActivity" />
         </activity>
         <activity
-            android:name=".Help"
+            android:name="com.SwedishSignAlphabet.Help"
             android:label="@string/help" >
             <intent-filter>
                 <action android:name="android.intent.action.HELP" />
@@ -88,7 +88,7 @@
                 android:value="com.example.android.MainActivity" />
         </activity>
         <activity
-            android:name=".DisplayHighscoreActivity"
+            android:name="com.SwedishSignAlphabet.DisplayHighscoreActivity"
             android:label="@string/highScore" >
             <intent-filter>
                 <action android:name="android.intent.action.DISPLAYHIGHSCOREACTIVITY" />
@@ -101,7 +101,7 @@
                 android:value="com.example.android.MainActivity" />
         </activity>
         <activity
-            android:name=".GameSettingsActivity"
+            android:name="com.SwedishSignAlphabet.GameSettingsActivity"
             android:label="@string/menu_settings" >
             <intent-filter>
                 <action android:name="android.intent.action.GAMESETTINGSACTIVITY" />
@@ -114,7 +114,7 @@
                 android:value="com.example.android.Game" />
         </activity>
         <activity
-            android:name=".GameEnd"
+            android:name="com.SwedishSignAlphabet.GameEnd"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.GAMEEND" />
@@ -127,7 +127,7 @@
                 android:value="com.example.android.MainActivity" />
         </activity>
         <activity
-            android:name=".ProfileSettingsActivity"
+            android:name="com.SwedishSignAlphabet.ProfileSettingsActivity"
             android:label="@string/profile_settings" >
             <intent-filter>
                 <action android:name="android.intent.action.PROFILESETTINGSACTIVITY" />
@@ -140,7 +140,7 @@
                 android:value="com.example.android.GameSettingsActivity" />
         </activity>
         <activity
-            android:name=".SoundSettingsActivity"
+            android:name="com.SwedishSignAlphabet.SoundSettingsActivity"
             android:label="@string/sound_settings" >
             <intent-filter>
                 <action android:name="android.intent.action.SOUNDSETTINGSACTIVITY" />
@@ -153,7 +153,7 @@
                 android:value="com.example.android.GameSettingsActivity" />
         </activity>
         <activity
-            android:name=".UserActivityWithUserImage"
+            android:name="com.SwedishSignAlphabet.UserActivityWithUserImage"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.USERACTIVITYWITHUSERIMAGE" />
@@ -166,7 +166,7 @@
                 android:value="com.example.android.MainActivity" />
         </activity>
         <activity
-            android:name=".TakePhotoActivity"
+            android:name="com.SwedishSignAlphabet.TakePhotoActivity"
             android:label="@string/take_photo" >
             <intent-filter>
                 <action android:name="android.intent.action.TAKEPHOTOACTIVITY" />
@@ -179,7 +179,7 @@
                 android:value="com.example.android.MainActivity" />
         </activity>
         <activity
-            android:name=".CreateNewPlayer"
+            android:name="com.SwedishSignAlphabet.CreateNewPlayer"
             android:label="@string/createNewPlayer" >
             <intent-filter>
                 <action android:name="android.intent.action.CREATENEWPLAYER" />
@@ -192,7 +192,7 @@
                 android:value="com.example.android.UserActivityWithUserImage" />
         </activity>
         <activity
-            android:name=".AlphabetHelpActivity"
+            android:name="com.SwedishSignAlphabet.AlphabetHelpActivity"
             android:label="@string/title_activity_alphabet_help" >
             <intent-filter>
                 <action android:name="android.intent.action.ALPHABETHELPACTIVITY" />
@@ -204,7 +204,7 @@
                 android:value="com.example.android.Help" />
         </activity>
         <activity
-            android:name=".GameHelpActivity"
+            android:name="com.SwedishSignAlphabet.GameHelpActivity"
             android:label="@string/title_activity_game_help" >
             <intent-filter>
                 <action android:name="android.intent.action.GAMEHELPACTIVITY" />

@@ -108,7 +108,7 @@ public class SoundPlayer extends Service {
     private static boolean debug = false;
 
     // The path to package resources
-    private final static String packagePath = "android.resource://com.example.android/";
+    private final static String packagePath = "android.resource://com.SwedishSignAlphabet/";
 
     // volume/sound and vibration related variables
     private static float volumeRight = 1.0f;

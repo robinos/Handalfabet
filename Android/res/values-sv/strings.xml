@@ -3,7 +3,7 @@
     <string name="username">Användarnamn</string> 	
     <string name="highScore">Högsta Rekord</string>
     <string name="login">Inloggning</string>
-    <string name="app_name">Android</string>
+    <string name="app_name">Handalfabetet</string>
     <string name="hello_world">Hallå världen!</string>
     <string name="menu_settings">Inställningar</string>
     <string name="title_activity_display_highscore">Highscore</string>
@@ -53,52 +53,52 @@
     <string name="start">Börja</string>
     <string name="stop">Avsluta</string>
     <string name="first_help_page">Välkommen till Handalfabet hjälp!  Det första
-        du gör borde vara att välja Ny Spelare knappen.  Ny Spelomgång och Inställningar
-        kommer att vara otillgänglig tills du skapar en spelare profil och loggar in.</string>
-    <string name="second_help_page">I vår exempel fall finns spelaren Jill redan,
+        du bör göra är att välja Ny Spelare knappen.  Ny Spelomgång och Inställningar
+        kommer att vara otillgängliga tills du skapar en spelarprofil och loggar in.</string>
+    <string name="second_help_page">I vårt exempelfall finns spelaren Jill redan,
         men om handalfabet är nyinstallerat kommer det inte finnas någon spelare i listan.
         Du kommer att behöva välja Skapa Ny Spelare knappen.</string>
-    <string name="third_help_page">Här borde du välja användarnamn fältet och knappa in ett
-        namn.  Den måsta vara åtminstonde tre bokstavar lång.  Du får också välja en bld
-        med Väjl Bild knappen, annars kommer du att få basinställningen.</string>
+    <string name="third_help_page">Här väljer du fältet för användarnamn och knappar in ett
+        namn.  Det måste vara åtminstone tre bokstäver långt.  Du får också välja en bild
+        med Välj Bild knappen, annars kommer du att få basinställningen.</string>
     <string name="fourth_help_page">Här väljer du bilden du vill ha som avatar.  När du är
-        klar, kommer du automatiskt tillbaka till förregående skärmen.</string>
-    <string name="fifth_help_page">Nu när du har en giltig namn och en bild är det tid att
+        klar, kommer du automatiskt tillbaka till föregående skärmen.</string>
+    <string name="fifth_help_page">Nu när du har ett giltigt namn och en bild är det tid att
         välja Skapa Spelare knappen.  Den kommer att ta dig tillbaka till
         inloggningsskärmen.</string>  
-    <string name="sixth_help_page">Du borde kunna se din nyskapade spelarnamn i listan.
-        Klick på namnet och den kommer att visas högst upp på skärmen.  Inloggningsknappen
+    <string name="sixth_help_page">Du bör nu kunna se ditt nyskapade spelarnamn i listan.
+        Klicka på namnet och det kommer att visas högst upp på skärmen.  Inloggningsknappen
         kommer nu vara aktiv.  Du kommer alltid att göra inloggningen från den här
         skärmen.</string>
-    <string name="seventh_help_page">Tillbaka i huvudmeny ser vi att Ny Spelomgång och
-        Inställningar knappar är aktiverad.  Klicka på Ny Spelomgång för att komma till
-        nästa skärmen där du kan välja svårighet och nummer av bokstäver.</string> 
+    <string name="seventh_help_page">Tillbaka i huvudmenyn ser vi att knappar för Ny Spelomgång och
+        Inställningar är aktiverade.  Klicka på Ny Spelomgång för att komma till
+        nästa skärm där du kan välja svårighet och antal bokstäver.</string> 
     <string name="eighth_help_page">Svårigheten väljs med radio knappar.  Val ett tillåter
         ungefär 10 sekunder, två 5 sekunder, och tre 2 sekunder att svara, alla med
-        större vinster.  Klick på nummer av bokstäver för att starta spelet.</string> 
+        större vinster.  Klicka på antal bokstäver för att starta spelet.</string> 
     <string name="ninth_help_page">Spelet börjar med en fråga.  Du måste gissa vilken
         bokstav eller ord som finns på bilden(erna).  Baren vid botten av skärmen är
-        din tid som snabbt försvinner.  De tre svarsknapparna är din alternativ.
+        din tid som snabbt försvinner.  De tre svarsknapparna är dina alternativ.
         Välj en.</string> 
     <string name="tenth_help_page">Här svarade vi innan tiden rann ut.  Gröna färgen,
-        och fina ljudet, betyder att svaret var korrekt.  Du kan även se att poäng och
-        total poäng har ökat, och nästa knappen är nu användbar.</string> 
+        och det fina ljudet, betyder att svaret var korrekt.  Du kan även se att poäng och
+        total poäng har ökat, och nästa knapp är nu klickbar.</string> 
     <string name="eleventh_help_page">I exemplet ovan svarade vi fel.  Röda färgen och
-        fula ljudet betyder att svaret var inkorrekt.  Poäng kommer inte att ändras, men
+        det fula ljudet betyder att svaret var inkorrekt.  Poäng kommer inte att ändras, men
         vi kan trycka på nästa knappen för att försöka igen.</string>  
-    <string name="twelvth_help_page">Nu har klock ljudet slutade och en hemsk beep ljud
+    <string name="twelvth_help_page">Nu har klockljudet slutat och ett hemskt beep ljud
         spelades upp.  Tiden rann ut.  Vi kunde efteråt gissa rätt, men får inga poäng för
         det.</string>
-    <string name="thirteenth_help_page">Här är exemplet på ett spel med tre bokstäver ord.
-        Där finns tre tecken bilder och varje svarsknapp har tre bokstäver.</string> 
-    <string name="fourteenth_help_page">Efter 10 gissningar, spelet slutar.  Du får veta
-        hur många rätt svar du hade, hur snabbt du svarade, dina total poäng (inte i bilden),
-        och om det var en ny rekord för dig eller inte.  Om det var det, får du
-        ett seger ljud.</string> 
-    <string name="fifteenth_help_page">Om du tryck på Högsta Rekord knappen efter slutet
+    <string name="thirteenth_help_page">Här är exemplet på ett spel med tre-bokstävers ord.
+        Där finns tre teckenbilder och varje svarsknapp har tre bokstäver.</string> 
+    <string name="fourteenth_help_page">Efter 10 gissningar slutar spelet.  Du får veta
+        hur många rätt svar du hade, hur snabbt du svarade, dina totalpoäng,
+        och om det var ett nytt rekord för dig eller inte.  Om det var det, får du
+        ett segerljud.</string> 
+    <string name="fifteenth_help_page">Om du trycker på Högsta Rekord knappen efter slutet
         av spelet, eller från huvudmenyn, kan du titta på Högsta Rekord listan.  Här kan
         vi se Jill och Anders högsta rekord.</string> 
-    <string name="sixteenth_help_page">Här är ljudinställningsskärmen.  Man kan kom åt den
-        genom Inställningar från Huvudmenyn. Här kan du stäng av och sätt på ljudet och
-        vibrationer, och även justera volym.  Vi hoppas spel guiden hjälpte dig!</string>       
+    <string name="sixteenth_help_page">Här är ljudinställningsskärmen.  Man kan komma åt den
+        genom Inställningar från Huvudmenyn. Här kan du stänga av och sätta på ljudet och
+        vibrationer, och även justera volym.  Vi hoppas spelguiden hjälpte dig!</string>       
 </resources>
